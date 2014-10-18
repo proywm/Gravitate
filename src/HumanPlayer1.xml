@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<Player Name="HumanPlayerWithAllFeatures" PlayerViewType="HumanView" PlayerViewTypeID="1">
+	<Control LeftKey = "a" RightKey = "d" Move = "LeftRight" MoveId = "LeftRight"/>
+</Player>

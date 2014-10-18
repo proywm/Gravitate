@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<Player Name="GameLogic" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" >
+	<Actor ActorFileName="./src/Map.xml" totalActors="1" spawnPositionX="400" spawnPositionY="300" faceTowardsX="0" faceTowardsY="400" />	
+\</Player>
