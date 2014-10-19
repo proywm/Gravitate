@@ -16,5 +16,6 @@ public:
 	//ShapeInterface* actorShape;
 	//sf::Shape actorShape;
 	ActorShape::Shape* actorShape;
+	int shapeID;
 };
 

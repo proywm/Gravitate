@@ -25,6 +25,11 @@ void PhysicalComponent::init(XMLElement *componentElement)
 			((ActorShape::Circle*)actorShape)->setSize(shapeElement->FloatAttribute("Radious"));
 			//actorShape = new sf::CircleShape(shapeElement->IntAttribute("Radious"));
 			break;
+		case 3://"GridMap":
+			actorShape = new ActorShape::GridMap();
+			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->FloatAttribute("BlockWidth"));
+			//actorShape = new sf::CircleShape(shapeElement->IntAttribute("Radious"));
+			break;
 		default:
 			actorShape = new ActorShape::Circle();
 			((ActorShape::Circle*)actorShape)->setSize(10);

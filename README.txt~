@@ -13,7 +13,7 @@ export LIB=~/local/lib
 export INCLUDE=~/local/include
 cmake .
 
-To compile, simply run 'make'. If SFML was installed correctly, a executable 'Gravitate' will be generated.
+To compile, simply run 'make'. If SFML was installed correctly, a executable 'helloworld' will be generated.
 
 
 **ADDING FILES**

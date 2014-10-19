@@ -1,6 +1,7 @@
 #include "ActorFactory.h"
 #include "PhysicalComponent.h"
 #include "VisualComponent.h"
+#include "GameStateComponent.h"
 ActorFactory::ActorFactory(void)
 {
 	currentId = 0;
@@ -18,8 +19,9 @@ void ActorFactory::init()
 }
 Actor* ActorFactory::CreateActor(const char* actorFile, double SpawnPositionX,double SpawnPositionY)
 {
+
 	XMLDocument* doc = new XMLDocument();
-    doc->LoadFile(actorFile);
+    	doc->LoadFile(actorFile);
 	
 	XMLElement *rootActorElement = doc->FirstChildElement();
 
@@ -27,10 +29,10 @@ Actor* ActorFactory::CreateActor(const char* actorFile, double SpawnPositionX,do
 	actor->actorId = NextId();
 	actor->spawnPosition.x = SpawnPositionX;
 	actor->spawnPosition.y = SpawnPositionY;
+	
 	for(XMLElement *componentElement = rootActorElement->FirstChildElement(); componentElement != NULL; componentElement = componentElement->NextSiblingElement())
 	{
 		ActorComponentInterface* actorComponent = CreateComponent(componentElement,actor);
-		//actorComponent->owner = actor;
 		actor->addComponent(actorComponent);
 	}
 	return actor;
@@ -44,6 +46,9 @@ ActorComponentInterface* ActorFactory::CreateComponentOf( int componentType)
 		break;
 	case VISUAL:
 		return new VisualComponent();
+		break;
+	case GAMESTATE:
+		return new GameStateComponent();
 		break;
 	default:
 		return NULL;

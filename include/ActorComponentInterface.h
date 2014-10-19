@@ -7,7 +7,8 @@ class Actor;
 enum ComponentType 
 {
 	VISUAL = 1, 
-	PHYSICAL = 2
+	PHYSICAL = 2,
+	GAMESTATE = 3
 };
 
 class ActorComponentInterface

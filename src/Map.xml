@@ -2,9 +2,12 @@
 <Actor ActorType="Map" ActorTypeID="2">
 	<Visual ComponentType="1" ComponentTypeText = "Visual" IsInvisible = "0">
 		<Color r="200" g="50" b="50" a="255" />
-		<Structure Shape="Map" ShapeID="5" NoOfRows="30" NoOfCols="30" BlockWidth="5"/>
-    	</Visual> 
-	<Physical ComponentType="2" ComponentTypeText ="Physical">
-		<Structure Shape="Map" ShapeID="5" NoOfRows="30" NoOfCols="30" BlockWidth="5"/>
-	</Physical>
+		<Structure Shape="Map" ShapeID="3" NoOfRows="30" NoOfCols="30" BlockWidth="15"/>
+    	</Visual>
+	<Physical ComponentType="2" ComponentTypeText = "Physical" IsInvisible = "1">
+		<Structure Shape="Map" ShapeID="3" NoOfRows="30" NoOfCols="30" BlockWidth="15"/>
+    	</Physical>
+	<GameState ComponentType="3" ComponentTypeText = "GameState" IsInvisible = "1">
+		<Structure Shape="Map" ShapeID="3" NoOfRows="30" NoOfCols="30" BlockWidth="15"/>
+	</GameState>
 </Actor>

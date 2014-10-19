@@ -17,7 +17,6 @@ public:
 	void StopGame();
 	void ShowWinner(GamePlayer* winner);
 	void updateScoreView();
-	void notifyAboutBallToAI(sf::Vector2f position);
 	void RestartGame();
 
 	int MaxPossibleScore;

@@ -1,5 +1,8 @@
 #pragma once
 #include "GlobalHeader.h"
+#define MAXROW 50
+#define MAXCOL 50
+
 namespace ActorShape
 {
 	class Shape
@@ -29,5 +32,15 @@ namespace ActorShape
 
 			sf::CircleShape actorShape;
 			double radious;
+	};
+	class GridMap : public Shape
+	{
+		public:
+			GridMap(void);
+			~GridMap(void);
+			void setBlockSize(double BlockSize);
+
+			double blockSize;
+			sf::RectangleShape gridMap[MAXROW][MAXCOL];
 	};
 }

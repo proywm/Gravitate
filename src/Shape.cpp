@@ -1,11 +1,7 @@
 #include "Shape.h"
-
-
 ActorShape::Shape::Shape(void)
 {
 }
-
-
 ActorShape::Shape::~Shape(void)
 {
 }
@@ -28,4 +24,19 @@ void ActorShape::Circle::setSize(double Radious)
 {
 	radious = Radious;
 	actorShape.setRadius(radious);
+}
+ActorShape::GridMap::GridMap(void)
+{}
+ActorShape::GridMap::~GridMap(void)
+{}
+void ActorShape::GridMap::setBlockSize(double BlockSize)
+{
+	blockSize = BlockSize;
+	for(int r=0;r<MAXROW;r++)
+	{
+		for(int c=0;c<MAXCOL;c++)
+		{
+			gridMap[r][c].setSize(sf::Vector2f(blockSize, blockSize));
+		}
+	}
 }

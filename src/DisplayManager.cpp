@@ -5,7 +5,7 @@ DisplayManager::DisplayManager(void)
 {
 	width = 800;
 	height = 600;
-	title = "Pong";
+	title = "Gravitate";
 }
 DisplayManager::~DisplayManager(void)
 {

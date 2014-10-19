@@ -22,7 +22,7 @@ GameLogicManager* GameLogicManager::instance()
 void GameLogicManager::InitGameLogicManager(void)
 {
 	ActorFactory::instance()->init();
-
+	
 	char* playerList = "./src/PlayerList.xml";
 	XMLDocument* doc = new XMLDocument();
     doc->LoadFile(playerList);
@@ -34,6 +34,7 @@ void GameLogicManager::InitGameLogicManager(void)
 		const char* fileLocation = playerFiles->Attribute("PlayerFileName");
 		int playerId = playerFiles->IntAttribute("PlayerId");
 		int playerTypeId = playerFiles->IntAttribute("PlayerTypeId");
+		
 		GamePlayer* gamePlayer = CreateGamePlayer(playerTypeId);//new GamePlayer();
 		
 		gamePlayer->initGamePlayer(fileLocation,playerId);
@@ -43,7 +44,7 @@ void GameLogicManager::InitGameLogicManager(void)
 
 		playerMap.insert(std::make_pair(gamePlayer->gamePlayerID,gamePlayer));
 	}
-
+	
 	//initSound();//hardcoded
 }
 GamePlayer* GameLogicManager::CreateGamePlayer(int playerTypeId)
