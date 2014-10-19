@@ -21,10 +21,24 @@ void GameOwner::init(const char* actorsList)
 }
 void GameOwner::update(double deltaMS)
 {
+	ImplementGravity(deltaMS);
 	if(HasWinner)
 		controlGame();
 	
 	updateScoreView();
+}
+void GameOwner::ImplementGravity(double deltaMS)
+{
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			//implement and call gameStateComponent->shifts to shift the shapes. 
+			printf("Implement Gravity here\n"); 
+		}
+	}
 }
 void GameOwner::HandleEvent(sf::Event receivedEvent)
 {

@@ -25,6 +25,8 @@ public:
 	void ShiftDownRequest();
 	void CreateShapeRequest();
 
+	void ImplementGravity(double deltaMS);
+
 	int MaxPossibleScore;
 	GamePlayer* winner;
 	bool HasWinner;
