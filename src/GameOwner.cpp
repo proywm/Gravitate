@@ -3,6 +3,7 @@
 #include "GameLogicManager.h"
 #include "PhysicalComponent.h"
 #include "DisplayManager.h"
+#include "GameStateComponent.h"
 #include <sstream>
 GameOwner::GameOwner(void)
 {
@@ -34,6 +35,31 @@ void GameOwner::HandleEvent(sf::Event receivedEvent)
 	else if(receivedEvent.key.code == sf::Keyboard::R)
 	{
 		RestartGame();
+	}
+}
+void GameOwner::ShiftLeftRequest()
+{
+}
+void GameOwner::ShiftRightRequest()
+{
+}
+void GameOwner::ShiftUpRequest()
+{
+}
+void GameOwner::ShiftDownRequest()
+{
+}
+void GameOwner::CreateShapeRequest()
+{
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			//hardcoded shapes; ToDo: Make dynamic
+			gameStateComponent->CreateNewShape(ZPOLYOMINO, 20, 20);
+		}
 	}
 }
 void GameOwner::controlGame(void)

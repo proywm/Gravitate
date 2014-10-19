@@ -19,6 +19,12 @@ public:
 	void updateScoreView();
 	void RestartGame();
 
+	void ShiftLeftRequest();
+	void ShiftRightRequest();
+	void ShiftUpRequest();
+	void ShiftDownRequest();
+	void CreateShapeRequest();
+
 	int MaxPossibleScore;
 	GamePlayer* winner;
 	bool HasWinner;

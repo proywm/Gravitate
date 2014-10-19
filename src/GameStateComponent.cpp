@@ -17,7 +17,7 @@ void GameStateComponent::init(XMLElement *componentElement)
 	CurrentGameCol = shapeElement->IntAttribute("NoOfCols");
 	
 	CreateMap(shapeElement);
-	CurrentTetrominoShapeID = 1;
+	CurrentTetrominoShapeID = 2;
 }
 void GameStateComponent::CreateMap(XMLElement *componentElement)
 {

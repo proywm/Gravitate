@@ -3,10 +3,10 @@
 #include "ActorComponentInterface.h"
 #include "Shape.h"
 
-#define BOUNDARYIDENTIFIER	-3
+#define BOUNDARYIDENTIFIER	-2
 #define EMPTYBLOCK	0
-#define CONCRETEBLOCK	-2
-#define NOTPLACEDBLOCK	-1
+#define CONCRETEBLOCK	-1
+#define NOTPLACEDBLOCK	1
 
 enum TetrominoShape 
 {

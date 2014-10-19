@@ -69,16 +69,30 @@ void VisualComponent::update(double deltaMS)
 		{
 			for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
 			{
-				if(gameStateComponent->GameMap[r][c]==0)
-				{
-					int posX = physicalComponent->getActorPosition().x + 
+				
+				int posX = physicalComponent->getActorPosition().x + 
 									(c * ((ActorShape::GridMap*)actorShape)->blockSize)+ c;
-					int posY = physicalComponent->getActorPosition().y + 
+				int posY = physicalComponent->getActorPosition().y + 
 									(r * ((ActorShape::GridMap*)actorShape)->blockSize) + r;
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
+				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
+				if(gameStateComponent->GameMap[r][c]>NOTPLACEDBLOCK)//placed
+				{
 					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Green);
-					DisplayManager::instance()->window.draw(((ActorShape::GridMap*)actorShape)->gridMap[r][c]);
 				}
+				else if(gameStateComponent->GameMap[r][c]==NOTPLACEDBLOCK)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Red);			
+				}
+				else if(gameStateComponent->GameMap[r][c]==EMPTYBLOCK)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Blue);			
+				}
+				else if(gameStateComponent->GameMap[r][c]==CONCRETEBLOCK)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Black);			
+				}			
+				DisplayManager::instance()->window.draw(((ActorShape::GridMap*)actorShape)->gridMap[r][c]);
+				
 			}
 		}
 	}

@@ -11,8 +11,12 @@ public:
 	void update(double deltaMS);
 	void HandleEvent(sf::Event receivedEvent);
 
-	char* leftKey;
-	char* rightKey;
+	sf::Keyboard::Key leftKey;
+	sf::Keyboard::Key rightKey;
+	sf::Keyboard::Key upKey;
+	sf::Keyboard::Key downKey;
+	
+	sf::Keyboard::Key createKey;
 	int moveId;
 };
 
