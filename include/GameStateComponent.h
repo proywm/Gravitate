@@ -39,9 +39,12 @@ public:
 	void CreateNewShape(TetrominoShape tetrominoShape, int xCorr, int yCorr);
 	void CreateMap(XMLElement *componentElement);
 	
-	void ShiftRight();
-	void ShiftLeft();
-	void ShiftUp();
-	void ShiftDown();
+	void ShiftRight(int id);
+	void ShiftLeft(int id);
+	void ShiftUp(int id);
+	void ShiftDown(int id);
+
+	void RotateClockwise(int id);
+	void RotateCounterClockwise(int id);
 };
 
