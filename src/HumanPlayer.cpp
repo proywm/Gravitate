@@ -2,6 +2,8 @@
 #include "GameLogicManager.h"
 #include "GamePlayer.h"
 #include "GameOwner.h"
+#include "GameStateComponent.h"
+
 HumanPlayer::HumanPlayer(void)
 {
 }
@@ -22,15 +24,24 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 	}
 	
 	if(receivedEvent.key.code == leftKey)//A
+	{
 		printf("call move Left\n");
+		((GameOwner*)gamePlayer)->ShiftLeftRequest(NOTPLACEDBLOCK);
+	}	
 	else if(receivedEvent.key.code == rightKey)//D
+	{
 		printf("call move Right\n");
+		((GameOwner*)gamePlayer)->ShiftRightRequest(NOTPLACEDBLOCK);	
+	}	
 	else if(receivedEvent.key.code == upKey)//W
+	{
 		printf("call move Up\n");
+		((GameOwner*)gamePlayer)->ShiftUpRequest(NOTPLACEDBLOCK);	
+	}	
 	else if(receivedEvent.key.code == downKey)//S
 	{
 		printf("call move Down\n");
-		((GameOwner*)gamePlayer)->ShiftDownRequest();
+		((GameOwner*)gamePlayer)->ShiftDownRequest(NOTPLACEDBLOCK);
 	}
 	else if(receivedEvent.key.code == createKey)//C
 	{

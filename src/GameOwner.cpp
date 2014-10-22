@@ -51,17 +51,57 @@ void GameOwner::HandleEvent(sf::Event receivedEvent)
 		RestartGame();
 	}
 }
-void GameOwner::ShiftLeftRequest()
+void GameOwner::ShiftLeftRequest(int shapeId)
 {
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			//hardcoded shapes; ToDo: Make dynamic
+			gameStateComponent->ShiftLeft(shapeId);
+		}
+	}
 }
-void GameOwner::ShiftRightRequest()
+void GameOwner::ShiftRightRequest(int shapeId)
 {
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			//hardcoded shapes; ToDo: Make dynamic
+			gameStateComponent->ShiftRight(shapeId);
+		}
+	}
 }
-void GameOwner::ShiftUpRequest()
+void GameOwner::ShiftUpRequest(int shapeId)
 {
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			//hardcoded shapes; ToDo: Make dynamic
+			gameStateComponent->ShiftUp(shapeId);
+		}
+	}
 }
-void GameOwner::ShiftDownRequest()
+void GameOwner::ShiftDownRequest(int shapeId)
 {
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			//hardcoded shapes; ToDo: Make dynamic
+			gameStateComponent->ShiftDown(shapeId);
+		}
+	}
 }
 void GameOwner::CreateShapeRequest()
 {

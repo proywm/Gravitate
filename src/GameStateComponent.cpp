@@ -55,7 +55,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+3][yCorr] = GameMap[xCorr][yCorr];
 			} 
-			PlaceNewShape();
+		
 			break; 
 		case SQUAREPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
@@ -66,7 +66,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 			} 
-			PlaceNewShape();
+		
 			break;
 		case TPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
@@ -77,7 +77,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 			}
-			PlaceNewShape();
+		
 			break;
 		case JPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
@@ -88,7 +88,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+2] = GameMap[xCorr][yCorr];
 			}
-			PlaceNewShape();
+		
 			break;
 		case LPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
@@ -99,7 +99,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+2] = GameMap[xCorr][yCorr];
 			}
-			PlaceNewShape();
+		
 			break;
 		case SPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
@@ -110,7 +110,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+1] = GameMap[xCorr][yCorr];
 			}
-			PlaceNewShape();
+		
 			break;
 		case ZPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
@@ -121,7 +121,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr+1] = GameMap[xCorr][yCorr];
 			}
-			PlaceNewShape();
+		
 			break;
 		default:
 			break;
@@ -296,6 +296,7 @@ void GameStateComponent::ShiftUp(int id)
 //This method moves piece South on the grid regardless of gravity.
 void GameStateComponent::ShiftDown(int id)
 {
+	
 	int arrayOfPoints[8];
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
@@ -313,7 +314,7 @@ void GameStateComponent::ShiftDown(int id)
 			}
 		}
 	}
-
+	
 	//Check below each point. x+1
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
@@ -325,7 +326,6 @@ void GameStateComponent::ShiftDown(int id)
 			obstacleFlag = true;
 		}
 	}
-
 	 // Set old points to 0 first, then write new points as id. This avoids 0ing out points moved.
 	if (not obstacleFlag)
 	{

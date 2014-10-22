@@ -19,10 +19,10 @@ public:
 	void updateScoreView();
 	void RestartGame();
 
-	void ShiftLeftRequest();
-	void ShiftRightRequest();
-	void ShiftUpRequest();
-	void ShiftDownRequest();
+	void ShiftLeftRequest(int shapeId);
+	void ShiftRightRequest(int shapeId);
+	void ShiftUpRequest(int shapeId);
+	void ShiftDownRequest(int shapeId);
 	void CreateShapeRequest();
 
 	void ImplementGravity(double deltaMS);
