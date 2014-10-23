@@ -55,7 +55,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+3][yCorr] = GameMap[xCorr][yCorr];
 			} 
-		
+
 			break; 
 		case SQUAREPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
@@ -66,7 +66,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 			} 
-		
+
 			break;
 		case TPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
@@ -77,7 +77,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 			}
-		
+
 			break;
 		case JPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
@@ -88,7 +88,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+2] = GameMap[xCorr][yCorr];
 			}
-		
+
 			break;
 		case LPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
@@ -99,7 +99,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+2] = GameMap[xCorr][yCorr];
 			}
-		
+
 			break;
 		case SPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
@@ -110,7 +110,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+1] = GameMap[xCorr][yCorr];
 			}
-		
+
 			break;
 		case ZPOLYOMINO:
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
@@ -121,7 +121,6 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr+1] = GameMap[xCorr][yCorr];
 			}
-		
 			break;
 		default:
 			break;
@@ -151,7 +150,7 @@ void GameStateComponent::PlaceNewShape()
 //This method moves piece East on the grid regardless of gravity.
 void GameStateComponent::ShiftRight(int id)
 {
-	int arrayOfPoints[8];
+	int arrayOfPoints[8] = {-2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -167,6 +166,11 @@ void GameStateComponent::ShiftRight(int id)
 				arrayTicker++;
 			}
 		}
+	}
+
+	if (arrayOfPoints[0] == -2)
+	{
+		return;
 	}
 
 
@@ -174,12 +178,15 @@ void GameStateComponent::ShiftRight(int id)
 	//Check right of each point. y+1
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
-		if (GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == 0 or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == id)
+		if (arrayOfPoints[i] != -2)
 		{
-		}
-		else
-		{
-			obstacleFlag = true;
+			if (GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == 0 or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == id)
+			{
+			}
+			else
+			{
+				obstacleFlag = true;
+			}
 		}
 	}
 
@@ -188,12 +195,18 @@ void GameStateComponent::ShiftRight(int id)
 	{
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 		{
-			GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+			if (arrayOfPoints[i] != -2)
+			{
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+			}
 		}
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 		{
-			GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] = id;
-		}
+			if (arrayOfPoints[i] != -2)
+			{
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] = id;
+			}
+		}	
 	}
 
 }
@@ -201,7 +214,7 @@ void GameStateComponent::ShiftRight(int id)
 //This method moves piece West on the grid regardless of gravity.
 void GameStateComponent::ShiftLeft(int id)
 {
-	int arrayOfPoints[8];
+	int arrayOfPoints[8] = {-2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -219,15 +232,23 @@ void GameStateComponent::ShiftLeft(int id)
 		}
 	}
 
+	if (arrayOfPoints[0] == -2)
+	{
+		return;
+	}
+
 	//Check right of each point. y-1
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
-		if (GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == 0 or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == id)
+		if (arrayOfPoints[i] != -2)
 		{
-		}
-		else
-		{
-			obstacleFlag = true;
+			if (GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == 0 or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == id)
+			{
+			}
+			else
+			{
+				obstacleFlag = true;
+			}
 		}
 	}
 
@@ -236,11 +257,17 @@ void GameStateComponent::ShiftLeft(int id)
 	{
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 		{
-			GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+			if (arrayOfPoints[i] != -2)
+			{
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+			}
 		}
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 		{
-			GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] = id;
+			if (arrayOfPoints[i] != -2)
+			{
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] = id;
+			}
 		}
 	}
 
@@ -249,7 +276,7 @@ void GameStateComponent::ShiftLeft(int id)
 //This method moves piece North on the grid regardless of gravity.
 void GameStateComponent::ShiftUp(int id)
 {
-	int arrayOfPoints[8];
+	int arrayOfPoints[8] = {-2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -267,15 +294,23 @@ void GameStateComponent::ShiftUp(int id)
 		}
 	}
 
+	if (arrayOfPoints[0] == -2)
+	{
+		return;
+	}
+
 	//Check below each point. x-1
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
-		if ((GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == 0 or GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == id) and not(arrayOfPoints[i] - 1 < 0))
+		if (arrayOfPoints[i] != -2)
 		{
-		}
-		else
-		{
-			obstacleFlag = true;
+			if ((GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == 0 or GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == id) and not(arrayOfPoints[i] - 1 < 0))
+			{
+			}
+			else
+			{
+				obstacleFlag = true;
+			}
 		}
 	}
 
@@ -284,11 +319,17 @@ void GameStateComponent::ShiftUp(int id)
 	{
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 		{
-			GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+			if (arrayOfPoints[i] != -2)
+			{
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+			}
 		}
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 		{
-			GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] = id;
+			if (arrayOfPoints[i] != -2)
+			{
+				GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] = id;
+			}
 		}
 	}
 }
@@ -296,8 +337,7 @@ void GameStateComponent::ShiftUp(int id)
 //This method moves piece South on the grid regardless of gravity.
 void GameStateComponent::ShiftDown(int id)
 {
-	
-	int arrayOfPoints[8];
+	int arrayOfPoints[8] = {-2};	
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -314,16 +354,23 @@ void GameStateComponent::ShiftDown(int id)
 			}
 		}
 	}
-	
+	if (arrayOfPoints[0] == -2)
+	{
+		return;
+	}
+
 	//Check below each point. x+1
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
-		if (GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == 0 or GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == id)
+		if (arrayOfPoints[i] != -2)
 		{
-		}
-		else
-		{
-			obstacleFlag = true;
+			if (GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == 0 or GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == id)
+			{
+			}
+			else
+			{
+				obstacleFlag = true;
+			}
 		}
 	}
 	 // Set old points to 0 first, then write new points as id. This avoids 0ing out points moved.
@@ -331,11 +378,17 @@ void GameStateComponent::ShiftDown(int id)
 	{
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 		{
-			GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+			if (arrayOfPoints[i] != -2)
+			{
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+			}
 		}
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 		{
-			GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] = id;
+			if (arrayOfPoints[i] != -2)
+			{
+				GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] = id;
+			}
 		}
 	}
 }
@@ -344,7 +397,7 @@ void GameStateComponent::ShiftDown(int id)
 void GameStateComponent::RotateClockwise(int id)
 {
 	//get (x,y) of points. also get x and y values in seperate array
-	int arrayOfPoints[8];
+	int arrayOfPoints[8] = {-2};
 	int arrayOfPointsOLD[8];
 	int arrayTicker = 0;
 	int arrayX[4];
@@ -372,6 +425,11 @@ void GameStateComponent::RotateClockwise(int id)
 		}
 
 	}
+
+	if (arrayOfPoints[0] == -2)
+	{
+		return;
+	}
 	
 
 
@@ -386,9 +444,12 @@ void GameStateComponent::RotateClockwise(int id)
 	//"Normalize" each point to the min
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
+		if (arrayOfPoints[i] != -2)
+		{
 
-		arrayOfPoints[i] = arrayOfPoints[i] - minX;
-		arrayOfPoints[i+1] = arrayOfPoints[i+1] - minY;
+			arrayOfPoints[i] = arrayOfPoints[i] - minX;
+			arrayOfPoints[i+1] = arrayOfPoints[i+1] - minY;
+		}
 	}
 	
 	//Place normalized points into a 4x4 2D array
@@ -403,7 +464,10 @@ void GameStateComponent::RotateClockwise(int id)
 	}
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
-		rotaterArray[arrayOfPoints[i]][arrayOfPoints[i+1]] = 1;
+		if (arrayOfPoints[i] != -2)
+		{
+			rotaterArray[arrayOfPoints[i]][arrayOfPoints[i+1]] = 1;
+		}
 	}
 
 	int rotatedArray[4][4];
@@ -445,14 +509,17 @@ void GameStateComponent::RotateClockwise(int id)
 
 	for(int z=0; z<(sizeof(arrayOfRotatedPoints) / sizeof(arrayOfRotatedPoints[0])); z = z+2)
 	{
-		row = arrayOfRotatedPoints[z] + minX;
-		col = arrayOfRotatedPoints[z+1] + minY;
-		if ((GameMap[row][col] == 0 or GameMap[row][col] == id) and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+		if (arrayOfRotatedPoints[z] != -2)
 		{
-		}
-		else
-		{
-			obstacleFlag = true;
+			row = arrayOfRotatedPoints[z] + minX;
+			col = arrayOfRotatedPoints[z+1] + minY;
+			if ((GameMap[row][col] == 0 or GameMap[row][col] == id) and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+			{
+			}
+			else
+			{
+				obstacleFlag = true;
+			}
 		}
 	}
 
@@ -460,14 +527,20 @@ void GameStateComponent::RotateClockwise(int id)
 	  	//Zero-out previous shape place
 		for(int z=0; z< (sizeof(arrayOfPointsOLD) / sizeof(arrayOfPointsOLD[0])); z = z+2)
 		{
-			GameMap[arrayOfPointsOLD[z]][arrayOfPointsOLD[z+1]]= 0;
+			if (arrayOfPointsOLD[z] != -2)
+			{
+				GameMap[arrayOfPointsOLD[z]][arrayOfPointsOLD[z+1]]= 0;
+			}
 		}
 
 		for(int z=0; z<(sizeof(arrayOfRotatedPoints) / sizeof(arrayOfRotatedPoints[0])); z = z+2)
 		{
-			row = arrayOfRotatedPoints[z] + minX;
-			col = arrayOfRotatedPoints[z+1] + minY;
-			GameMap[row][col] = id;
+			if (arrayOfRotatedPoints[z] != -2)
+			{
+				row = arrayOfRotatedPoints[z] + minX;
+				col = arrayOfRotatedPoints[z+1] + minY;
+				GameMap[row][col] = id;
+			}
 		}
 	}
 }
@@ -476,7 +549,7 @@ void GameStateComponent::RotateClockwise(int id)
 void GameStateComponent::RotateCounterClockwise(int id)
 {
   	//get (x,y) of points. also get x and y values in seperate array
-	int arrayOfPoints[8];
+	int arrayOfPoints[8] = {-2};
 	int arrayOfPointsOLD[8];
 	int arrayTicker = 0;
 	int arrayX[4];
@@ -504,6 +577,11 @@ void GameStateComponent::RotateCounterClockwise(int id)
 		}
 
 	}
+
+	if (arrayOfPoints[0] == -2)
+	{
+		return;
+	}
 	
 
 
@@ -518,9 +596,11 @@ void GameStateComponent::RotateCounterClockwise(int id)
 	//"Normalize" each point to the min
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
-
-		arrayOfPoints[i] = arrayOfPoints[i] - minX;
-		arrayOfPoints[i+1] = arrayOfPoints[i+1] - minY;
+		if (arrayOfPoints[i] != -2)
+		{
+			arrayOfPoints[i] = arrayOfPoints[i] - minX;
+			arrayOfPoints[i+1] = arrayOfPoints[i+1] - minY;
+		}
 	}
 	
 	//Place normalized points into a 4x4 2D array
@@ -535,7 +615,10 @@ void GameStateComponent::RotateCounterClockwise(int id)
 	}
 	for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
 	{
-		rotaterArray[arrayOfPoints[i]][arrayOfPoints[i+1]] = 1;
+		if (arrayOfPoints[i] != -2)
+		{
+			rotaterArray[arrayOfPoints[i]][arrayOfPoints[i+1]] = 1;
+		}
 	}
 
 	int rotatedArray[4][4];
@@ -577,14 +660,17 @@ void GameStateComponent::RotateCounterClockwise(int id)
 
 	for(int z=0; z<(sizeof(arrayOfRotatedPoints) / sizeof(arrayOfRotatedPoints[0])); z = z+2)
 	{
-		row = arrayOfRotatedPoints[z] + minX -1;
-		col = arrayOfRotatedPoints[z+1] + minY;
-		if ((GameMap[row][col] == 0 or GameMap[row][col] == id) and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+		if (arrayOfRotatedPoints[z] != -2)
 		{
-		}
-		else
-		{
-			obstacleFlag = true;
+			row = arrayOfRotatedPoints[z] + minX -1;
+			col = arrayOfRotatedPoints[z+1] + minY;
+			if ((GameMap[row][col] == 0 or GameMap[row][col] == id) and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+			{
+			}
+			else
+			{
+				obstacleFlag = true;
+			}
 		}
 	}
 
@@ -592,14 +678,20 @@ void GameStateComponent::RotateCounterClockwise(int id)
 	  	//Zero-out previous shape place
 		for(int z=0; z< (sizeof(arrayOfPointsOLD) / sizeof(arrayOfPointsOLD[0])); z = z+2)
 		{
-			GameMap[arrayOfPointsOLD[z]][arrayOfPointsOLD[z+1]]= 0;
+			if (arrayOfPointsOLD[z] != -2)
+			{
+				GameMap[arrayOfPointsOLD[z]][arrayOfPointsOLD[z+1]]= 0;
+			}
 		}
 
 		for(int z=0; z<(sizeof(arrayOfRotatedPoints) / sizeof(arrayOfRotatedPoints[0])); z = z+2)
 		{
-			row = arrayOfRotatedPoints[z] + minX -1;
-			col = arrayOfRotatedPoints[z+1] + minY;
-			GameMap[row][col] = id;
+			if (arrayOfRotatedPoints[z] != -2)
+			{
+				row = arrayOfRotatedPoints[z] + minX -1;
+				col = arrayOfRotatedPoints[z+1] + minY;
+				GameMap[row][col] = id;
+			}
 		}
 	}
 
