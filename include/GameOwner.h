@@ -24,6 +24,8 @@ public:
 	void ShiftUpRequest(int shapeId);
 	void ShiftDownRequest(int shapeId);
 	void CreateShapeRequest();
+	void RotateCounterClockwiseRequest(int shapeId);
+	void RotateClockwiseRequest(int shapeId);
 
 	void ImplementGravity(double deltaMS);
 
@@ -33,4 +35,3 @@ public:
 
 	sf::Font font;
 };
-
