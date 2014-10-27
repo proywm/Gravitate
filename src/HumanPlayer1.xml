@@ -3,6 +3,8 @@
 	<Control Move = "KeyBoardControl" MoveId = "KeyBoardControl"
 		LeftKeyID = "0" LeftKey = "A" RightKeyID = "3" RightKey = "D"
 		UpKeyID = "22" UpKey = "W" DownKeyID = "18" DownKey = "S"
-		CreateKeyID = "2" CreateKey = "C" 
+		CreateKeyID = "2" CreateKey = "C" RotateCounterClockwiseID = "17"
+		RotateCounterClockwise = "R" RotateClockwiseID = "19"
+		RotateClockwise = "T"
 	/>
 </Player>

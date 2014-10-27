@@ -48,6 +48,16 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 		printf("call Create\n");
 		((GameOwner*)gamePlayer)->CreateShapeRequest();
 	}
+		else if(receivedEvent.key.code == rotateCounterClockwise)//R
+	{
+		printf("call Rotate Counterclockwise\n");
+		((GameOwner*)gamePlayer)->RotateCounterClockwiseRequest(NOTPLACEDBLOCK);
+	}
+		else if(receivedEvent.key.code == rotateClockwise)//T
+	{
+		printf("call Rotate Clockwise\n");
+		((GameOwner*)gamePlayer)->RotateClockwiseRequest(NOTPLACEDBLOCK);
+	}
 }
 void HumanPlayer::init(const char* actorsList)
 {
@@ -60,6 +70,8 @@ void HumanPlayer::init(const char* actorsList)
 	rightKey = (sf::Keyboard::Key)playerFiles->IntAttribute("RightKeyID");//D
 	upKey = (sf::Keyboard::Key)playerFiles->IntAttribute("UpKeyID");//W
 	downKey = (sf::Keyboard::Key)playerFiles->IntAttribute("DownKeyID");//S
+	rotateCounterClockwise = (sf::Keyboard::Key)playerFiles->IntAttribute("RotateCounterClockwiseID");//R
+	rotateClockwise = (sf::Keyboard::Key)playerFiles->IntAttribute("RotateClockwiseID");//T
 
 	createKey = (sf::Keyboard::Key)playerFiles->IntAttribute("CreateKeyID");//C
 	moveId = playerFiles->IntAttribute("MoveId");

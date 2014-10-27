@@ -4,6 +4,7 @@
 #include "PhysicalComponent.h"
 #include "DisplayManager.h"
 #include "GameStateComponent.h"
+#include <math.h>
 #include <sstream>
 GameOwner::GameOwner(void)
 {
@@ -103,6 +104,32 @@ void GameOwner::ShiftDownRequest(int shapeId)
 		}
 	}
 }
+void GameOwner::RotateCounterClockwiseRequest(int shapeId)
+{
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			//hardcoded shapes; ToDo: Make dynamic
+			gameStateComponent->RotateCounterClockwise(shapeId);
+		}
+	}
+}
+void GameOwner::RotateClockwiseRequest(int shapeId)
+{
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			//hardcoded shapes; ToDo: Make dynamic
+			gameStateComponent->RotateClockwise(shapeId);
+		}
+	}
+}
 void GameOwner::CreateShapeRequest()
 {
 	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
@@ -112,7 +139,15 @@ void GameOwner::CreateShapeRequest()
 		{
 			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
 			//hardcoded shapes; ToDo: Make dynamic
-			gameStateComponent->CreateNewShape(ZPOLYOMINO, 20, 20);
+
+			//Get mouse position in window
+			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
+			
+			//Convert position to grid
+			int xGridPosition = floor((localPosition.x - 100.0)/15.0);
+			int yGridPosition = floor((localPosition.y - 100.0)/15.0);
+
+			gameStateComponent->CreateNewShape(ZPOLYOMINO, yGridPosition, xGridPosition);
 		}
 	}
 }
