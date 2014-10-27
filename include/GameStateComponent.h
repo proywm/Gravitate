@@ -32,6 +32,8 @@ public:
 	int CurrentGameRow;
 	int CurrentGameCol;
 
+	bool Hover;
+
 	int CurrentTetrominoShapeID;
 	int getTetrominoShapeID();
 
@@ -47,4 +49,3 @@ public:
 	void RotateClockwise(int id);
 	void RotateCounterClockwise(int id);
 };
-
