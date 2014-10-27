@@ -44,6 +44,8 @@ void GameStateComponent::update(double deltaMS)
 
 void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr, int yCorr)
 {
+	Hover = false;
+
 	switch(tetrominoShape)
 	{
 		case STRAIGHTPOLYOMINO:
