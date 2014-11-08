@@ -66,8 +66,8 @@ void GameOwner::ImplementGravity(double deltaMS)
 			if (gameTime >= GAMETIME)
 			{
 				gameTime = 0;
-				
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
+
 				if (direction == 0)
 				{
 					for(int r=MAXROW-2;r>=0;r--)
@@ -77,6 +77,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 							//calling proper function to shift non-empty block
 							if (ismoveableBlock(gameStateComponent->GameMap[r][c]))
 								ShiftDownRequest(gameStateComponent->GameMap[r][c]);
+
 						}
 					}
 
