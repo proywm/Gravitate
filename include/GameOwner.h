@@ -1,6 +1,7 @@
 #pragma once
 #include "GamePlayer.h"
 #include "GlobalHeader.h"
+#include "Actor.h"
 class GameOwner :
 	public GamePlayer
 {
@@ -23,15 +24,23 @@ public:
 	void ShiftRightRequest(int shapeId);
 	void ShiftUpRequest(int shapeId);
 	void ShiftDownRequest(int shapeId);
-	void CreateShapeRequest();
 	void RotateCounterClockwiseRequest(int shapeId);
 	void RotateClockwiseRequest(int shapeId);
 
+	void CreateShapeRequest();
+	int SelectedShape();
+	int randomShapeSelection();
+
 	void ImplementGravity(double deltaMS);
+	bool ismoveableBlock(int blockId);
 
 	int MaxPossibleScore;
+	int direction;
 	GamePlayer* winner;
 	bool HasWinner;
+	
+	int shiftTime;
+	int gameTime;
 
 	sf::Font font;
 };

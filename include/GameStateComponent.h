@@ -16,7 +16,8 @@ enum TetrominoShape
 	JPOLYOMINO = 4,// J
 	LPOLYOMINO = 5,// L
 	SPOLYOMINO = 6,// S
-	ZPOLYOMINO = 7 // Z
+	ZPOLYOMINO = 7, // Z
+	TOTALSHAPES
 };
 
 class GameStateComponent : public ActorComponentInterface

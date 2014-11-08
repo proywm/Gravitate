@@ -20,6 +20,7 @@ void GameStateComponent::init(XMLElement *componentElement)
 	
 	CreateMap(shapeElement);
 	CurrentTetrominoShapeID = 2;
+	Hover = false;
 }
 void GameStateComponent::CreateMap(XMLElement *componentElement)
 {
@@ -44,8 +45,11 @@ void GameStateComponent::update(double deltaMS)
 
 void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr, int yCorr)
 {
-	Hover = false;
-
+	if(Hover)
+	{
+		printf("can't create now\n");
+		return;
+	}
 	switch(tetrominoShape)
 	{
 		case STRAIGHTPOLYOMINO:
@@ -56,6 +60,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+3][yCorr] = GameMap[xCorr][yCorr];
+				Hover = true;
 			} 
 
 			break; 
@@ -67,6 +72,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
+				Hover = true;
 			} 
 
 			break;
@@ -78,6 +84,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
+				Hover = true;
 			}
 
 			break;
@@ -89,6 +96,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+2] = GameMap[xCorr][yCorr];
+				Hover = true;
 			}
 
 			break;
@@ -100,6 +108,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+2] = GameMap[xCorr][yCorr];
+				Hover = true;
 			}
 
 			break;
@@ -111,6 +120,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+1] = GameMap[xCorr][yCorr];
+				Hover = true;
 			}
 
 			break;
@@ -122,6 +132,7 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr+1] = GameMap[xCorr][yCorr];
+				Hover = true;
 			}
 			break;
 		default:
@@ -146,7 +157,8 @@ void GameStateComponent::PlaceNewShape()
 				GameMap[r][c] = setID;
 			}
 		}
-	}	
+	}
+	Hover = false;
 }
 
 //This method moves piece East on the grid regardless of gravity.
@@ -209,6 +221,10 @@ void GameStateComponent::ShiftRight(int id)
 				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] = id;
 			}
 		}	
+	}else
+	{
+		if(id==NOTPLACEDBLOCK)
+			PlaceNewShape();
 	}
 
 }
@@ -272,6 +288,11 @@ void GameStateComponent::ShiftLeft(int id)
 			}
 		}
 	}
+	else
+	{
+		if(id==NOTPLACEDBLOCK)
+			PlaceNewShape();
+	}
 
 }
 
@@ -333,6 +354,10 @@ void GameStateComponent::ShiftUp(int id)
 				GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] = id;
 			}
 		}
+	}else
+	{
+		if(id==NOTPLACEDBLOCK)
+			PlaceNewShape();
 	}
 }
 
@@ -392,6 +417,10 @@ void GameStateComponent::ShiftDown(int id)
 				GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] = id;
 			}
 		}
+	}else
+	{
+		if(id==NOTPLACEDBLOCK)
+			PlaceNewShape();
 	}
 }
 
@@ -544,6 +573,10 @@ void GameStateComponent::RotateClockwise(int id)
 				GameMap[row][col] = id;
 			}
 		}
+	}else
+	{
+		if(id==NOTPLACEDBLOCK)
+			PlaceNewShape();
 	}
 }
 
@@ -695,6 +728,10 @@ void GameStateComponent::RotateCounterClockwise(int id)
 				GameMap[row][col] = id;
 			}
 		}
+	}else
+	{
+		if(id==NOTPLACEDBLOCK)
+			PlaceNewShape();
 	}
 
 }
