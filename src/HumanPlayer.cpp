@@ -48,12 +48,12 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 		printf("call Create\n");
 		((GameOwner*)gamePlayer)->CreateShapeRequest();
 	}
-		else if(receivedEvent.key.code == rotateCounterClockwise)//R
+	else if(receivedEvent.key.code == rotateCounterClockwise)//R
 	{
 		printf("call Rotate Counterclockwise\n");
 		((GameOwner*)gamePlayer)->RotateCounterClockwiseRequest(NOTPLACEDBLOCK);
 	}
-		else if(receivedEvent.key.code == rotateClockwise)//T
+	else if(receivedEvent.key.code == rotateClockwise)//T
 	{
 		printf("call Rotate Clockwise\n");
 		((GameOwner*)gamePlayer)->RotateClockwiseRequest(NOTPLACEDBLOCK);

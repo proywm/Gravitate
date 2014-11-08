@@ -17,6 +17,8 @@ public:
 	sf::Keyboard::Key downKey;
 	
 	sf::Keyboard::Key createKey;
+	sf::Keyboard::Key rotateCounterClockwise;
+	sf::Keyboard::Key rotateClockwise;
 	int moveId;
 };
 
