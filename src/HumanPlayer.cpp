@@ -22,7 +22,21 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 				break;
 		}
 	}
-	
+	if (receivedEvent.type == sf::Event::MouseButtonPressed)
+	{
+	    if (receivedEvent.mouseButton.button == sf::Mouse::Left)
+	    {
+	        std::cout << "the right button was pressed" << std::endl;
+	        std::cout << "mouse x: " << receivedEvent.mouseButton.x << std::endl;
+	        std::cout << "mouse y: " << receivedEvent.mouseButton.y << std::endl;
+		printf("call Create\n");
+		((GameOwner*)gamePlayer)->CreateShapeRequest();
+		return;
+	    }
+	    else
+		return;
+	}	
+
 	if(receivedEvent.key.code == leftKey)//A
 	{
 		printf("call move Left\n");

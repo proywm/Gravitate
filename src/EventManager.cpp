@@ -24,10 +24,11 @@ void  EventManager::getEvents(void)
 			case sf::Event::Closed:
 				DisplayManager::instance()->window.close();
 			break;
-			// key pressed
+			// key pressed 
 			case sf::Event::KeyPressed:
+			case sf::Event::MouseButtonPressed://// Mouse Button Pressed
 					GameLogicManager::instance()->SendKeyEventToPlayer(event);
-            break;
+            		break;
 		}
 	}
 }

@@ -227,7 +227,6 @@ void GameOwner::CreateShapeRequest()
 		if(actor->actorType == "Map")
 		{
 			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
-			//hardcoded shapes; ToDo: Make dynamic
 
 			//Get mouse position in window
 			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
