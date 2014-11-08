@@ -1,6 +1,7 @@
 #pragma once
 #include "GamePlayer.h"
 #include "GlobalHeader.h"
+#include "Actor.h"
 class GameOwner :
 	public GamePlayer
 {
@@ -30,8 +31,12 @@ public:
 	void ImplementGravity(double deltaMS);
 
 	int MaxPossibleScore;
+	int direction;
 	GamePlayer* winner;
 	bool HasWinner;
+	
+	int shiftTime;
+	int gameTime;
 
 	sf::Font font;
 };
