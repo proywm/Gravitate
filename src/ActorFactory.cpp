@@ -2,6 +2,8 @@
 #include "PhysicalComponent.h"
 #include "VisualComponent.h"
 #include "GameStateComponent.h"
+#include "SelectionToolBarComponent.h"
+
 ActorFactory::ActorFactory(void)
 {
 	currentId = 0;
@@ -49,6 +51,9 @@ ActorComponentInterface* ActorFactory::CreateComponentOf( int componentType)
 		break;
 	case GAMESTATE:
 		return new GameStateComponent();
+		break;
+	case SELECTIONTOOLBAR:
+		return new SelectionToolBarComponent();
 		break;
 	default:
 		return NULL;

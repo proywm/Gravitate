@@ -1,4 +1,5 @@
 <?xml version="1.0" ?>
 <Player Name="GameLogic" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" >
-	<Actor ActorFileName="./src/Map.xml" totalActors="1" spawnPositionX="100" spawnPositionY="100" />	
-\</Player>
+	<Actor ActorFileName="./src/Map.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80" />
+	<Actor ActorFileName="./src/ShapeSelectionToolBar.xml" totalActors="1" spawnPositionX="600" spawnPositionY="50" />	
+</Player>

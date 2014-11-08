@@ -2,6 +2,8 @@
 #include "DisplayManager.h"
 #include "PhysicalComponent.h"
 #include "GameStateComponent.h"
+#include "SelectionToolBarComponent.h"
+
 VisualComponent::VisualComponent(void)
 {
 }
@@ -31,6 +33,7 @@ void VisualComponent::init(XMLElement *componentElement)
 			((ActorShape::Circle*)actorShape)->actorShape.setFillColor((const sf::Color &)actorColor);
 			break;
 		case 3://"GRID MAP":
+		case 4://"SelectionToolBarMAP"-> "GRID MAP":
 			actorShape = new ActorShape::GridMap();
 			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->FloatAttribute("BlockWidth"));
 			
@@ -88,6 +91,40 @@ void VisualComponent::update(double deltaMS)
 					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Blue);			
 				}
 				else if(gameStateComponent->GameMap[r][c]==CONCRETEBLOCK)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Black);			
+				}			
+				DisplayManager::instance()->window.draw(((ActorShape::GridMap*)actorShape)->gridMap[r][c]);
+				
+			}
+		}
+	}
+	else if(shapeID == 4)//"SelectionToolBarMAP"
+	{
+		SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)owner->GetComponent(SELECTIONTOOLBAR);
+		for(int r=0;r<selectionToolBarComponent->CurrentToolBarRow;r++)
+		{
+			for(int c=0;c<selectionToolBarComponent->CurrentToolBarCol;c++)
+			{
+				
+				int posX = physicalComponent->getActorPosition().x + 
+									(c * ((ActorShape::GridMap*)actorShape)->blockSize)+ c;
+				int posY = physicalComponent->getActorPosition().y + 
+									(r * ((ActorShape::GridMap*)actorShape)->blockSize) + r;
+				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
+				if(selectionToolBarComponent->GameMap[r][c]>NOTPLACEDBLOCK)//placed
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Green);
+				}
+				else if(selectionToolBarComponent->GameMap[r][c]==NOTPLACEDBLOCK)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Red);			
+				}
+				else if(selectionToolBarComponent->GameMap[r][c]==EMPTYBLOCK)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Blue);			
+				}
+				else if(selectionToolBarComponent->GameMap[r][c]==CONCRETEBLOCK)
 				{
 					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Black);			
 				}			
