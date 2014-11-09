@@ -18,9 +18,14 @@ GameOwner::~GameOwner(void)
 void GameOwner::init(const char* actorsList)
 {
 	font.loadFromFile("./src/arial.ttf");
+	maxShift = 15;
 
 	MaxPossibleScore = 10;//hardcoded
-	direction = 0; //hardcoded
+	direction[0]= randomGravity();
+	direction[1]= randomGravity();
+	direction[2]= randomGravity();
+	direction[3]= randomGravity();
+
 	gameTime = 0; 
 	shiftTime = 0;
 	HasWinner = false;
@@ -29,6 +34,10 @@ void GameOwner::init(const char* actorsList)
 void GameOwner::update(double deltaMS)
 {	
 	ImplementGravity(deltaMS);
+	
+	//Check for Line Deletion
+	LineDeletion();
+	
 	if(HasWinner)
 		controlGame();
 	
@@ -52,14 +61,11 @@ void GameOwner::ImplementGravity(double deltaMS)
 			if (shiftTime >= SHIFTTIME)
 			{
 				shiftTime = 0;
-				bool random = true;
-				if (random)
-					direction = rand();
-				else
-					direction ++;
-					
-				direction %= 4;
-				printf("New gravity shift (0:SOUTH,1:EAST,2:NORTH,3:WEST): %d", direction);
+				for (int i =0; i < 3; i++)
+				{
+				  direction[i] = direction[i+1];
+				}
+				direction[4] = randomGravity();
 			}
 			
 			gameTime += deltaMS;
@@ -68,8 +74,9 @@ void GameOwner::ImplementGravity(double deltaMS)
 				gameTime = 0;
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
 
-				if (direction == 0)
-				{
+				 switch(direction[0])
+				 {
+				   case SOUTH:
 					for(int r=MAXROW-2;r>=0;r--)
 					{
 						for(int c=0;c<MAXCOL;c++)
@@ -80,9 +87,9 @@ void GameOwner::ImplementGravity(double deltaMS)
 
 						}
 					}
-
-				} else if (direction == 1)
-				{
+					break;
+					
+				   case EAST: 
 					for(int r=0;r<MAXROW;r++)
 					{
 						for(int c=MAXCOL-2;c>=0;c--)
@@ -92,9 +99,8 @@ void GameOwner::ImplementGravity(double deltaMS)
 								ShiftRightRequest(gameStateComponent->GameMap[r][c]);
 						}
 					}
-
-				} else if (direction == 2)
-				{
+					break;
+				   case NORTH:
 					for(int r=1;r<MAXROW;r++)
 					{
 						for(int c=0;c<MAXCOL;c++)
@@ -104,9 +110,8 @@ void GameOwner::ImplementGravity(double deltaMS)
 								ShiftUpRequest(gameStateComponent->GameMap[r][c]);
 						}
 					}
-
-				} else //if (direction == 3)
-				{
+					break;
+				   case WEST:
 					for(int r=0;r<MAXROW;r++)
 					{
 						for(int c=1;c<MAXCOL;c++)
@@ -116,6 +121,9 @@ void GameOwner::ImplementGravity(double deltaMS)
 								ShiftLeftRequest(gameStateComponent->GameMap[r][c]);
 						}
 					}
+					break;
+				   default:
+				     break;
 				}
 			}
 		}
@@ -273,3 +281,145 @@ void GameOwner::RestartGame()
 	
 	controlGame();
 }
+
+Direction GameOwner::randomGravity()
+{
+  int dirr = 0;
+  bool random = true;
+  if (random)
+    dirr = rand();
+  else
+    dirr ++;
+  dirr %= 4;
+  if (dirr == 0)
+    return (SOUTH);
+  else if (dirr == 1)
+    return (EAST);
+  else if (dirr == 2)
+    return (NORTH);
+  else
+    return (WEST);
+}
+Direction GameOwner::getDirection()
+{
+  return (direction[0]);
+}
+
+void GameOwner::LineDeletion()
+{
+  /*
+  actorIterType iter = actorMap.begin();
+  Actor* actor = (Actor*)iter->second;
+
+  GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
+
+  bool topRowFlag = false;
+  bool botRowFlag = false;
+  bool topColFlag = false;
+  bool botColFlag = false;
+  
+  //Check top col. If full: delete top col
+  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
+  {
+    if(gameStateComponent->GameMap[r][0] == 0)
+    {
+      topColFlag = true;
+    }
+  }
+  
+  if(topColFlag == false)
+  {
+    for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
+    {
+      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+      {
+	gameStateComponent->GameMap[r][c-1] = gameStateComponent->GameMap[r][c];
+      }
+    }
+    
+    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
+    {
+      gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = 0;
+    }
+  }
+  
+  //Check bottom col. If full: delete bottom col
+  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
+  {
+    if(gameStateComponent->GameMap[r][gameStateComponent->CurrentGameCol] == 0)
+    {
+      botColFlag = true;
+    }
+  }
+  
+  if(botColFlag == false)
+  {
+    for (int c=gameStateComponent->CurrentGameRow - 1; c > 0;c--)
+    {
+      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+      {
+	gameStateComponent->GameMap[r][c + 1] = gameStateComponent->GameMap[r][c];
+      }
+    }
+    
+    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
+    {
+      gameStateComponent->GameMap[i][0] = 0;
+    }
+  }
+  
+  //Check top row. If full: delete top row
+  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+  {
+    if(gameStateComponent->GameMap[0][r] == 0)
+    {
+      topRowFlag = true;
+    }
+  }
+  
+  if(topRowFlag == false)
+  {
+    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
+    {
+      for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
+      {
+	gameStateComponent->GameMap[r-1][c] = gameStateComponent->GameMap[r][c];
+      }
+    }
+    
+    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
+    {
+      gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = 0;
+    }
+  }
+  
+    //Check bot row. If full: delete bot row
+  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+  {
+    if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol][r] == 0)
+    {
+      botRowFlag = true;
+    }
+  }
+  
+  if(botRowFlag == false)
+  {
+    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
+    {
+      for (int r=gameStateComponent->CurrentGameCol; r > 0;r--)
+      {
+	gameStateComponent->GameMap[r+1][c] = gameStateComponent->GameMap[r][c];
+      }
+    }
+    
+    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
+    {
+      gameStateComponent->GameMap[0][i] = 0;
+    }
+  }
+  */
+  
+}
+
+
+

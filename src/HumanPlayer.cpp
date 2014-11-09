@@ -39,23 +39,53 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 
 	if(receivedEvent.key.code == leftKey)//A
 	{
-		printf("call move Left\n");
-		((GameOwner*)gamePlayer)->ShiftLeftRequest(NOTPLACEDBLOCK);
+
+	  switch(((GameOwner*)gamePlayer)->getDirection())
+	  {
+	    case EAST :
+	      break;
+	    default :
+	      printf("call move Left\n");
+	      ((GameOwner*)gamePlayer)->ShiftLeftRequest(NOTPLACEDBLOCK);
+	      break;
+	  }
+		
 	}	
 	else if(receivedEvent.key.code == rightKey)//D
 	{
-		printf("call move Right\n");
-		((GameOwner*)gamePlayer)->ShiftRightRequest(NOTPLACEDBLOCK);	
+	  switch(((GameOwner*)gamePlayer)->getDirection())
+	  {
+	    case WEST :
+	      break;
+	     default:
+	      printf("call move Right\n");
+	      ((GameOwner*)gamePlayer)->ShiftRightRequest(NOTPLACEDBLOCK);
+	       break;
+	  }
 	}	
 	else if(receivedEvent.key.code == upKey)//W
 	{
-		printf("call move Up\n");
-		((GameOwner*)gamePlayer)->ShiftUpRequest(NOTPLACEDBLOCK);	
+	  switch(((GameOwner*)gamePlayer)->getDirection())
+	  {
+	    case SOUTH :
+	      break;
+	    default:
+	      printf("call move Up\n");
+	      ((GameOwner*)gamePlayer)->ShiftUpRequest(NOTPLACEDBLOCK);
+	      break;
+	  }
 	}	
 	else if(receivedEvent.key.code == downKey)//S
 	{
-		printf("call move Down\n");
+	  switch(((GameOwner*)gamePlayer)->getDirection())
+	  {
+	    case NORTH :
+	      break;
+	    default :
+	      	printf("call move Down\n");
 		((GameOwner*)gamePlayer)->ShiftDownRequest(NOTPLACEDBLOCK);
+	      break;
+	  }
 	}
 	else if(receivedEvent.key.code == createKey)//C
 	{

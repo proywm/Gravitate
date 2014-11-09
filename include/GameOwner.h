@@ -2,6 +2,16 @@
 #include "GamePlayer.h"
 #include "GlobalHeader.h"
 #include "Actor.h"
+
+enum Direction 
+{
+	SOUTH = 0,
+	EAST = 1,
+	NORTH = 2,
+	WEST = 3,
+};
+
+
 class GameOwner :
 	public GamePlayer
 {
@@ -35,9 +45,14 @@ public:
 	bool ismoveableBlock(int blockId);
 
 	int MaxPossibleScore;
-	int direction;
+	int maxShift;
+	Direction direction[4];
 	GamePlayer* winner;
 	bool HasWinner;
+	
+	Direction randomGravity();
+	Direction getDirection();
+	void LineDeletion();
 	
 	int shiftTime;
 	int gameTime;
