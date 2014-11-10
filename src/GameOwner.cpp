@@ -21,6 +21,7 @@ void GameOwner::init(const char* actorsList)
 	maxShift = 15;
 
 	MaxPossibleScore = 10;//hardcoded
+	srand(1);
 	direction[0]= randomGravity();
 	direction[1]= randomGravity();
 	direction[2]= randomGravity();
@@ -57,21 +58,22 @@ void GameOwner::ImplementGravity(double deltaMS)
 		Actor* actor = (Actor*)iter->second;
 		if(actor->actorType == "Map")
 		{	
-			shiftTime += deltaMS;
-			if (shiftTime >= SHIFTTIME)
-			{
-				shiftTime = 0;
-				for (int i =0; i < 3; i++)
-				{
-				  direction[i] = direction[i+1];
-				}
-				direction[4] = randomGravity();
-			}
-			
+
 			gameTime += deltaMS;
 			if (gameTime >= GAMETIME)
 			{
 				gameTime = 0;
+				shiftTime += 1000;
+				if (shiftTime >= SHIFTTIME)
+				{
+					shiftTime = 0;
+					for (int i = 0; i < 3; i++)
+					{
+						printf("%d: %d\n",i,direction[i]);
+						direction[i] = direction[i+1];
+					}
+					direction[3] = randomGravity();
+				}
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
 
 				 switch(direction[0])
@@ -284,21 +286,15 @@ void GameOwner::RestartGame()
 
 Direction GameOwner::randomGravity()
 {
-  int dirr = 0;
-  bool random = true;
-  if (random)
-    dirr = rand();
-  else
-    dirr ++;
-  dirr %= 4;
-  if (dirr == 0)
-    return (SOUTH);
-  else if (dirr == 1)
-    return (EAST);
-  else if (dirr == 2)
-    return (NORTH);
-  else
-    return (WEST);
+	int dirr = rand() % 4;
+	if (dirr == 0)
+		return (SOUTH);
+	else if (dirr == 1)
+		return (EAST);
+	else if (dirr == 2)
+		return (NORTH);
+	else
+		return (WEST);
 }
 Direction GameOwner::getDirection()
 {
