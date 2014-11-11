@@ -75,7 +75,6 @@ void GameOwner::ImplementGravity(double deltaMS)
 					shiftTime = 0;
 					for (int i = 0; i < 3; i++)
 					{
-						printf("%d: %d\n",i,direction[i]);
 						direction[i] = direction[i+1];
 					}
 					direction[3] = randomGravity();
