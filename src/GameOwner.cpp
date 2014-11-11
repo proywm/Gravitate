@@ -2,8 +2,10 @@
 #include "ActorComponentInterface.h"
 #include "GameLogicManager.h"
 #include "PhysicalComponent.h"
+#include "VisualComponent.h"
 #include "DisplayManager.h"
 #include "GameStateComponent.h"
+#include "SelectionToolBarComponent.h"
 #include <math.h>
 #include <sstream>
 
@@ -227,7 +229,17 @@ int GameOwner::randomShapeSelection()
 }
 int GameOwner::SelectedShape()
 {
-	return randomShapeSelection();
+//	return randomShapeSelection();
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "ShapeSelectionToolBar")
+		{
+			SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)actor->GetComponent(SELECTIONTOOLBAR);
+			return selectionToolBarComponent->GetSelectedShape();
+		}
+	}
+	return -1;
 }
 void GameOwner::CreateShapeRequest()
 {
@@ -237,18 +249,47 @@ void GameOwner::CreateShapeRequest()
 		if(actor->actorType == "Map")
 		{
 			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
-
+			PhysicalComponent* physicalComponent = (PhysicalComponent*)actor->GetComponent(PHYSICAL);
+			int blockSize = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockSize;
 			//Get mouse position in window
 			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
 			
 			//Convert position to grid
-			int xGridPosition = floor((localPosition.x - 100.0)/15.0);
-			int yGridPosition = floor((localPosition.y - 100.0)/15.0);
+			int xGridPosition = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
+			int yGridPosition = floor((localPosition.y - physicalComponent->getActorPosition().x)/blockSize);
 			
-			gameStateComponent->CreateNewShape((TetrominoShape)SelectedShape(), yGridPosition, xGridPosition);
+			int shapeId = SelectedShape();
+			if(shapeId!=-1)//something seleceted check
+				gameStateComponent->CreateNewShape((TetrominoShape)shapeId, yGridPosition, xGridPosition);
+			else
+				printf("Nothing Selected");
 		}
 	}
 }
+void GameOwner::SelectShapeRequest()
+{
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "ShapeSelectionToolBar")
+		{
+			SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)actor->GetComponent(SELECTIONTOOLBAR);
+			PhysicalComponent* physicalComponent = (PhysicalComponent*)actor->GetComponent(PHYSICAL);
+			int blockSize = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockSize;
+			//Get mouse position in window
+			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
+		
+			printf("----------->localPosition.x %d\n",localPosition.x );
+			printf("----------->localPosition.y %d\n",localPosition.y);
+			//Convert position to grid
+			int xGridPosition = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
+			int yGridPosition = floor((localPosition.y - physicalComponent->getActorPosition().y)/blockSize);
+			
+			selectionToolBarComponent->SelectShape(yGridPosition, xGridPosition);
+		}
+	}
+}
+
 void GameOwner::controlGame(void)
 {
 	//Hard Coded: ToDO: Make Dynamic Game Control

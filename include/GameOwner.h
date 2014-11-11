@@ -40,6 +40,7 @@ public:
 	void CreateShapeRequest();
 	int SelectedShape();
 	int randomShapeSelection();
+	void SelectShapeRequest();
 
 	void ImplementGravity(double deltaMS);
 	bool ismoveableBlock(int blockId);

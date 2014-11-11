@@ -30,6 +30,7 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 	        std::cout << "mouse x: " << receivedEvent.mouseButton.x << std::endl;
 	        std::cout << "mouse y: " << receivedEvent.mouseButton.y << std::endl;
 		printf("call Create\n");
+		((GameOwner*)gamePlayer)->SelectShapeRequest();
 		((GameOwner*)gamePlayer)->CreateShapeRequest();
 		return;
 	    }

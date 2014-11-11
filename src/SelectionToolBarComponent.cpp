@@ -51,6 +51,7 @@ void SelectionToolBarComponent::CreateShapes()
 	int xCorr = 2, yCorr = 2;
 	while(shape!=((int)TOTALSHAPES-1))
 	{
+		printf("Shape-------------->x %d\n",xCorr);
 		CreateNewShape((TetrominoShape)shape,xCorr,yCorr);
 		xCorr = xCorr + 6;
 		shape++;
@@ -64,7 +65,7 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
 && (GameMap[xCorr+2][yCorr]==0) && (GameMap[xCorr+3][yCorr]==0))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = STRAIGHTPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+3][yCorr] = GameMap[xCorr][yCorr];
@@ -75,7 +76,7 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
 				&& (GameMap[xCorr][yCorr+1]==0) && (GameMap[xCorr+1][yCorr+1]==0))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = SQUAREPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
@@ -86,7 +87,7 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
 				&& (GameMap[xCorr+2][yCorr]==0) && (GameMap[xCorr+1][yCorr+1]==0))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = TPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
@@ -97,7 +98,7 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
 				&& (GameMap[xCorr][yCorr+2]==0) && (GameMap[xCorr-1][yCorr+2]==0))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = JPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+2] = GameMap[xCorr][yCorr];
@@ -108,7 +109,7 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
 				&& (GameMap[xCorr][yCorr+2]==0) && (GameMap[xCorr+1][yCorr+2]==0))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = LPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+2] = GameMap[xCorr][yCorr];
@@ -119,7 +120,7 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
 				&& (GameMap[xCorr][yCorr+1]==0) && (GameMap[xCorr-1][yCorr+1]==0))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = SPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+1] = GameMap[xCorr][yCorr];
@@ -130,7 +131,7 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
 				&& (GameMap[xCorr+1][yCorr+1]==0) && (GameMap[xCorr+2][yCorr+1]==0))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = ZPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr+1] = GameMap[xCorr][yCorr];
@@ -139,4 +140,30 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 		default:
 			break;
 	}
+}
+int SelectionToolBarComponent::findShape(int xGridPosition, int yGridPosition)
+{
+	for(int i = -2; i<3;i++)
+		for(int j = -2 ; j<3;j++)
+			if(GameMap[xGridPosition+i][yGridPosition+j]>0)
+				return GameMap[xGridPosition+i][yGridPosition+j];
+	return 0;
+}
+void SelectionToolBarComponent::SelectShape(int xGridPosition, int yGridPosition)
+{
+	if(yGridPosition<CurrentToolBarCol && yGridPosition>=0 && xGridPosition<CurrentToolBarRow && xGridPosition>=0 )
+	{	
+		CurrentTetrominoShapeID = findShape(xGridPosition, yGridPosition);
+		if(CurrentTetrominoShapeID>0)
+		{
+			Selected = true;
+		}
+			
+	}
+}
+int SelectionToolBarComponent::GetSelectedShape()
+{
+	if(Selected)
+		return CurrentTetrominoShapeID;
+	return -1;
 }

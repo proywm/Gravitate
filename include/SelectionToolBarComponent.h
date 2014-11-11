@@ -25,4 +25,7 @@ public:
 	void CreateShapes();
 	void CreateNewShape(TetrominoShape tetrominoShape, int xCorr, int yCorr);
 	void CreateMap(XMLElement *componentElement);
+	void SelectShape(int xGridPosition, int yGridPosition);
+	int GetSelectedShape();
+	int findShape(int xGridPosition, int yGridPosition);
 };
