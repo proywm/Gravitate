@@ -109,13 +109,33 @@ void VisualComponent::update(double deltaMS)
 									(r * ((ActorShape::GridMap*)actorShape)->blockSize) + r;
 				
 				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
-				if(selectionToolBarComponent->GameMap[r][c]>NOTPLACEDBLOCK)//placed
+				if(selectionToolBarComponent->GameMap[r][c]==STRAIGHTPOLYOMINO)
 				{
 					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Green);
 				}
-				else if(selectionToolBarComponent->GameMap[r][c]==NOTPLACEDBLOCK)
+				else if(selectionToolBarComponent->GameMap[r][c]==SQUAREPOLYOMINO)
 				{
 					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Red);			
+				}
+				else if(selectionToolBarComponent->GameMap[r][c]==TPOLYOMINO)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Yellow);
+				}
+				else if(selectionToolBarComponent->GameMap[r][c]==JPOLYOMINO)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Magenta);			
+				}
+				else if(selectionToolBarComponent->GameMap[r][c]==LPOLYOMINO)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::White);
+				}
+				else if(selectionToolBarComponent->GameMap[r][c]==SPOLYOMINO)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Cyan);			
+				}
+				else if(selectionToolBarComponent->GameMap[r][c]==ZPOLYOMINO)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Black);			
 				}
 				else if(selectionToolBarComponent->GameMap[r][c]==EMPTYBLOCK)
 				{
