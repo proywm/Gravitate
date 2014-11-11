@@ -72,14 +72,9 @@ void VisualComponent::update(double deltaMS)
 		{
 			for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
 			{
-				int ax = physicalComponent->getActorPosition().x;
-				int bs = ((ActorShape::GridMap*)actorShape)->blockSize;
-				int posX = ax + (c * bs)+ c;
+				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockSize)+ c;
 				int posY = physicalComponent->getActorPosition().y + 
 									(r * ((ActorShape::GridMap*)actorShape)->blockSize) + r;
-				//printf("----------------> physicalComponent->getActorPosition().x  %d \n",ax);
-				//printf("----------------> posX %d c %d \n",posX, c);
-				//printf("----------------> ((ActorShape::GridMap*)actorShape)->blockSize %d \n",bs);
 				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
 				if(gameStateComponent->GameMap[r][c]>NOTPLACEDBLOCK)//placed
 				{
@@ -109,15 +104,10 @@ void VisualComponent::update(double deltaMS)
 		{
 			for(int c=0;c<selectionToolBarComponent->CurrentToolBarCol;c++)
 			{
-				
-				int ax = physicalComponent->getActorPosition().x;
-				int bs = ((ActorShape::GridMap*)actorShape)->blockSize;
-				int posX = ax + (c * bs)+ c;
+				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockSize)+ c;
 				int posY = physicalComponent->getActorPosition().y + 
 									(r * ((ActorShape::GridMap*)actorShape)->blockSize) + r;
-				//printf("----------------> physicalComponent->getActorPosition().x  %d \n",ax);
-				//printf("----------------> posX %d c %d \n",posX, c);
-				//printf("----------------> ((ActorShape::GridMap*)actorShape)->blockSize %d \n",bs);
+				
 				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
 				if(selectionToolBarComponent->GameMap[r][c]>NOTPLACEDBLOCK)//placed
 				{

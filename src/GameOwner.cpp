@@ -9,8 +9,6 @@
 #include <math.h>
 #include <sstream>
 
-#define SHIFTTIME 5000
-#define GAMETIME 1000
 GameOwner::GameOwner(void)
 {
 }
@@ -19,6 +17,12 @@ GameOwner::~GameOwner(void)
 }
 void GameOwner::init(const char* actorsList)
 {
+	XMLDocument* doc = new XMLDocument();
+    	doc->LoadFile(actorsList);
+	XMLElement *playerFiles = doc->FirstChildElement();
+	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
+	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
+
 	font.loadFromFile("./src/arial.ttf");
 	maxShift = 15;
 
@@ -62,11 +66,11 @@ void GameOwner::ImplementGravity(double deltaMS)
 		{	
 
 			gameTime += deltaMS;
-			if (gameTime >= GAMETIME)
+			if (gameTime >= ConfiguredGAMETIME)
 			{
 				gameTime = 0;
 				shiftTime += 1000;
-				if (shiftTime >= SHIFTTIME)
+				if (shiftTime >= ConfiguredSHIFTTIME)
 				{
 					shiftTime = 0;
 					for (int i = 0; i < 3; i++)
@@ -279,8 +283,6 @@ void GameOwner::SelectShapeRequest()
 			//Get mouse position in window
 			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
 		
-			printf("----------->localPosition.x %d\n",localPosition.x );
-			printf("----------->localPosition.y %d\n",localPosition.y);
 			//Convert position to grid
 			int xGridPosition = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
 			int yGridPosition = floor((localPosition.y - physicalComponent->getActorPosition().y)/blockSize);

@@ -59,4 +59,7 @@ public:
 	int gameTime;
 
 	sf::Font font;
+	
+	int ConfiguredSHIFTTIME;
+	int ConfiguredGAMETIME;
 };
