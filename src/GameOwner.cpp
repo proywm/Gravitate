@@ -344,123 +344,119 @@ Direction GameOwner::getDirection()
 }
 
 void GameOwner::LineDeletion()
-{  
-  //actorIterType iter = actorMap.begin();
-  //Actor* actor = (Actor*)iter->second;
+{
+  /*
+  actorIterType iter = actorMap.begin();
+  Actor* actor = (Actor*)iter->second;
+
+  GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
 
   bool topRowFlag = false;
   bool botRowFlag = false;
   bool topColFlag = false;
   bool botColFlag = false;
-
-  for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
-	{
-		Actor* actor = (Actor*)iter->second;
-		if(actor->actorType == "Map")
-		{
-			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
- 
-		  //Check top col. If full: delete top col
-		  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
-		  {
-		    if(gameStateComponent->GameMap[r][0] == 0)
-		    {
-		      topColFlag = true;
-		    }
-		  }
-		  
-		  if(topColFlag == false)
-		  {
-		    for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
-		    {
-		      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-		      {
-				gameStateComponent->GameMap[r][c-1] = gameStateComponent->GameMap[r][c];
-		      }
-		    }
-		    
-		    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
-		    {
-		      gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = 0;
-		    }
-		  }
-		  
-		  //Check bottom col. If full: delete bottom col
-		  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
-		  {
-		    if(gameStateComponent->GameMap[r][gameStateComponent->CurrentGameCol] == 0)
-		    {
-		      botColFlag = true;
-		    }
-		  }
-		  
-		  if(botColFlag == false)
-		  {
-		    for (int c=gameStateComponent->CurrentGameRow - 1; c > 0;c--)
-		    {
-		      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-		      {
-				gameStateComponent->GameMap[r][c + 1] = gameStateComponent->GameMap[r][c];
-		      }
-		    }
-		    
-		    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
-		    {
-		      gameStateComponent->GameMap[i][0] = 0;
-		    }
-		  }
-		  
-		  //Check top row. If full: delete top row
-		  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-		  {
-		    if(gameStateComponent->GameMap[0][r] == 0)
-		    {
-		      topRowFlag = true;
-		    }
-		  }
-		  
-		  if(topRowFlag == false)
-		  {
-		    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
-		    {
-		      for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
-		      {
-				gameStateComponent->GameMap[r-1][c] = gameStateComponent->GameMap[r][c];
-		      }
-		    }
-		    
-		    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
-		    {
-		      gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = 0;
-		    }
-		  }
-		  
-		    //Check bot row. If full: delete bot row
-		  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-		  {
-		    if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol][r] == 0)
-		    {
-		      botRowFlag = true;
-		    }
-		  }
-		  
-		  if(botRowFlag == false)
-		  {
-		    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
-		    {
-		      for (int r=gameStateComponent->CurrentGameCol; r > 0;r--)
-		      {
-				gameStateComponent->GameMap[r+1][c] = gameStateComponent->GameMap[r][c];
-		      }
-		    }
-		    
-		    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
-		    {
-		      gameStateComponent->GameMap[0][i] = 0;
-		    }
-		  }
-		}
-	}
+  
+  //Check top col. If full: delete top col
+  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
+  {
+    if(gameStateComponent->GameMap[r][0] == 0)
+    {
+      topColFlag = true;
+    }
+  }
+  
+  if(topColFlag == false)
+  {
+    for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
+    {
+      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+      {
+	gameStateComponent->GameMap[r][c-1] = gameStateComponent->GameMap[r][c];
+      }
+    }
+    
+    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
+    {
+      gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = 0;
+    }
+  }
+  
+  //Check bottom col. If full: delete bottom col
+  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
+  {
+    if(gameStateComponent->GameMap[r][gameStateComponent->CurrentGameCol] == 0)
+    {
+      botColFlag = true;
+    }
+  }
+  
+  if(botColFlag == false)
+  {
+    for (int c=gameStateComponent->CurrentGameRow - 1; c > 0;c--)
+    {
+      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+      {
+	gameStateComponent->GameMap[r][c + 1] = gameStateComponent->GameMap[r][c];
+      }
+    }
+    
+    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
+    {
+      gameStateComponent->GameMap[i][0] = 0;
+    }
+  }
+  
+  //Check top row. If full: delete top row
+  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+  {
+    if(gameStateComponent->GameMap[0][r] == 0)
+    {
+      topRowFlag = true;
+    }
+  }
+  
+  if(topRowFlag == false)
+  {
+    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
+    {
+      for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
+      {
+	gameStateComponent->GameMap[r-1][c] = gameStateComponent->GameMap[r][c];
+      }
+    }
+    
+    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
+    {
+      gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = 0;
+    }
+  }
+  
+    //Check bot row. If full: delete bot row
+  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+  {
+    if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol][r] == 0)
+    {
+      botRowFlag = true;
+    }
+  }
+  
+  if(botRowFlag == false)
+  {
+    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
+    {
+      for (int r=gameStateComponent->CurrentGameCol; r > 0;r--)
+      {
+	gameStateComponent->GameMap[r+1][c] = gameStateComponent->GameMap[r][c];
+      }
+    }
+    
+    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
+    {
+      gameStateComponent->GameMap[0][i] = 0;
+    }
+  }
+  */
+  
 }
 
 
