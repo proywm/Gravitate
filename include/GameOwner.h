@@ -62,4 +62,6 @@ public:
 	
 	int ConfiguredSHIFTTIME;
 	int ConfiguredGAMETIME;
+	
+	int score;
 };

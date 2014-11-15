@@ -35,6 +35,7 @@ void GameOwner::init(const char* actorsList)
 
 	gameTime = 0; 
 	shiftTime = 0;
+	score = 0;
 	HasWinner = false;
 	controlGame();
 }
@@ -369,6 +370,10 @@ void GameOwner::LineDeletion()
 		  if(topColFlag == false)
 		  {
 		    std::cout<<"LINEDELETION";
+		    
+		    // YOU SCORED!
+		    score = score + 100;
+		    
 		    for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
 		    {
 		      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
@@ -398,8 +403,9 @@ void GameOwner::LineDeletion()
 		  {
 		    std::cout<<"LINEDELETION";
 		    
-		     // INCREASE POINT TOTAL HERE
-
+		    // YOU SCORED!
+		    score = score + 100;
+		    
 		    for (int c=gameStateComponent->CurrentGameRow - 2; c > 0;c--)
 		    {
 		      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
@@ -429,8 +435,9 @@ void GameOwner::LineDeletion()
 		  {
 		    std::cout<<"LINEDELETION";
 		    
-		    // INCREASE POINT TOTAL HERE
-
+		    // YOU SCORED!
+		    score = score + 100;
+		    
 		    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
 		    {
 		      for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
@@ -458,8 +465,9 @@ void GameOwner::LineDeletion()
 		  {
 		    std::cout<<"LINEDELETION";
 		    
-		    // INCREASE POINT TOTAL HERE
-
+		     // YOU SCORED!
+		    score = score + 100;
+		    
 		    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
 		    {
 		      for (int r=gameStateComponent->CurrentGameCol - 2; r >= 0;r--)
@@ -478,6 +486,3 @@ void GameOwner::LineDeletion()
 		}	
 	}
 }
-
-
-
