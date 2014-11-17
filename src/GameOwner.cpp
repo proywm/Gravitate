@@ -6,6 +6,7 @@
 #include "DisplayManager.h"
 #include "GameStateComponent.h"
 #include "SelectionToolBarComponent.h"
+#include <set>
 #include <math.h>
 #include <sstream>
 
@@ -81,18 +82,22 @@ void GameOwner::ImplementGravity(double deltaMS)
 					direction[3] = randomGravity();
 				}
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
+				std::set<int> pieces; 
 
-				 switch(direction[0])
-				 {
-				   case SOUTH:
+				switch(direction[0])
+				{
+				    case SOUTH:
 					for(int r=MAXROW-2;r>=0;r--)
 					{
 						for(int c=0;c<MAXCOL;c++)
 						{
+							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
-							if (ismoveableBlock(gameStateComponent->GameMap[r][c]))
-								ShiftDownRequest(gameStateComponent->GameMap[r][c]);
-
+							if (ismoveableBlock(id) && (pieces.find(id) == pieces.end()) )
+							{
+								pieces.insert(id);
+								ShiftDownRequest(id);
+							}
 						}
 					}
 					break;
@@ -102,9 +107,13 @@ void GameOwner::ImplementGravity(double deltaMS)
 					{
 						for(int c=MAXCOL-2;c>=0;c--)
 						{
+							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
-							if (ismoveableBlock(gameStateComponent->GameMap[r][c]))
-								ShiftRightRequest(gameStateComponent->GameMap[r][c]);
+							if (ismoveableBlock(id) && (pieces.find(id) == pieces.end()) )
+							{
+								pieces.insert(id);
+								ShiftRightRequest(id);
+							}
 						}
 					}
 					break;
@@ -113,9 +122,13 @@ void GameOwner::ImplementGravity(double deltaMS)
 					{
 						for(int c=0;c<MAXCOL;c++)
 						{
+							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
-							if (ismoveableBlock(gameStateComponent->GameMap[r][c]))
-								ShiftUpRequest(gameStateComponent->GameMap[r][c]);
+							if (ismoveableBlock(id) && (pieces.find(id) == pieces.end()) )
+							{
+								pieces.insert(id);
+								ShiftUpRequest(id);
+							}
 						}
 					}
 					break;
@@ -124,9 +137,13 @@ void GameOwner::ImplementGravity(double deltaMS)
 					{
 						for(int c=1;c<MAXCOL;c++)
 						{
+							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
-							if (ismoveableBlock(gameStateComponent->GameMap[r][c]))
-								ShiftLeftRequest(gameStateComponent->GameMap[r][c]);
+							if (ismoveableBlock(id) && (pieces.find(id) == pieces.end()) )
+							{
+								pieces.insert(id);
+								ShiftLeftRequest(id);
+							}
 						}
 					}
 					break;
