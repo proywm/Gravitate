@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<playerList>
+	<player PlayerFileName="./config/HumanPlayer1.xml" PlayerType="Human" PlayerTypeId="1" PlayerName="Probir" PlayerId="1"/>
+	<player PlayerFileName="./config/GameLogic.xml" PlayerType="Game" PlayerTypeId="2" PlayerName="Game" PlayerId="2"/>
+</playerList>

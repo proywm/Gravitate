@@ -24,7 +24,7 @@ void GameOwner::init(const char* actorsList)
 	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
 
-	font.loadFromFile("./src/arial.ttf");
+	font.loadFromFile("./resources/fonts/arial.ttf");
 	maxShift = 15;
 
 	MaxPossibleScore = 10;//hardcoded

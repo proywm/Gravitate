@@ -23,7 +23,7 @@ void GameLogicManager::InitGameLogicManager(void)
 {
 	ActorFactory::instance()->init();
 	
-	char* playerList = "./src/PlayerList.xml";
+	char* playerList = "./config/PlayerList.xml";
 	XMLDocument* doc = new XMLDocument();
     doc->LoadFile(playerList);
 
