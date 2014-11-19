@@ -54,6 +54,8 @@ public:
 	Direction randomGravity();
 	Direction getDirection();
 	void LineDeletion();
+	void ForcedDeletion();
+
 	
 	int shiftTime;
 	int gameTime;
