@@ -25,13 +25,6 @@ void GameOwner::init(const char* actorsList)
 	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
 
-	sf::Music music;
-	if (!music.openFromFile("./resources/sounds/BGMusic.wav"))
-    	exit (EXIT_FAILURE);
-    music.setLoop(true);
-    music.setVolume(100);
-	music.play();
-
 	font.loadFromFile("./resources/fonts/arial.ttf");
 	maxShift = 15;
 
@@ -41,6 +34,23 @@ void GameOwner::init(const char* actorsList)
 	direction[1]= randomGravity();
 	direction[2]= randomGravity();
 	direction[3]= randomGravity();
+
+	//Init sounds
+	if (!buffer.loadFromFile("./resources/sounds/GravityChange.wav"))
+	    exit (EXIT_FAILURE);
+	sound.setBuffer(buffer);
+	sound.setVolume(65);
+	if (!buffer2.loadFromFile("./resources/sounds/PiecePlacement.wav"))
+	    exit (EXIT_FAILURE);
+	sound2.setBuffer(buffer2);
+	sound2.setVolume(18);
+	//sound2.setPitch(1.2);
+	if (!buffer3.loadFromFile("./resources/sounds/LineDeletion.wav"))
+	    exit (EXIT_FAILURE);
+	sound3.setBuffer(buffer3);
+	if (!buffer4.loadFromFile("./resources/sounds/ForcedDeletion.wav"))
+	    exit (EXIT_FAILURE);
+	sound4.setBuffer(buffer4);
 
 	gameTime = 0; 
 	shiftTime = 0;
@@ -93,12 +103,6 @@ void GameOwner::ImplementGravity(double deltaMS)
 						direction[i] = direction[i+1];
 					}
 					direction[3] = randomGravity();
-
-					sf::SoundBuffer buffer;
-	    			if (!buffer.loadFromFile("./resources/sounds/GravityChange.wav"))
-	        			exit (EXIT_FAILURE);
-	    			sf::Sound sound;
-					sound.setBuffer(buffer);
 					sound.play();
 				}
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
@@ -305,12 +309,8 @@ void GameOwner::CreateShapeRequest()
 			if(shapeId!=-1)//something seleceted check
 			{
 				gameStateComponent->CreateNewShape((TetrominoShape)shapeId, yGridPosition, xGridPosition);
-				sf::SoundBuffer buffer2;
-	    		if (!buffer2.loadFromFile("./resources/sounds/ForcedDeletion.wav"))
-	        		exit (EXIT_FAILURE);
-	    		sf::Sound sound2;
-				sound2.setBuffer(buffer2);
 				sound2.play();
+				
 			}
 			else
 				printf("Nothing Selected");
@@ -396,7 +396,7 @@ void GameOwner::LineDeletion()
   bool topRowFlag = false;
   bool botRowFlag = false;
   bool topColFlag = false;
-  bool botColFlag = false;
+  bool botColFlag = false;  
 
   for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
 	{
@@ -420,12 +420,6 @@ void GameOwner::LineDeletion()
 		    
 		    // YOU SCORED!
 		    score = score + 1000;
-
-		    sf::SoundBuffer buffer3;
-    		if (!buffer3.loadFromFile("./resources/sounds/LineDeletion.wav"))
-        		exit (EXIT_FAILURE);
-    		sf::Sound sound3;
-			sound3.setBuffer(buffer3);
 			sound3.play();
 		    
 		    for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
@@ -459,13 +453,7 @@ void GameOwner::LineDeletion()
 		    
 		    // YOU SCORED!
 		    score = score + 1000;
-
-		    sf::SoundBuffer buffer4;
-    		if (!buffer4.loadFromFile("./resources/sounds/LineDeletion.wav"))
-        		exit (EXIT_FAILURE);
-    		sf::Sound sound4;
-			sound4.setBuffer(buffer4);
-			sound4.play();
+			sound3.play();
 		    
 		    for (int c=gameStateComponent->CurrentGameRow - 2; c > 0;c--)
 		    {
@@ -498,15 +486,8 @@ void GameOwner::LineDeletion()
 		    
 		    // YOU SCORED!
 		    score = score + 1000;
+			sound3.play();
 
-		    sf::SoundBuffer buffer5;
-    		if (!buffer5.loadFromFile("./resources/sounds/LineDeletion.wav"))
-        		exit (EXIT_FAILURE);
-    		sf::Sound sound5;
-			sound5.setBuffer(buffer5);
-			sound5.play();
-
-		    
 		    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
 		    {
 		      for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
@@ -536,13 +517,7 @@ void GameOwner::LineDeletion()
 		    
 		     // YOU SCORED!
 		    score = score + 1000;
-
-		    sf::SoundBuffer buffer6;
-    		if (!buffer6.loadFromFile("./resources/sounds/PiecePlacement.wav"))
-        		exit (EXIT_FAILURE);
-    		sf::Sound sound6;
-			sound6.setBuffer(buffer6);
-			sound6.play();
+			sound3.play();
 		    
 		    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
 		    {
@@ -569,16 +544,6 @@ void GameOwner::ForcedDeletion()
 {
 	std::cout<<"Forced Deletion";
 	int pointCounter = 0;
-	sf::SoundBuffer buffer7;
-	sf::SoundBuffer buffer8;
-	sf::SoundBuffer buffer9;
-	sf::SoundBuffer buffer10;
-
-	sf::Sound sound7;
-	sf::Sound sound8;
-	sf::Sound sound9;
-	sf::Sound sound10;
-
 
 	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
 	{
@@ -613,11 +578,7 @@ void GameOwner::ForcedDeletion()
 		    	}
 
 		    	score = score - ((gameStateComponent->CurrentGameRow - pointCounter) * 25);
-
-    			if (!buffer7.loadFromFile("./resources/sounds/ForcedDeletion.wav"))
-        			exit (EXIT_FAILURE);
-				sound7.setBuffer(buffer7);
-				sound7.play();
+				sound4.play();
 
 				break;
 
@@ -644,11 +605,7 @@ void GameOwner::ForcedDeletion()
 			    	}
 
 		    		score = score - ((gameStateComponent->CurrentGameCol - pointCounter) * 25);
-
-	    			if (!buffer8.loadFromFile("./resources/sounds/ForcedDeletion.wav"))
-	        			exit (EXIT_FAILURE);
-					sound8.setBuffer(buffer8);
-					sound8.play();
+					sound4.play();
 
 					break;
 
@@ -675,11 +632,7 @@ void GameOwner::ForcedDeletion()
 			    	}
 
 		    		score = score - ((gameStateComponent->CurrentGameRow - pointCounter) * 25);
-
-	    			if (!buffer9.loadFromFile("./resources/sounds/ForcedDeletion.wav"))
-	        			exit (EXIT_FAILURE);
-					sound9.setBuffer(buffer9);
-					sound9.play();
+					sound4.play();
 
 					break;
 
@@ -706,11 +659,7 @@ void GameOwner::ForcedDeletion()
 			   		}
 
 		    		score = score - ((gameStateComponent->CurrentGameCol - pointCounter) * 25);
-
-	    			if (!buffer10.loadFromFile("./resources/sounds/ForcedDeletion.wav"))
-	        			exit (EXIT_FAILURE);
-					sound10.setBuffer(buffer10);
-					sound10.play();
+					sound4.play();
 
 					break;
 

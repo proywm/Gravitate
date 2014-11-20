@@ -22,6 +22,12 @@ void GameApplication::Run(void)
 	GameLogicManager::instance()->InitGameLogicManager();
 //	GameViewManager::instance()->InitGameViewManager();
 
+	sf::Music music;
+	if (!music.openFromFile("./resources/sounds/BGMusic.wav"))
+    	exit (EXIT_FAILURE);
+    music.setLoop(true);
+    music.setVolume(40);
+	music.play();
 
 	GameLoop();
 }
