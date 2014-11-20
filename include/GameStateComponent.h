@@ -4,9 +4,10 @@
 #include "Shape.h"
 
 #define BOUNDARYIDENTIFIER	-2
-#define EMPTYBLOCK	0
-#define CONCRETEBLOCK	-1
-#define NOTPLACEDBLOCK	1
+#define CONCRETEBLOCK		-1
+#define EMPTYBLOCK			 0
+#define HOVERBLOCK		 	 1
+#define ACTIVEBLOCK		 	 2
 
 enum TetrominoShape 
 {
@@ -37,6 +38,7 @@ public:
 
 	int CurrentTetrominoShapeID;
 	int getTetrominoShapeID();
+	bool isEmptyBlock(int blockId);
 
 	void PlaceNewShape();
 	void CreateNewShape(TetrominoShape tetrominoShape, int xCorr, int yCorr);

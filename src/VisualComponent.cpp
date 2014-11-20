@@ -76,11 +76,15 @@ void VisualComponent::update(double deltaMS)
 				int posY = physicalComponent->getActorPosition().y + 
 									(r * ((ActorShape::GridMap*)actorShape)->blockSize) + r;
 				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
-				if(gameStateComponent->GameMap[r][c]>NOTPLACEDBLOCK)//placed
+				if(gameStateComponent->GameMap[r][c]>ACTIVEBLOCK)//placed
 				{
 					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Green);
 				}
-				else if(gameStateComponent->GameMap[r][c]==NOTPLACEDBLOCK)
+				else if(gameStateComponent->GameMap[r][c]==ACTIVEBLOCK)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Red);			
+				}
+				else if(gameStateComponent->GameMap[r][c]==HOVERBLOCK)
 				{
 					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Red);			
 				}

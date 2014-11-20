@@ -2,6 +2,7 @@
 #include "GamePlayer.h"
 #include "GlobalHeader.h"
 #include "Actor.h"
+#include "GameStateComponent.h"
 
 enum Direction 
 {
@@ -44,6 +45,7 @@ public:
 
 	void ImplementGravity(double deltaMS);
 	bool ismoveableBlock(int blockId);
+	bool isEmptyBlock(int blockId);
 
 	int MaxPossibleScore;
 	int maxShift;
@@ -53,6 +55,8 @@ public:
 	
 	Direction randomGravity();
 	Direction getDirection();
+	void ShowCursor();
+	void CreateNewShape(int (*GameMap)[MAXCOL], TetrominoShape tetrominoShape, int xCorr, int yCorr);
 	void LineDeletion();
 	void ForcedDeletion();
 

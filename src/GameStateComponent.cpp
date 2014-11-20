@@ -19,7 +19,7 @@ void GameStateComponent::init(XMLElement *componentElement)
 	CurrentGameCol = shapeElement->IntAttribute("NoOfCols");
 	
 	CreateMap(shapeElement);
-	CurrentTetrominoShapeID = 2;
+	CurrentTetrominoShapeID = 3;
 	Hover = false;
 }
 void GameStateComponent::CreateMap(XMLElement *componentElement)
@@ -42,7 +42,10 @@ void GameStateComponent::update(double deltaMS)
 {
 
 }
-
+bool GameStateComponent::isEmptyBlock(int blockId)
+{
+	return blockId == EMPTYBLOCK || blockId == HOVERBLOCK;
+}
 void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr, int yCorr)
 {
 	if(Hover)
@@ -53,10 +56,10 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 	switch(tetrominoShape)
 	{
 		case STRAIGHTPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-&& (GameMap[xCorr+2][yCorr]==0) && (GameMap[xCorr+3][yCorr]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr+2][yCorr]) && isEmptyBlock(GameMap[xCorr+3][yCorr]))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+3][yCorr] = GameMap[xCorr][yCorr];
@@ -65,10 +68,10 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 
 			break; 
 		case SQUAREPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-				&& (GameMap[xCorr][yCorr+1]==0) && (GameMap[xCorr+1][yCorr+1]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr][yCorr+1]) && isEmptyBlock(GameMap[xCorr+1][yCorr+1]))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
@@ -77,10 +80,10 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 
 			break;
 		case TPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-				&& (GameMap[xCorr+2][yCorr]==0) && (GameMap[xCorr+1][yCorr+1]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr+2][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr+1]))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
@@ -89,10 +92,10 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 
 			break;
 		case JPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
-				&& (GameMap[xCorr][yCorr+2]==0) && (GameMap[xCorr-1][yCorr+2]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr][yCorr+1]) 
+				&& isEmptyBlock(GameMap[xCorr][yCorr+2]) && isEmptyBlock(GameMap[xCorr-1][yCorr+2]))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+2] = GameMap[xCorr][yCorr];
@@ -101,10 +104,10 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 
 			break;
 		case LPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
-				&& (GameMap[xCorr][yCorr+2]==0) && (GameMap[xCorr+1][yCorr+2]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr][yCorr+1]) 
+				&& isEmptyBlock(GameMap[xCorr][yCorr+2]) && isEmptyBlock(GameMap[xCorr+1][yCorr+2]))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+2] = GameMap[xCorr][yCorr];
@@ -113,10 +116,10 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 
 			break;
 		case SPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-				&& (GameMap[xCorr][yCorr+1]==0) && (GameMap[xCorr-1][yCorr+1]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr][yCorr+1]) && isEmptyBlock(GameMap[xCorr-1][yCorr+1]))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr-1][yCorr+1] = GameMap[xCorr][yCorr];
@@ -125,10 +128,10 @@ void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr
 
 			break;
 		case ZPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-				&& (GameMap[xCorr+1][yCorr+1]==0) && (GameMap[xCorr+2][yCorr+1]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr+1][yCorr+1]) && isEmptyBlock(GameMap[xCorr+2][yCorr+1]))
 			{
-				GameMap[xCorr][yCorr] = NOTPLACEDBLOCK;//getTetrominoShapeID();
+				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
 				GameMap[xCorr+2][yCorr+1] = GameMap[xCorr][yCorr];
@@ -152,7 +155,7 @@ void GameStateComponent::PlaceNewShape()
 	{
 		for(int c = 0;c<CurrentGameCol;c++)
 		{
-			if(GameMap[r][c] == NOTPLACEDBLOCK)
+			if(GameMap[r][c] == ACTIVEBLOCK)
 			{
 				GameMap[r][c] = setID;
 			}
@@ -194,7 +197,7 @@ void GameStateComponent::ShiftRight(int id)
 	{
 		if (arrayOfPoints[i] != -2)
 		{
-			if (GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == 0 or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == id)
+			if (isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1]) or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == id)
 			{
 			}
 			else
@@ -211,7 +214,7 @@ void GameStateComponent::ShiftRight(int id)
 		{
 			if (arrayOfPoints[i] != -2)
 			{
-				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = EMPTYBLOCK;
 			}
 		}
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
@@ -223,7 +226,7 @@ void GameStateComponent::ShiftRight(int id)
 		}	
 	}else
 	{
-		if(id==NOTPLACEDBLOCK)
+		if(id==ACTIVEBLOCK)
 			PlaceNewShape();
 	}
 
@@ -260,7 +263,7 @@ void GameStateComponent::ShiftLeft(int id)
 	{
 		if (arrayOfPoints[i] != -2)
 		{
-			if (GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == 0 or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == id)
+			if (isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1]) or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == id)
 			{
 			}
 			else
@@ -277,7 +280,7 @@ void GameStateComponent::ShiftLeft(int id)
 		{
 			if (arrayOfPoints[i] != -2)
 			{
-				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = EMPTYBLOCK;
 			}
 		}
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
@@ -290,7 +293,7 @@ void GameStateComponent::ShiftLeft(int id)
 	}
 	else
 	{
-		if(id==NOTPLACEDBLOCK)
+		if(id==ACTIVEBLOCK)
 			PlaceNewShape();
 	}
 
@@ -327,7 +330,8 @@ void GameStateComponent::ShiftUp(int id)
 	{
 		if (arrayOfPoints[i] != -2)
 		{
-			if ((GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == 0 or GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == id) and not(arrayOfPoints[i] - 1 < 0))
+			if ((isEmptyBlock(GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]]) or GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == id) 
+				and not(arrayOfPoints[i] - 1 < 0))
 			{
 			}
 			else
@@ -344,7 +348,7 @@ void GameStateComponent::ShiftUp(int id)
 		{
 			if (arrayOfPoints[i] != -2)
 			{
-				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = EMPTYBLOCK;
 			}
 		}
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
@@ -356,7 +360,7 @@ void GameStateComponent::ShiftUp(int id)
 		}
 	}else
 	{
-		if(id==NOTPLACEDBLOCK)
+		if(id==ACTIVEBLOCK)
 			PlaceNewShape();
 	}
 }
@@ -391,7 +395,7 @@ void GameStateComponent::ShiftDown(int id)
 	{
 		if (arrayOfPoints[i] != -2)
 		{
-			if (GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == 0 or GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == id)
+			if (isEmptyBlock(GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]]) or GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == id)
 			{
 			}
 			else
@@ -407,7 +411,7 @@ void GameStateComponent::ShiftDown(int id)
 		{
 			if (arrayOfPoints[i] != -2)
 			{
-				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = 0;
+				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1]] = EMPTYBLOCK;
 			}
 		}
 		for (int i=0; i < (sizeof(arrayOfPoints) / sizeof(arrayOfPoints[0])); i = i + 2)
@@ -419,7 +423,7 @@ void GameStateComponent::ShiftDown(int id)
 		}
 	}else
 	{
-		if(id==NOTPLACEDBLOCK)
+		if(id==ACTIVEBLOCK)
 			PlaceNewShape();
 	}
 }
@@ -544,7 +548,8 @@ void GameStateComponent::RotateClockwise(int id)
 		{
 			row = arrayOfRotatedPoints[z] + minX;
 			col = arrayOfRotatedPoints[z+1] + minY;
-			if ((GameMap[row][col] == 0 or GameMap[row][col] == id) and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+			if ((isEmptyBlock(GameMap[row][col]) or GameMap[row][col] == id) 
+				and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
 			{
 			}
 			else
@@ -560,7 +565,7 @@ void GameStateComponent::RotateClockwise(int id)
 		{
 			if (arrayOfPointsOLD[z] != -2)
 			{
-				GameMap[arrayOfPointsOLD[z]][arrayOfPointsOLD[z+1]]= 0;
+				GameMap[arrayOfPointsOLD[z]][arrayOfPointsOLD[z+1]]= EMPTYBLOCK;
 			}
 		}
 
@@ -575,7 +580,7 @@ void GameStateComponent::RotateClockwise(int id)
 		}
 	}else
 	{
-		if(id==NOTPLACEDBLOCK)
+		if(id==ACTIVEBLOCK)
 			PlaceNewShape();
 	}
 }
@@ -699,7 +704,8 @@ void GameStateComponent::RotateCounterClockwise(int id)
 		{
 			row = arrayOfRotatedPoints[z] + minX -1;
 			col = arrayOfRotatedPoints[z+1] + minY;
-			if ((GameMap[row][col] == 0 or GameMap[row][col] == id) and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+			if ((isEmptyBlock(GameMap[row][col]) or GameMap[row][col] == id) 
+				and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
 			{
 			}
 			else
@@ -715,7 +721,7 @@ void GameStateComponent::RotateCounterClockwise(int id)
 		{
 			if (arrayOfPointsOLD[z] != -2)
 			{
-				GameMap[arrayOfPointsOLD[z]][arrayOfPointsOLD[z+1]]= 0;
+				GameMap[arrayOfPointsOLD[z]][arrayOfPointsOLD[z+1]]= EMPTYBLOCK;
 			}
 		}
 
@@ -730,7 +736,7 @@ void GameStateComponent::RotateCounterClockwise(int id)
 		}
 	}else
 	{
-		if(id==NOTPLACEDBLOCK)
+		if(id==ACTIVEBLOCK)
 			PlaceNewShape();
 	}
 

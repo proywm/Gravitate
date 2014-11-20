@@ -62,8 +62,8 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 	switch(tetrominoShape)
 	{
 		case STRAIGHTPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-&& (GameMap[xCorr+2][yCorr]==0) && (GameMap[xCorr+3][yCorr]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr+2][yCorr]) && isEmptyBlock(GameMap[xCorr+3][yCorr]))
 			{
 				GameMap[xCorr][yCorr] = STRAIGHTPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
@@ -73,8 +73,8 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 
 			break; 
 		case SQUAREPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-				&& (GameMap[xCorr][yCorr+1]==0) && (GameMap[xCorr+1][yCorr+1]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr][yCorr+1]) && isEmptyBlock(GameMap[xCorr+1][yCorr+1]))
 			{
 				GameMap[xCorr][yCorr] = SQUAREPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
@@ -84,8 +84,8 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 
 			break;
 		case TPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-				&& (GameMap[xCorr+2][yCorr]==0) && (GameMap[xCorr+1][yCorr+1]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr+2][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr+1]))
 			{
 				GameMap[xCorr][yCorr] = TPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
@@ -95,8 +95,8 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 
 			break;
 		case JPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
-				&& (GameMap[xCorr][yCorr+2]==0) && (GameMap[xCorr-1][yCorr+2]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr][yCorr+1]) 
+				&& isEmptyBlock(GameMap[xCorr][yCorr+2]) && isEmptyBlock(GameMap[xCorr-1][yCorr+2]))
 			{
 				GameMap[xCorr][yCorr] = JPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
@@ -106,8 +106,8 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 
 			break;
 		case LPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr][yCorr+1]==0) 
-				&& (GameMap[xCorr][yCorr+2]==0) && (GameMap[xCorr+1][yCorr+2]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr][yCorr+1]) 
+				&& isEmptyBlock(GameMap[xCorr][yCorr+2]) && isEmptyBlock(GameMap[xCorr+1][yCorr+2]))
 			{
 				GameMap[xCorr][yCorr] = LPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
@@ -117,8 +117,8 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 
 			break;
 		case SPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-				&& (GameMap[xCorr][yCorr+1]==0) && (GameMap[xCorr-1][yCorr+1]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr][yCorr+1]) && isEmptyBlock(GameMap[xCorr-1][yCorr+1]))
 			{
 				GameMap[xCorr][yCorr] = SPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
@@ -128,8 +128,8 @@ void SelectionToolBarComponent::CreateNewShape(TetrominoShape tetrominoShape, in
 
 			break;
 		case ZPOLYOMINO:
-			if((GameMap[xCorr][yCorr]==0) && (GameMap[xCorr+1][yCorr]==0) 
-				&& (GameMap[xCorr+1][yCorr+1]==0) && (GameMap[xCorr+2][yCorr+1]==0))
+			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
+				&& isEmptyBlock(GameMap[xCorr+1][yCorr+1]) && isEmptyBlock(GameMap[xCorr+2][yCorr+1]))
 			{
 				GameMap[xCorr][yCorr] = ZPOLYOMINO;//getTetrominoShapeID();
 				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
@@ -145,7 +145,7 @@ int SelectionToolBarComponent::findShape(int xGridPosition, int yGridPosition)
 {
 	for(int i = -2; i<3;i++)
 		for(int j = -2 ; j<3;j++)
-			if(GameMap[xGridPosition+i][yGridPosition+j]>0)
+			if(GameMap[xGridPosition+i][yGridPosition+j] > HOVERBLOCK)
 				return GameMap[xGridPosition+i][yGridPosition+j];
 	return 0;
 }
@@ -166,4 +166,8 @@ int SelectionToolBarComponent::GetSelectedShape()
 	if(Selected)
 		return CurrentTetrominoShapeID;
 	return -1;
+}
+bool SelectionToolBarComponent::isEmptyBlock(int blockId)
+{
+	return blockId == EMPTYBLOCK || blockId == HOVERBLOCK;
 }

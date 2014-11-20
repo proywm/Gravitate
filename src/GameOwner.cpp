@@ -4,7 +4,6 @@
 #include "PhysicalComponent.h"
 #include "VisualComponent.h"
 #include "DisplayManager.h"
-#include "GameStateComponent.h"
 #include "SelectionToolBarComponent.h"
 #include <set>
 #include <math.h>
@@ -62,6 +61,8 @@ void GameOwner::update(double deltaMS)
 {	
 	ImplementGravity(deltaMS);
 	
+	ShowCursor();
+	
 	//Check for Line Deletion
 	LineDeletion();
 
@@ -77,10 +78,14 @@ void GameOwner::update(double deltaMS)
 }
 bool GameOwner::ismoveableBlock(int blockId)
 {
-	if (blockId != BOUNDARYIDENTIFIER && blockId != EMPTYBLOCK && blockId != CONCRETEBLOCK)
+	if (blockId != BOUNDARYIDENTIFIER && blockId != EMPTYBLOCK && blockId != HOVERBLOCK && blockId != CONCRETEBLOCK)
 		return true;
 	else
 		return false;
+}
+bool GameOwner::isEmptyBlock(int blockId)
+{
+	return blockId == EMPTYBLOCK || blockId == HOVERBLOCK;
 }
 void GameOwner::ImplementGravity(double deltaMS)
 {
@@ -176,6 +181,117 @@ void GameOwner::ImplementGravity(double deltaMS)
 				}
 			}
 		}
+	}
+}
+void GameOwner::ShowCursor()
+{
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
+			PhysicalComponent* physicalComponent = (PhysicalComponent*)actor->GetComponent(PHYSICAL);
+			int blockSize = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockSize;
+			//Get mouse position in window
+			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
+			
+			//Convert position to grid
+			int xGridPosition = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
+			int yGridPosition = floor((localPosition.y - physicalComponent->getActorPosition().x)/blockSize);
+			int shapeId = SelectedShape();
+			if(shapeId!=-1)//something selected check
+				CreateNewShape(gameStateComponent->GameMap, (TetrominoShape)shapeId, yGridPosition, xGridPosition);
+			else
+			//	printf("Nothing Selected\n");
+			;
+		}
+	}
+}
+void GameOwner::CreateNewShape(int (*GameMap)[MAXCOL], TetrominoShape tetrominoShape, int xCorr, int yCorr)
+{
+	for(int r=0;r<MAXROW;r++)
+	{
+		for(int c=0;c<MAXCOL;c++)
+		{
+			if (GameMap[r][c] == HOVERBLOCK)
+				GameMap[r][c] = EMPTYBLOCK;
+		}
+	}
+	switch(tetrominoShape)
+	{
+		case STRAIGHTPOLYOMINO:
+			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+2][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr+2][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+3][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr+3][yCorr] = HOVERBLOCK;
+			break; 
+		case SQUAREPOLYOMINO:
+			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr+1] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
+			break;
+		case TPOLYOMINO:
+			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+2][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr+2][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
+			break;
+		case JPOLYOMINO:
+			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr+1] = HOVERBLOCK;
+			if(GameMap[xCorr][yCorr+2] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr+2] = HOVERBLOCK;
+			if(GameMap[xCorr-1][yCorr+2] == EMPTYBLOCK)
+				GameMap[xCorr-1][yCorr+2] = HOVERBLOCK;
+			break;
+		case LPOLYOMINO:
+			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr+1] = HOVERBLOCK;
+			if(GameMap[xCorr][yCorr+2] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr+2] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr+2] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr+2] = HOVERBLOCK;
+			break;
+		case SPOLYOMINO:
+			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr+1] = HOVERBLOCK;
+			if(GameMap[xCorr-1][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr-1][yCorr+1] = HOVERBLOCK;
+			break;
+		case ZPOLYOMINO:
+			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+			if(GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
+			if(GameMap[xCorr+2][yCorr+1] == EMPTYBLOCK)
+				GameMap[xCorr+2][yCorr+1] = HOVERBLOCK;
+			break;
+		default:
+			break;
 	}
 }
 void GameOwner::HandleEvent(sf::Event receivedEvent)
@@ -408,7 +524,7 @@ void GameOwner::LineDeletion()
 		  //Check top col. If full: delete top col. LEFT.
 		  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
 		  {
-		    if(gameStateComponent->GameMap[r][0] < 1)
+		    if(gameStateComponent->GameMap[r][0] < ACTIVEBLOCK)
 		    {
 		      topColFlag = true;
 		    }
@@ -432,7 +548,7 @@ void GameOwner::LineDeletion()
 		    
 		    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
 		    {
-		      gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = 0;
+		      gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = EMPTYBLOCK;
 		    }
 		  }
 			
@@ -441,7 +557,7 @@ void GameOwner::LineDeletion()
 		  //Check bottom col. If full: delete bottom col. RIGHT.
 		  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
 		  {
-		    if(gameStateComponent->GameMap[r][gameStateComponent->CurrentGameCol - 1] < 1)
+		    if(gameStateComponent->GameMap[r][gameStateComponent->CurrentGameCol - 1] < ACTIVEBLOCK)
 		    {
 		      botColFlag = true;
 		    }
@@ -465,7 +581,7 @@ void GameOwner::LineDeletion()
 		    
 		    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
 		    {
-		      gameStateComponent->GameMap[i][0] = 0;
+		      gameStateComponent->GameMap[i][0] = EMPTYBLOCK;
 		    }
 		  }
 		  
@@ -474,7 +590,7 @@ void GameOwner::LineDeletion()
 		  {
 		   // std::cout<<"checcord"<<gameStateComponent->GameMap[0][r];
 
-		    if(gameStateComponent->GameMap[0][r] < 1)
+		    if(gameStateComponent->GameMap[0][r] < ACTIVEBLOCK)
 		    {
 		      topRowFlag = true;
 		    }
@@ -498,14 +614,14 @@ void GameOwner::LineDeletion()
 		    
 		    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
 		    {
-		      gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = 0;
+		      gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = EMPTYBLOCK;
 		    }
 		  }
 		  
 		    //Check bot row. If full: delete bot row. BOTTOM.
 		  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
 		  {
-		    if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol -1][r] < 1)
+		    if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol -1][r] < ACTIVEBLOCK)
 		    {
 		      botRowFlag = true;
 		    }
@@ -529,7 +645,7 @@ void GameOwner::LineDeletion()
 		    
 		    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
 		    {
-		      gameStateComponent->GameMap[0][i] = 0;
+		      gameStateComponent->GameMap[0][i] = EMPTYBLOCK;
 		    }
 		  }
 		  
@@ -558,7 +674,7 @@ void GameOwner::ForcedDeletion()
 
 				for(int k=0; k < gameStateComponent->CurrentGameRow; k++)
 				{
-					if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol - 1][k] > 0)
+					if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol - 1][k] >  HOVERBLOCK)
 					{
 						pointCounter++;
 					}
@@ -574,7 +690,7 @@ void GameOwner::ForcedDeletion()
 		    
 		    	for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
 		    	{
-		     		gameStateComponent->GameMap[0][i] = 0;
+		     		gameStateComponent->GameMap[0][i] = EMPTYBLOCK;
 		    	}
 
 		    	score = score - ((gameStateComponent->CurrentGameRow - pointCounter) * 25);
@@ -585,7 +701,7 @@ void GameOwner::ForcedDeletion()
 				case EAST:
 					for(int k=0; k < gameStateComponent->CurrentGameCol; k++)
 					{
-						if(gameStateComponent->GameMap[k][gameStateComponent->CurrentGameRow - 1] > 0)
+						if(gameStateComponent->GameMap[k][gameStateComponent->CurrentGameRow - 1] > HOVERBLOCK)
 						{
 							pointCounter++;
 						}
@@ -601,7 +717,7 @@ void GameOwner::ForcedDeletion()
 			    
 			  		for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
 			    	{
-			      		gameStateComponent->GameMap[i][0] = 0;
+			      		gameStateComponent->GameMap[i][0] = EMPTYBLOCK;
 			    	}
 
 		    		score = score - ((gameStateComponent->CurrentGameCol - pointCounter) * 25);
@@ -613,7 +729,7 @@ void GameOwner::ForcedDeletion()
 
 					for(int k=0; k < gameStateComponent->CurrentGameRow; k++)
 					{
-						if(gameStateComponent->GameMap[0][k] > 0)
+						if(gameStateComponent->GameMap[0][k] > HOVERBLOCK)
 						{
 							pointCounter++;
 						}
@@ -628,7 +744,7 @@ void GameOwner::ForcedDeletion()
 			    
 			    	for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
 			    	{
-			      		gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = 0;
+			      		gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = EMPTYBLOCK;
 			    	}
 
 		    		score = score - ((gameStateComponent->CurrentGameRow - pointCounter) * 25);
@@ -640,7 +756,7 @@ void GameOwner::ForcedDeletion()
 
 					for(int k=0; k < gameStateComponent->CurrentGameCol; k++)
 					{
-						if(gameStateComponent->GameMap[k][0] > 0)
+						if(gameStateComponent->GameMap[k][0] > HOVERBLOCK)
 						{
 							pointCounter++;
 						}
@@ -655,7 +771,7 @@ void GameOwner::ForcedDeletion()
 			    	}
 			    	for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
 			    	{
-			      		gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = 0;
+			      		gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = EMPTYBLOCK;
 			   		}
 
 		    		score = score - ((gameStateComponent->CurrentGameCol - pointCounter) * 25);

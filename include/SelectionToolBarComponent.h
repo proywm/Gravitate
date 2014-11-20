@@ -27,5 +27,6 @@ public:
 	void CreateMap(XMLElement *componentElement);
 	void SelectShape(int xGridPosition, int yGridPosition);
 	int GetSelectedShape();
+	bool isEmptyBlock(int blockId);
 	int findShape(int xGridPosition, int yGridPosition);
 };

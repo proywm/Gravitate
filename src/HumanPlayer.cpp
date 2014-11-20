@@ -47,7 +47,7 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 	      break;
 	    default :
 	      printf("call move Left\n");
-	      ((GameOwner*)gamePlayer)->ShiftLeftRequest(NOTPLACEDBLOCK);
+	      ((GameOwner*)gamePlayer)->ShiftLeftRequest(ACTIVEBLOCK);
 	      break;
 	  }
 		
@@ -60,7 +60,7 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 	      break;
 	     default:
 	      printf("call move Right\n");
-	      ((GameOwner*)gamePlayer)->ShiftRightRequest(NOTPLACEDBLOCK);
+	      ((GameOwner*)gamePlayer)->ShiftRightRequest(ACTIVEBLOCK);
 	       break;
 	  }
 	}	
@@ -72,7 +72,7 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 	      break;
 	    default:
 	      printf("call move Up\n");
-	      ((GameOwner*)gamePlayer)->ShiftUpRequest(NOTPLACEDBLOCK);
+	      ((GameOwner*)gamePlayer)->ShiftUpRequest(ACTIVEBLOCK);
 	      break;
 	  }
 	}	
@@ -84,7 +84,7 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 	      break;
 	    default :
 	      	printf("call move Down\n");
-		((GameOwner*)gamePlayer)->ShiftDownRequest(NOTPLACEDBLOCK);
+		((GameOwner*)gamePlayer)->ShiftDownRequest(ACTIVEBLOCK);
 	      break;
 	  }
 	}
@@ -96,12 +96,12 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 	else if(receivedEvent.key.code == rotateCounterClockwise)//R
 	{
 		printf("call Rotate Counterclockwise\n");
-		((GameOwner*)gamePlayer)->RotateCounterClockwiseRequest(NOTPLACEDBLOCK);
+		((GameOwner*)gamePlayer)->RotateCounterClockwiseRequest(ACTIVEBLOCK);
 	}
 	else if(receivedEvent.key.code == rotateClockwise)//T
 	{
 		printf("call Rotate Clockwise\n");
-		((GameOwner*)gamePlayer)->RotateClockwiseRequest(NOTPLACEDBLOCK);
+		((GameOwner*)gamePlayer)->RotateClockwiseRequest(ACTIVEBLOCK);
 	}
 }
 void HumanPlayer::init(const char* actorsList)
