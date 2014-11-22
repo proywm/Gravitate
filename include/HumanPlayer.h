@@ -17,6 +17,13 @@ public:
 	sf::Keyboard::Key downKey;
 	
 	sf::Keyboard::Key createKey;
+	sf::Keyboard::Key key1;
+	sf::Keyboard::Key key2;
+	sf::Keyboard::Key key3;
+	sf::Keyboard::Key key4;
+	sf::Keyboard::Key key5;
+	sf::Keyboard::Key key6;
+	sf::Keyboard::Key key7;
 
 	sf::Keyboard::Key rotateCounterClockwise;
 	sf::Keyboard::Key rotateClockwise;

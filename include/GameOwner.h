@@ -42,6 +42,7 @@ public:
 	int SelectedShape();
 	int randomShapeSelection();
 	void SelectShapeRequest();
+	void SelectGivenShapeRequest(int tetrominoId);
 
 	void ImplementGravity(double deltaMS);
 	bool ismoveableBlock(int blockId);
@@ -56,7 +57,6 @@ public:
 	Direction randomGravity();
 	Direction getDirection();
 	void ShowCursor();
-	void CreateNewShape(int (*GameMap)[MAXCOL], TetrominoShape tetrominoShape, int xCorr, int yCorr);
 	void LineDeletion();
 	void ForcedDeletion();
 

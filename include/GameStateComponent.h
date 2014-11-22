@@ -35,13 +35,14 @@ public:
 	int CurrentGameCol;
 
 	bool Hover;
+	bool canCreate;
 
 	int CurrentTetrominoShapeID;
 	int getTetrominoShapeID();
 	bool isEmptyBlock(int blockId);
 
 	void PlaceNewShape();
-	void CreateNewShape(TetrominoShape tetrominoShape, int xCorr, int yCorr);
+	void CreateNewShape();
 	void CreateMap(XMLElement *componentElement);
 	
 	void ShiftRight(int id);

@@ -46,101 +46,30 @@ bool GameStateComponent::isEmptyBlock(int blockId)
 {
 	return blockId == EMPTYBLOCK || blockId == HOVERBLOCK;
 }
-void GameStateComponent::CreateNewShape(TetrominoShape tetrominoShape, int xCorr, int yCorr)
+void GameStateComponent::CreateNewShape()
 {
 	if(Hover)
 	{
 		printf("can't create now\n");
 		return;
 	}
-	switch(tetrominoShape)
+	else if (!canCreate)
 	{
-		case STRAIGHTPOLYOMINO:
-			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
-				&& isEmptyBlock(GameMap[xCorr+2][yCorr]) && isEmptyBlock(GameMap[xCorr+3][yCorr]))
-			{
-				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
-				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
-				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
-				GameMap[xCorr+3][yCorr] = GameMap[xCorr][yCorr];
-				Hover = true;
-			} 
-
-			break; 
-		case SQUAREPOLYOMINO:
-			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
-				&& isEmptyBlock(GameMap[xCorr][yCorr+1]) && isEmptyBlock(GameMap[xCorr+1][yCorr+1]))
-			{
-				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
-				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
-				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
-				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
-				Hover = true;
-			} 
-
-			break;
-		case TPOLYOMINO:
-			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
-				&& isEmptyBlock(GameMap[xCorr+2][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr+1]))
-			{
-				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
-				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
-				GameMap[xCorr+2][yCorr] = GameMap[xCorr][yCorr];
-				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
-				Hover = true;
-			}
-
-			break;
-		case JPOLYOMINO:
-			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr][yCorr+1]) 
-				&& isEmptyBlock(GameMap[xCorr][yCorr+2]) && isEmptyBlock(GameMap[xCorr-1][yCorr+2]))
-			{
-				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
-				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
-				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
-				GameMap[xCorr-1][yCorr+2] = GameMap[xCorr][yCorr];
-				Hover = true;
-			}
-
-			break;
-		case LPOLYOMINO:
-			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr][yCorr+1]) 
-				&& isEmptyBlock(GameMap[xCorr][yCorr+2]) && isEmptyBlock(GameMap[xCorr+1][yCorr+2]))
-			{
-				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
-				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
-				GameMap[xCorr][yCorr+2] = GameMap[xCorr][yCorr];
-				GameMap[xCorr+1][yCorr+2] = GameMap[xCorr][yCorr];
-				Hover = true;
-			}
-
-			break;
-		case SPOLYOMINO:
-			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
-				&& isEmptyBlock(GameMap[xCorr][yCorr+1]) && isEmptyBlock(GameMap[xCorr-1][yCorr+1]))
-			{
-				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
-				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
-				GameMap[xCorr][yCorr+1] = GameMap[xCorr][yCorr];
-				GameMap[xCorr-1][yCorr+1] = GameMap[xCorr][yCorr];
-				Hover = true;
-			}
-
-			break;
-		case ZPOLYOMINO:
-			if(isEmptyBlock(GameMap[xCorr][yCorr]) && isEmptyBlock(GameMap[xCorr+1][yCorr]) 
-				&& isEmptyBlock(GameMap[xCorr+1][yCorr+1]) && isEmptyBlock(GameMap[xCorr+2][yCorr+1]))
-			{
-				GameMap[xCorr][yCorr] = ACTIVEBLOCK;//getTetrominoShapeID();
-				GameMap[xCorr+1][yCorr] = GameMap[xCorr][yCorr];
-				GameMap[xCorr+1][yCorr+1] = GameMap[xCorr][yCorr];
-				GameMap[xCorr+2][yCorr+1] = GameMap[xCorr][yCorr];
-				Hover = true;
-			}
-			break;
-		default:
-			break;
+	    printf("Piece cannot be created here\n");
+	    return;
 	}
+
+	for(int r = 0; r<CurrentGameRow;r++)
+	{
+	    for(int c = 0;c<CurrentGameCol;c++)
+	    {
+		if (GameMap[r][c] == HOVERBLOCK)
+		    GameMap[r][c] = ACTIVEBLOCK;
+	    }
+	}
+	
+	Hover = true;
+
 }
 int GameStateComponent::getTetrominoShapeID()
 {

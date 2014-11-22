@@ -103,6 +103,41 @@ void HumanPlayer::HandleEvent(sf::Event receivedEvent)
 		printf("call Rotate Clockwise\n");
 		((GameOwner*)gamePlayer)->RotateClockwiseRequest(ACTIVEBLOCK);
 	}
+	else if(receivedEvent.key.code == key1)//1
+	{
+	    printf("call Create piece 1\n");
+	    ((GameOwner*)gamePlayer)->SelectGivenShapeRequest(1);
+	}
+	else if(receivedEvent.key.code == key2)//2
+	{
+	    printf("call Create piece 2\n");
+	    ((GameOwner*)gamePlayer)->SelectGivenShapeRequest(2);
+	}
+	else if(receivedEvent.key.code == key3)//3
+	{
+	    printf("call Create piece 3\n");
+	    ((GameOwner*)gamePlayer)->SelectGivenShapeRequest(3);
+	}
+	else if(receivedEvent.key.code == key4)//4
+	{
+	    printf("call Create piece 4\n");
+	    ((GameOwner*)gamePlayer)->SelectGivenShapeRequest(4);
+	}
+	else if(receivedEvent.key.code == key5)//5
+	{
+	    printf("call Create piece 5\n");
+	    ((GameOwner*)gamePlayer)->SelectGivenShapeRequest(5);
+	}
+	else if(receivedEvent.key.code == key6)//6
+	{
+	    printf("call Create piece 6\n");
+	    ((GameOwner*)gamePlayer)->SelectGivenShapeRequest(6);
+	}
+	else if(receivedEvent.key.code == key7)//7
+	{
+	    printf("call Create piece 7\n");
+	    ((GameOwner*)gamePlayer)->SelectGivenShapeRequest(7);
+	}
 }
 void HumanPlayer::init(const char* actorsList)
 {
@@ -119,6 +154,15 @@ void HumanPlayer::init(const char* actorsList)
 	rotateClockwise = (sf::Keyboard::Key)playerFiles->IntAttribute("RotateClockwiseID");//T
 
 	createKey = (sf::Keyboard::Key)playerFiles->IntAttribute("CreateKeyID");//C
+	key1 = (sf::Keyboard::Key)playerFiles->IntAttribute("key1");
+	key2 = (sf::Keyboard::Key)playerFiles->IntAttribute("key2");
+	key3 = (sf::Keyboard::Key)playerFiles->IntAttribute("key3");
+	key4 = (sf::Keyboard::Key)playerFiles->IntAttribute("key4");
+	key5 = (sf::Keyboard::Key)playerFiles->IntAttribute("key5");
+	key6 = (sf::Keyboard::Key)playerFiles->IntAttribute("key6");
+	key7 = (sf::Keyboard::Key)playerFiles->IntAttribute("key7");
+	
+	
 	moveId = playerFiles->IntAttribute("MoveId");
 }
 void HumanPlayer::update(double deltaMS)

@@ -5,6 +5,7 @@
 		UpKeyID = "22" UpKey = "W" DownKeyID = "18" DownKey = "S"
 		CreateKeyID = "2" CreateKey = "C" RotateCounterClockwiseID = "17"
 		RotateCounterClockwise = "R" RotateClockwiseID = "19"
-		RotateClockwise = "T"
+		RotateClockwise = "T" key1 = "27"  key2 = "28"  key3 = "29"  
+		key4 = "30"  key5 = "31"  key6 = "32" key7 = "33" 
 	/>
 </Player>

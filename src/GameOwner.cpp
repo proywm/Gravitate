@@ -19,38 +19,38 @@ GameOwner::~GameOwner(void)
 void GameOwner::init(const char* actorsList)
 {
 	XMLDocument* doc = new XMLDocument();
-    	doc->LoadFile(actorsList);
+	doc->LoadFile(actorsList);
 	XMLElement *playerFiles = doc->FirstChildElement();
 	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
-
+	
 	font.loadFromFile("./resources/fonts/arial.ttf");
 	maxShift = 15;
-
+	
 	MaxPossibleScore = 10;//hardcoded
 	srand(1);
 	direction[0]= randomGravity();
 	direction[1]= randomGravity();
 	direction[2]= randomGravity();
 	direction[3]= randomGravity();
-
+	
 	//Init sounds
 	if (!buffer.loadFromFile("./resources/sounds/GravityChange.wav"))
-	    exit (EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	sound.setBuffer(buffer);
 	sound.setVolume(65);
 	if (!buffer2.loadFromFile("./resources/sounds/PiecePlacement.wav"))
-	    exit (EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	sound2.setBuffer(buffer2);
 	sound2.setVolume(18);
 	//sound2.setPitch(1.2);
 	if (!buffer3.loadFromFile("./resources/sounds/LineDeletion.wav"))
-	    exit (EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	sound3.setBuffer(buffer3);
 	if (!buffer4.loadFromFile("./resources/sounds/ForcedDeletion.wav"))
-	    exit (EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	sound4.setBuffer(buffer4);
-
+	
 	gameTime = 0; 
 	shiftTime = 0;
 	score = 0;
@@ -65,8 +65,8 @@ void GameOwner::update(double deltaMS)
 	
 	//Check for Line Deletion
 	LineDeletion();
-
-	 // No negative scores!!
+	
+	// No negative scores!!
 	if (score < 0){
 		score = 0;
 	}
@@ -94,7 +94,6 @@ void GameOwner::ImplementGravity(double deltaMS)
 		Actor* actor = (Actor*)iter->second;
 		if(actor->actorType == "Map")
 		{	
-
 			gameTime += deltaMS;
 			if (gameTime >= ConfiguredGAMETIME)
 			{
@@ -112,13 +111,20 @@ void GameOwner::ImplementGravity(double deltaMS)
 				}
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
 				std::set<int> pieces; 
-
+				for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
+				{
+					for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
+					printf("%d ",gameStateComponent->GameMap[r][c]);
+					
+					printf("\n");
+				}
+				printf("\n");
 				switch(direction[0])
 				{
-				    case SOUTH:
-					for(int r=MAXROW-2;r>=0;r--)
+				case SOUTH:
+					for(int r=gameStateComponent->CurrentGameRow-2;r>=0;r--)
 					{
-						for(int c=0;c<MAXCOL;c++)
+						for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
 						{
 							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
@@ -131,10 +137,10 @@ void GameOwner::ImplementGravity(double deltaMS)
 					}
 					break;
 					
-				   case EAST: 
-					for(int r=0;r<MAXROW;r++)
+				case EAST: 
+					for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 					{
-						for(int c=MAXCOL-2;c>=0;c--)
+						for(int c=gameStateComponent->CurrentGameCol-2;c>=0;c--)
 						{
 							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
@@ -146,10 +152,10 @@ void GameOwner::ImplementGravity(double deltaMS)
 						}
 					}
 					break;
-				   case NORTH:
-					for(int r=1;r<MAXROW;r++)
+				case NORTH:
+					for(int r=1;r<gameStateComponent->CurrentGameRow;r++)
 					{
-						for(int c=0;c<MAXCOL;c++)
+						for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
 						{
 							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
@@ -161,10 +167,10 @@ void GameOwner::ImplementGravity(double deltaMS)
 						}
 					}
 					break;
-				   case WEST:
-					for(int r=0;r<MAXROW;r++)
+				case WEST:
+					for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 					{
-						for(int c=1;c<MAXCOL;c++)
+						for(int c=1;c<gameStateComponent->CurrentGameCol;c++)
 						{
 							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
@@ -176,8 +182,8 @@ void GameOwner::ImplementGravity(double deltaMS)
 						}
 					}
 					break;
-				   default:
-				     break;
+				default:
+					break;
 				}
 			}
 		}
@@ -197,101 +203,183 @@ void GameOwner::ShowCursor()
 			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
 			
 			//Convert position to grid
-			int xGridPosition = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
-			int yGridPosition = floor((localPosition.y - physicalComponent->getActorPosition().x)/blockSize);
-			int shapeId = SelectedShape();
-			if(shapeId!=-1)//something selected check
-				CreateNewShape(gameStateComponent->GameMap, (TetrominoShape)shapeId, yGridPosition, xGridPosition);
-			else
-			//	printf("Nothing Selected\n");
-			;
+			int yCorr = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
+			int xCorr = floor((localPosition.y - physicalComponent->getActorPosition().x)/blockSize);
+			int tetrominoShape = SelectedShape();
+			if(tetrominoShape == -1)//something selected check
+				continue;
+			
+			for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
+			{
+				for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
+				{
+					if (gameStateComponent->GameMap[r][c] == HOVERBLOCK)
+						gameStateComponent->GameMap[r][c] = EMPTYBLOCK;
+				}
+			}
+			
+			int count = 0;
+			switch(tetrominoShape)
+			{
+			case STRAIGHTPOLYOMINO:
+				if(gameStateComponent->GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+2][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+2][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+3][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+3][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				break; 
+			case SQUAREPOLYOMINO:
+				if(gameStateComponent->GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				break;
+			case TPOLYOMINO:
+				if(gameStateComponent->GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+2][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+2][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				break;
+			case JPOLYOMINO:
+				if(gameStateComponent->GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr][yCorr+2] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr+2] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr-1][yCorr+2] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr-1][yCorr+2] = HOVERBLOCK;
+					count++;
+				}
+				break;
+			case LPOLYOMINO:
+				if(gameStateComponent->GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr][yCorr+2] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr+2] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr+2] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr+2] = HOVERBLOCK;
+					count++;
+				}
+				break;
+			case SPOLYOMINO:
+				if(gameStateComponent->GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr-1][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr-1][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				break;
+			case ZPOLYOMINO:
+				if(gameStateComponent->GameMap[xCorr][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				if(gameStateComponent->GameMap[xCorr+2][yCorr+1] == EMPTYBLOCK)
+				{
+					gameStateComponent->GameMap[xCorr+2][yCorr+1] = HOVERBLOCK;
+					count++;
+				}
+				break;
+			default:
+				break;
+			}
+			gameStateComponent->canCreate = (count == 4); //True if all 4 pieces appeared, so a shape can be created.
 		}
-	}
-}
-void GameOwner::CreateNewShape(int (*GameMap)[MAXCOL], TetrominoShape tetrominoShape, int xCorr, int yCorr)
-{
-	for(int r=0;r<MAXROW;r++)
-	{
-		for(int c=0;c<MAXCOL;c++)
-		{
-			if (GameMap[r][c] == HOVERBLOCK)
-				GameMap[r][c] = EMPTYBLOCK;
-		}
-	}
-	switch(tetrominoShape)
-	{
-		case STRAIGHTPOLYOMINO:
-			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+2][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr+2][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+3][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr+3][yCorr] = HOVERBLOCK;
-			break; 
-		case SQUAREPOLYOMINO:
-			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr+1] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
-			break;
-		case TPOLYOMINO:
-			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+2][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr+2][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
-			break;
-		case JPOLYOMINO:
-			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr+1] = HOVERBLOCK;
-			if(GameMap[xCorr][yCorr+2] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr+2] = HOVERBLOCK;
-			if(GameMap[xCorr-1][yCorr+2] == EMPTYBLOCK)
-				GameMap[xCorr-1][yCorr+2] = HOVERBLOCK;
-			break;
-		case LPOLYOMINO:
-			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr+1] = HOVERBLOCK;
-			if(GameMap[xCorr][yCorr+2] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr+2] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr+2] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr+2] = HOVERBLOCK;
-			break;
-		case SPOLYOMINO:
-			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr+1] = HOVERBLOCK;
-			if(GameMap[xCorr-1][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr-1][yCorr+1] = HOVERBLOCK;
-			break;
-		case ZPOLYOMINO:
-			if(GameMap[xCorr][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr] = HOVERBLOCK;
-			if(GameMap[xCorr+1][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr+1][yCorr+1] = HOVERBLOCK;
-			if(GameMap[xCorr+2][yCorr+1] == EMPTYBLOCK)
-				GameMap[xCorr+2][yCorr+1] = HOVERBLOCK;
-			break;
-		default:
-			break;
 	}
 }
 void GameOwner::HandleEvent(sf::Event receivedEvent)
@@ -392,7 +480,7 @@ int GameOwner::randomShapeSelection()
 }
 int GameOwner::SelectedShape()
 {
-//	return randomShapeSelection();
+	//	return randomShapeSelection();
 	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
 	{
 		Actor* actor = (Actor*)iter->second;
@@ -412,24 +500,14 @@ void GameOwner::CreateShapeRequest()
 		if(actor->actorType == "Map")
 		{
 			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
-			PhysicalComponent* physicalComponent = (PhysicalComponent*)actor->GetComponent(PHYSICAL);
-			int blockSize = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockSize;
-			//Get mouse position in window
-			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
-			
-			//Convert position to grid
-			int xGridPosition = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
-			int yGridPosition = floor((localPosition.y - physicalComponent->getActorPosition().x)/blockSize);
-			
-			int shapeId = SelectedShape();
-			if(shapeId!=-1)//something seleceted check
+			if(SelectedShape()!=-1)//something selected check
 			{
-				gameStateComponent->CreateNewShape((TetrominoShape)shapeId, yGridPosition, xGridPosition);
+				gameStateComponent->CreateNewShape();
 				sound2.play();
 				
 			}
 			else
-				printf("Nothing Selected");
+			printf("Nothing Selected");
 		}
 	}
 }
@@ -445,7 +523,7 @@ void GameOwner::SelectShapeRequest()
 			int blockSize = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockSize;
 			//Get mouse position in window
 			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
-		
+			
 			//Convert position to grid
 			int xGridPosition = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
 			int yGridPosition = floor((localPosition.y - physicalComponent->getActorPosition().y)/blockSize);
@@ -454,7 +532,18 @@ void GameOwner::SelectShapeRequest()
 		}
 	}
 }
-
+void GameOwner::SelectGivenShapeRequest(int tetrominoId)
+{
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "ShapeSelectionToolBar")
+		{
+			SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)actor->GetComponent(SELECTIONTOOLBAR);
+			selectionToolBarComponent->SelectGivenShape(tetrominoId);
+		}
+	}
+}
 void GameOwner::controlGame(void)
 {
 	//Hard Coded: ToDO: Make Dynamic Game Control
@@ -504,174 +593,174 @@ Direction GameOwner::randomGravity()
 }
 Direction GameOwner::getDirection()
 {
-  return (direction[0]);
+	return (direction[0]);
 }
 
 void GameOwner::LineDeletion()
 {  
-  bool topRowFlag = false;
-  bool botRowFlag = false;
-  bool topColFlag = false;
-  bool botColFlag = false;  
-
-  for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
-	{
-		Actor* actor = (Actor*)iter->second;
-		if(actor->actorType == "Map")
-		{
-			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
- 
-		  //Check top col. If full: delete top col. LEFT.
-		  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
-		  {
-		    if(gameStateComponent->GameMap[r][0] < ACTIVEBLOCK)
-		    {
-		      topColFlag = true;
-		    }
-		  }
-		  
-		  if(topColFlag == false)
-		  {
-		    std::cout<<"LINEDELETION";
-		    
-		    // YOU SCORED!
-		    score = score + 1000;
-			sound3.play();
-		    
-		    for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
-		    {
-		      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-		      {
-				gameStateComponent->GameMap[r][c-1] = gameStateComponent->GameMap[r][c];
-		      }
-		    }
-		    
-		    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
-		    {
-		      gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = EMPTYBLOCK;
-		    }
-		  }
-			
-			
-		  
-		  //Check bottom col. If full: delete bottom col. RIGHT.
-		  for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
-		  {
-		    if(gameStateComponent->GameMap[r][gameStateComponent->CurrentGameCol - 1] < ACTIVEBLOCK)
-		    {
-		      botColFlag = true;
-		    }
-		  }
-		  
-		  if(botColFlag == false)
-		  {
-		    std::cout<<"LINEDELETION";
-		    
-		    // YOU SCORED!
-		    score = score + 1000;
-			sound3.play();
-		    
-		    for (int c=gameStateComponent->CurrentGameRow - 2; c > 0;c--)
-		    {
-		      for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-		      {
-				gameStateComponent->GameMap[r][c + 1] = gameStateComponent->GameMap[r][c];
-		      }
-		    }
-		    
-		    for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
-		    {
-		      gameStateComponent->GameMap[i][0] = EMPTYBLOCK;
-		    }
-		  }
-		  
-		  //Check top row. If full: delete top row TOP.
-		  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-		  {
-		   // std::cout<<"checcord"<<gameStateComponent->GameMap[0][r];
-
-		    if(gameStateComponent->GameMap[0][r] < ACTIVEBLOCK)
-		    {
-		      topRowFlag = true;
-		    }
-		  }
-		  
-		  if(topRowFlag == false)
-		  {
-		    std::cout<<"LINEDELETION";
-		    
-		    // YOU SCORED!
-		    score = score + 1000;
-			sound3.play();
-
-		    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
-		    {
-		      for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
-		      {
-				gameStateComponent->GameMap[r-1][c] = gameStateComponent->GameMap[r][c];
-		      }
-		    }
-		    
-		    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
-		    {
-		      gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = EMPTYBLOCK;
-		    }
-		  }
-		  
-		    //Check bot row. If full: delete bot row. BOTTOM.
-		  for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-		  {
-		    if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol -1][r] < ACTIVEBLOCK)
-		    {
-		      botRowFlag = true;
-		    }
-		  }
-		  
-		  if(botRowFlag == false)
-		  {
-		    std::cout<<"LINEDELETION";
-		    
-		     // YOU SCORED!
-		    score = score + 1000;
-			sound3.play();
-		    
-		    for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
-		    {
-		      for (int r=gameStateComponent->CurrentGameCol - 2; r >= 0;r--)
-		      {
-				gameStateComponent->GameMap[r+1][c] = gameStateComponent->GameMap[r][c];
-		      }
-		    }
-		    
-		    for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
-		    {
-		      gameStateComponent->GameMap[0][i] = EMPTYBLOCK;
-		    }
-		  }
-		  
-		  
-		}	
-	}
-}
-
- //If Red button is pushed, bottom row or column relative to gravity is deleted. Points deducted based on how many spaces are filled in row/col. 25 points for each
- //space not filled in on row/col to be deleted.
-void GameOwner::ForcedDeletion()
-{
-	std::cout<<"Forced Deletion";
-	int pointCounter = 0;
-
+	bool topRowFlag = false;
+	bool botRowFlag = false;
+	bool topColFlag = false;
+	bool botColFlag = false;  
+	
 	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
 	{
 		Actor* actor = (Actor*)iter->second;
 		if(actor->actorType == "Map")
 		{
 			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
- 
+			
+			//Check top col. If full: delete top col. LEFT.
+			for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
+			{
+				if(gameStateComponent->GameMap[r][0] < ACTIVEBLOCK)
+				{
+					topColFlag = true;
+				}
+			}
+			
+			if(topColFlag == false)
+			{
+				std::cout<<"LINEDELETION";
+				
+				// YOU SCORED!
+				score = score + 1000;
+				sound3.play();
+				
+				for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
+				{
+					for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+					{
+						gameStateComponent->GameMap[r][c-1] = gameStateComponent->GameMap[r][c];
+					}
+				}
+				
+				for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
+				{
+					gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = EMPTYBLOCK;
+				}
+			}
+			
+			
+			
+			//Check bottom col. If full: delete bottom col. RIGHT.
+			for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
+			{
+				if(gameStateComponent->GameMap[r][gameStateComponent->CurrentGameCol - 1] < ACTIVEBLOCK)
+				{
+					botColFlag = true;
+				}
+			}
+			
+			if(botColFlag == false)
+			{
+				std::cout<<"LINEDELETION";
+				
+				// YOU SCORED!
+				score = score + 1000;
+				sound3.play();
+				
+				for (int c=gameStateComponent->CurrentGameRow - 2; c > 0;c--)
+				{
+					for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+					{
+						gameStateComponent->GameMap[r][c + 1] = gameStateComponent->GameMap[r][c];
+					}
+				}
+				
+				for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
+				{
+					gameStateComponent->GameMap[i][0] = EMPTYBLOCK;
+				}
+			}
+			
+			//Check top row. If full: delete top row TOP.
+			for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+			{
+				// std::cout<<"checcord"<<gameStateComponent->GameMap[0][r];
+				
+				if(gameStateComponent->GameMap[0][r] < ACTIVEBLOCK)
+				{
+					topRowFlag = true;
+				}
+			}
+			
+			if(topRowFlag == false)
+			{
+				std::cout<<"LINEDELETION";
+				
+				// YOU SCORED!
+				score = score + 1000;
+				sound3.play();
+				
+				for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
+				{
+					for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
+					{
+						gameStateComponent->GameMap[r-1][c] = gameStateComponent->GameMap[r][c];
+					}
+				}
+				
+				for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
+				{
+					gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = EMPTYBLOCK;
+				}
+			}
+			
+			//Check bot row. If full: delete bot row. BOTTOM.
+			for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+			{
+				if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol -1][r] < ACTIVEBLOCK)
+				{
+					botRowFlag = true;
+				}
+			}
+			
+			if(botRowFlag == false)
+			{
+				std::cout<<"LINEDELETION";
+				
+				// YOU SCORED!
+				score = score + 1000;
+				sound3.play();
+				
+				for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
+				{
+					for (int r=gameStateComponent->CurrentGameCol - 2; r >= 0;r--)
+					{
+						gameStateComponent->GameMap[r+1][c] = gameStateComponent->GameMap[r][c];
+					}
+				}
+				
+				for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
+				{
+					gameStateComponent->GameMap[0][i] = EMPTYBLOCK;
+				}
+			}
+			
+			
+		}	
+	}
+}
+
+//If Red button is pushed, bottom row or column relative to gravity is deleted. Points deducted based on how many spaces are filled in row/col. 25 points for each
+//space not filled in on row/col to be deleted.
+void GameOwner::ForcedDeletion()
+{
+	std::cout<<"Forced Deletion";
+	int pointCounter = 0;
+	
+	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorType == "Map")
+		{
+			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
+			
 			switch(direction[0])
 			{
-				case SOUTH:
-
+			case SOUTH:
+				
 				for(int k=0; k < gameStateComponent->CurrentGameRow; k++)
 				{
 					if(gameStateComponent->GameMap[gameStateComponent->CurrentGameCol - 1][k] >  HOVERBLOCK)
@@ -679,108 +768,108 @@ void GameOwner::ForcedDeletion()
 						pointCounter++;
 					}
 				}
-
+				
 				for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
-		    	{
-		      		for (int r=gameStateComponent->CurrentGameCol - 2; r >= 0;r--)
-		      		{
+				{
+					for (int r=gameStateComponent->CurrentGameCol - 2; r >= 0;r--)
+					{
 						gameStateComponent->GameMap[r+1][c] = gameStateComponent->GameMap[r][c];
-		      		}
-		    	}
-		    
-		    	for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
-		    	{
-		     		gameStateComponent->GameMap[0][i] = EMPTYBLOCK;
-		    	}
-
-		    	score = score - ((gameStateComponent->CurrentGameRow - pointCounter) * 25);
+					}
+				}
+				
+				for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
+				{
+					gameStateComponent->GameMap[0][i] = EMPTYBLOCK;
+				}
+				
+				score = score - ((gameStateComponent->CurrentGameRow - pointCounter) * 25);
 				sound4.play();
-
+				
 				break;
-
-				case EAST:
-					for(int k=0; k < gameStateComponent->CurrentGameCol; k++)
+				
+			case EAST:
+				for(int k=0; k < gameStateComponent->CurrentGameCol; k++)
+				{
+					if(gameStateComponent->GameMap[k][gameStateComponent->CurrentGameRow - 1] > HOVERBLOCK)
 					{
-						if(gameStateComponent->GameMap[k][gameStateComponent->CurrentGameRow - 1] > HOVERBLOCK)
-						{
-							pointCounter++;
-						}
+						pointCounter++;
 					}
-
-					for (int c=gameStateComponent->CurrentGameRow - 2; c > 0;c--)
-			    	{
-			      		for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-			      		{
-							gameStateComponent->GameMap[r][c + 1] = gameStateComponent->GameMap[r][c];
-			      		}
-			   		}
-			    
-			  		for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
-			    	{
-			      		gameStateComponent->GameMap[i][0] = EMPTYBLOCK;
-			    	}
-
-		    		score = score - ((gameStateComponent->CurrentGameCol - pointCounter) * 25);
-					sound4.play();
-
-					break;
-
-				case NORTH:
-
-					for(int k=0; k < gameStateComponent->CurrentGameRow; k++)
+				}
+				
+				for (int c=gameStateComponent->CurrentGameRow - 2; c > 0;c--)
+				{
+					for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
 					{
-						if(gameStateComponent->GameMap[0][k] > HOVERBLOCK)
-						{
-							pointCounter++;
-						}
+						gameStateComponent->GameMap[r][c + 1] = gameStateComponent->GameMap[r][c];
 					}
-					for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
-			    	{
-			      		for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
-			     		{
-							gameStateComponent->GameMap[r-1][c] = gameStateComponent->GameMap[r][c];
-			      		}
-			   		}
-			    
-			    	for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
-			    	{
-			      		gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = EMPTYBLOCK;
-			    	}
-
-		    		score = score - ((gameStateComponent->CurrentGameRow - pointCounter) * 25);
-					sound4.play();
-
-					break;
-
-				case WEST:
-
-					for(int k=0; k < gameStateComponent->CurrentGameCol; k++)
+				}
+				
+				for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
+				{
+					gameStateComponent->GameMap[i][0] = EMPTYBLOCK;
+				}
+				
+				score = score - ((gameStateComponent->CurrentGameCol - pointCounter) * 25);
+				sound4.play();
+				
+				break;
+				
+			case NORTH:
+				
+				for(int k=0; k < gameStateComponent->CurrentGameRow; k++)
+				{
+					if(gameStateComponent->GameMap[0][k] > HOVERBLOCK)
 					{
-						if(gameStateComponent->GameMap[k][0] > HOVERBLOCK)
-						{
-							pointCounter++;
-						}
+						pointCounter++;
 					}
-					
-					for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
-			    	{
-			      		for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
-			      		{
-							gameStateComponent->GameMap[r][c-1] = gameStateComponent->GameMap[r][c];
-			      		}
-			    	}
-			    	for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
-			    	{
-			      		gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = EMPTYBLOCK;
-			   		}
-
-		    		score = score - ((gameStateComponent->CurrentGameCol - pointCounter) * 25);
-					sound4.play();
-
-					break;
-
-				default:
-				 break;
+				}
+				for (int c=0; c < gameStateComponent->CurrentGameRow;c++)
+				{
+					for (int r=1; r < gameStateComponent->CurrentGameCol;r++)
+					{
+						gameStateComponent->GameMap[r-1][c] = gameStateComponent->GameMap[r][c];
+					}
+				}
+				
+				for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
+				{
+					gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = EMPTYBLOCK;
+				}
+				
+				score = score - ((gameStateComponent->CurrentGameRow - pointCounter) * 25);
+				sound4.play();
+				
+				break;
+				
+			case WEST:
+				
+				for(int k=0; k < gameStateComponent->CurrentGameCol; k++)
+				{
+					if(gameStateComponent->GameMap[k][0] > HOVERBLOCK)
+					{
+						pointCounter++;
+					}
+				}
+				
+				for (int c=1; c < gameStateComponent->CurrentGameRow;c++)
+				{
+					for (int r=0; r < gameStateComponent->CurrentGameCol;r++)
+					{
+						gameStateComponent->GameMap[r][c-1] = gameStateComponent->GameMap[r][c];
+					}
+				}
+				for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
+				{
+					gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = EMPTYBLOCK;
+				}
+				
+				score = score - ((gameStateComponent->CurrentGameCol - pointCounter) * 25);
+				sound4.play();
+				
+				break;
+				
+			default:
+				break;
 			}
 		}
 	}

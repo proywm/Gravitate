@@ -145,7 +145,7 @@ int SelectionToolBarComponent::findShape(int xGridPosition, int yGridPosition)
 {
 	for(int i = -2; i<3;i++)
 		for(int j = -2 ; j<3;j++)
-			if(GameMap[xGridPosition+i][yGridPosition+j] > HOVERBLOCK)
+			if(GameMap[xGridPosition+i][yGridPosition+j] > 0)
 				return GameMap[xGridPosition+i][yGridPosition+j];
 	return 0;
 }
@@ -160,6 +160,11 @@ void SelectionToolBarComponent::SelectShape(int xGridPosition, int yGridPosition
 		}
 			
 	}
+}
+void SelectionToolBarComponent::SelectGivenShape(int tetrominoId)
+{
+    CurrentTetrominoShapeID = tetrominoId;
+    Selected = true;
 }
 int SelectionToolBarComponent::GetSelectedShape()
 {
