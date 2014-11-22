@@ -621,6 +621,7 @@ void GameOwner::LineDeletion()
 			
 			if(topColFlag == false)
 			{
+				gameStateComponent->PlaceNewShape();
 				std::cout<<"LINEDELETION";
 				
 				// YOU SCORED!
@@ -654,6 +655,7 @@ void GameOwner::LineDeletion()
 			
 			if(botColFlag == false)
 			{
+				gameStateComponent->PlaceNewShape();
 				std::cout<<"LINEDELETION";
 				
 				// YOU SCORED!
@@ -687,6 +689,7 @@ void GameOwner::LineDeletion()
 			
 			if(topRowFlag == false)
 			{
+				gameStateComponent->PlaceNewShape();
 				std::cout<<"LINEDELETION";
 				
 				// YOU SCORED!
@@ -718,6 +721,7 @@ void GameOwner::LineDeletion()
 			
 			if(botRowFlag == false)
 			{
+				gameStateComponent->PlaceNewShape();
 				std::cout<<"LINEDELETION";
 				
 				// YOU SCORED!
