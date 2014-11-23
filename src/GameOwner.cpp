@@ -733,11 +733,11 @@ void GameOwner::updateScoreView()
 		if(actor->actorId == 15)//directional Image
 		{
 			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
-			GravityShiftString << "Gravity Shift Within " << (ConfiguredGAMETIME-gameTime);// put float into string buffer
+			GravityShiftString << "Next Gravity Shift: " << (ConfiguredSHIFTTIME-shiftTime) / 1000;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(GravityShiftString, 0, 0);
 			ScoreString << "Score " << score;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ScoreString, 1, 0);
-			LevelTimeString << "Time Left " << levelTime;// put float into string buffer
+			LevelTimeString << "Time Left: " << levelTime / 1000;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(LevelTimeString, 2, 0);
 		}
 	}
