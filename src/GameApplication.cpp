@@ -2,11 +2,13 @@
 #include "DisplayManager.h"
 #include "EventManager.h"
 #include "GameLogicManager.h"
+#include "GameViewManager.h"
 #include <SFML/Graphics.hpp>
 
 DisplayManager *DisplayManager::s_instance = 0;
 EventManager *EventManager::s_instance = 0;
 GameLogicManager *GameLogicManager::s_instance = 0;
+GameViewManager *GameViewManager::s_instance = 0;
 GameApplication::GameApplication(void)
 {
 	
@@ -19,6 +21,7 @@ void GameApplication::Run(void)
 {
 	DisplayManager::instance()->InitDisplayManager();
 	//EventManager::instance()->InitEventManager();
+	GameViewManager::instance()->InitGameViewManager();//instatiate
 	GameLogicManager::instance()->InitGameLogicManager();
 //	GameViewManager::instance()->InitGameViewManager();
 

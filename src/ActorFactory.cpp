@@ -3,6 +3,7 @@
 #include "VisualComponent.h"
 #include "GameStateComponent.h"
 #include "SelectionToolBarComponent.h"
+#include "TextAreaComponent.h"
 
 ActorFactory::ActorFactory(void)
 {
@@ -19,7 +20,7 @@ void ActorFactory::init()
 	componentCreatorsMap.insert(std::make_pair(PHYSICAL,new PhysicalComponent()));
 	componentCreatorsMap.insert(std::make_pair(VISUAL,new VisualComponent()));
 }
-Actor* ActorFactory::CreateActor(const char* actorFile, double SpawnPositionX,double SpawnPositionY)
+Actor* ActorFactory::CreateActor(const char* actorFile, int actorId, double SpawnPositionX,double SpawnPositionY)
 {
 
 	XMLDocument* doc = new XMLDocument();
@@ -28,7 +29,7 @@ Actor* ActorFactory::CreateActor(const char* actorFile, double SpawnPositionX,do
 	XMLElement *rootActorElement = doc->FirstChildElement();
 
 	Actor* actor = new Actor(rootActorElement->Attribute("ActorType"),rootActorElement->IntAttribute("ActorTypeID"));
-	actor->actorId = NextId();
+	actor->actorId = actorId;
 	actor->spawnPosition.x = SpawnPositionX;
 	actor->spawnPosition.y = SpawnPositionY;
 	
@@ -54,6 +55,9 @@ ActorComponentInterface* ActorFactory::CreateComponentOf( int componentType)
 		break;
 	case SELECTIONTOOLBAR:
 		return new SelectionToolBarComponent();
+		break;
+	case TEXTAREA:
+		return new TextAreaComponent();
 		break;
 	default:
 		return NULL;

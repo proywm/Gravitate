@@ -10,7 +10,7 @@ public:
 	~ActorFactory(void);
 
 	void init();
-	Actor* CreateActor(const char* resource, double SpawnPositionX,double SpawnPositionY);
+	Actor* CreateActor(const char* resource, int actorId, double SpawnPositionX,double SpawnPositionY);
 	ActorComponentInterface* CreateComponent(  XMLElement *componentElement, Actor* owner);
 	ActorComponentInterface* CreateComponentOf( int componentType);
 	int NextId();

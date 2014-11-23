@@ -3,7 +3,9 @@
 #include "PhysicalComponent.h"
 #include "GameStateComponent.h"
 #include "SelectionToolBarComponent.h"
-
+#include "TextAreaComponent.h"
+#include <sstream>
+#include <stdlib.h>
 VisualComponent::VisualComponent(void)
 {
 }
@@ -15,7 +17,11 @@ VisualComponent::~VisualComponent(void)
 
 void VisualComponent::init(XMLElement *componentElement)
 {
+	XMLElement* textureElement;
+	const char* textureFileLocation;
+	const char* fontFileLocation;
 	ComponentID = componentElement->IntAttribute("ComponentType");
+	viewType = (ViewType)componentElement->IntAttribute("GameViewId");
 	XMLElement* colorElement = componentElement->FirstChildElement("Color");
 	//actorColor = new sf::Color(colorElement->IntAttribute("r"),colorElement->IntAttribute("g"),colorElement->IntAttribute("b"),colorElement->IntAttribute("a"));
 	XMLElement* shapeElement = colorElement->NextSiblingElement("Structure");
@@ -35,8 +41,17 @@ void VisualComponent::init(XMLElement *componentElement)
 		case 3://"GRID MAP":
 		case 4://"SelectionToolBarMAP"-> "GRID MAP":
 			actorShape = new ActorShape::GridMap();
-			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->FloatAttribute("BlockWidth"));
+			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->IntAttribute("BlockHeight"),shapeElement->IntAttribute("BlockWidth"));
 			
+			break;
+		case 5://TextArea
+			textureElement = shapeElement->NextSiblingElement("Texture");
+			textureFileLocation = textureElement->Attribute("TextureFileName");
+			actorShape = new ActorShape::GridMap();
+			((ActorShape::GridMap*)actorShape)->LoadTexture(textureFileLocation);
+			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->IntAttribute("BlockHeight"),shapeElement->IntAttribute("BlockWidth"));
+			fontFileLocation = textureElement->Attribute("FontFileName");
+			((ActorShape::GridMap*)actorShape)->LoadFont(fontFileLocation);
 			break;
 		default:
 			actorShape = new ActorShape::Circle();
@@ -44,7 +59,7 @@ void VisualComponent::init(XMLElement *componentElement)
 			((ActorShape::Circle*)actorShape)->actorShape.setFillColor((const sf::Color &)actorColor);
 			break;
 	}
-	
+	isVisible = true;
 }
 
 void VisualComponent::update(double deltaMS)
@@ -52,6 +67,8 @@ void VisualComponent::update(double deltaMS)
 	/*sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 	DisplayManager::instance()->window.draw(shape);*/
+	if(!isVisible)
+		return;
 	PhysicalComponent* physicalComponent = (PhysicalComponent*)owner->GetComponent(PHYSICAL);
 	if(shapeID == 1)
 	{
@@ -72,9 +89,9 @@ void VisualComponent::update(double deltaMS)
 		{
 			for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
 			{
-				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockSize)+ c;
+				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockWidth)+ c;
 				int posY = physicalComponent->getActorPosition().y + 
-									(r * ((ActorShape::GridMap*)actorShape)->blockSize) + r;
+									(r * ((ActorShape::GridMap*)actorShape)->blockHeight) + r;
 				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
 				if(gameStateComponent->GameMap[r][c]>ACTIVEBLOCK)//placed
 				{
@@ -108,9 +125,9 @@ void VisualComponent::update(double deltaMS)
 		{
 			for(int c=0;c<selectionToolBarComponent->CurrentToolBarCol;c++)
 			{
-				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockSize)+ c;
+				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockWidth)+ c;
 				int posY = physicalComponent->getActorPosition().y + 
-									(r * ((ActorShape::GridMap*)actorShape)->blockSize) + r;
+									(r * ((ActorShape::GridMap*)actorShape)->blockHeight) + r;
 				
 				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
 				if(selectionToolBarComponent->GameMap[r][c]==STRAIGHTPOLYOMINO)
@@ -154,4 +171,94 @@ void VisualComponent::update(double deltaMS)
 			}
 		}
 	}
+	else if(shapeID == 5)//"TextAreaComponent"
+	{
+		TextAreaComponent* textAreaComponent = (TextAreaComponent*)owner->GetComponent(TEXTAREA);
+		for(int r=0;r<textAreaComponent->CurrentTextAreaRow;r++)
+		{
+			for(int c=0;c<textAreaComponent->CurrentTextAreaCol;c++)
+			{
+				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockWidth)+ c;
+				int posY = physicalComponent->getActorPosition().y + 
+									(r * ((ActorShape::GridMap*)actorShape)->blockHeight) + r;
+				((ActorShape::GridMap*)actorShape)->gridMapSprite[r][c].setPosition(sf::Vector2f(posX, posY));
+				if(textAreaComponent->TextArea[r][c]==1)
+				{
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Green);
+				}				
+				else
+					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Black);
+				DisplayManager::instance()->window.draw(((ActorShape::GridMap*)actorShape)->gridMapSprite[r][c]);
+			}
+		}
+		for(int r=0;r<textAreaComponent->CurrentTextAreaRow;r++)
+		{
+			for(int c=0;c<textAreaComponent->CurrentTextAreaCol;c++)
+			{
+				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockWidth)+ c;
+				int posY = physicalComponent->getActorPosition().y + 
+									(r * ((ActorShape::GridMap*)actorShape)->blockHeight) + r;
+				((ActorShape::GridMap*)actorShape)->gridMapSprite[r][c].setPosition(sf::Vector2f(posX, posY));
+				((ActorShape::GridMap*)actorShape)->gridMaptext[r][c].setPosition(posX,posY);
+				DisplayManager::instance()->window.draw(((ActorShape::GridMap*)actorShape)->gridMaptext[r][c]);
+			}
+		}
+	}
+}
+void VisualComponent::setVisibility(bool visible)
+{
+	isVisible = visible;
+}
+bool VisualComponent::IsAnInclusivePoint(int posX, int posY)
+{
+	int Top, Bottom, Left, Right;
+	PhysicalComponent* physicalComponent = (PhysicalComponent*)owner->GetComponent(PHYSICAL);
+	if(shapeID == 1)
+	{
+		Right = 15;
+		Bottom = 15;
+		Left = 0;
+		Top = 0;
+	}
+	else if(shapeID == 2)
+	{
+		Right = 15;
+		Bottom = 15;
+		Left = 0;
+		Top = 0;
+	}
+	else if(shapeID == 3)//Grid Map
+	{
+		GameStateComponent* gameStateComponent = (GameStateComponent*)owner->GetComponent(GAMESTATE);
+		Right = physicalComponent->getActorPosition().x + (gameStateComponent->CurrentGameCol *
+						((ActorShape::GridMap*)actorShape)->blockWidth);
+		Bottom = physicalComponent->getActorPosition().y + (gameStateComponent->CurrentGameRow * 
+						((ActorShape::GridMap*)actorShape)->blockHeight);
+		Left = physicalComponent->getActorPosition().x;
+		Top = physicalComponent->getActorPosition().y;
+	}
+	else if(shapeID == 4)//"SelectionToolBarMAP"
+	{
+		SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)owner->GetComponent(SELECTIONTOOLBAR);
+		Right = physicalComponent->getActorPosition().x + (selectionToolBarComponent->CurrentToolBarCol *
+						((ActorShape::GridMap*)actorShape)->blockWidth);
+		Bottom = physicalComponent->getActorPosition().y + (selectionToolBarComponent->CurrentToolBarRow * 
+						((ActorShape::GridMap*)actorShape)->blockHeight);
+		Left = physicalComponent->getActorPosition().x;
+		Top = physicalComponent->getActorPosition().y;
+	}
+	else if(shapeID == 5)//"TextAreaComponent"
+	{
+		TextAreaComponent* textAreaComponent = (TextAreaComponent*)owner->GetComponent(TEXTAREA);
+		Right = physicalComponent->getActorPosition().x + (textAreaComponent->CurrentTextAreaCol *
+						((ActorShape::GridMap*)actorShape)->blockWidth);
+		Bottom = physicalComponent->getActorPosition().y + (textAreaComponent->CurrentTextAreaRow * 
+						((ActorShape::GridMap*)actorShape)->blockHeight);
+		Left = physicalComponent->getActorPosition().x;
+		Top = physicalComponent->getActorPosition().y;
+	}
+	if(Left<=posX && Right>=posX && Top <= posY && Bottom >=posY)
+		return true;
+	else
+		return false;
 }

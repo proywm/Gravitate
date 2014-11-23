@@ -9,7 +9,8 @@ enum ComponentType
 	VISUAL = 1, 
 	PHYSICAL = 2,
 	GAMESTATE = 3,
-	SELECTIONTOOLBAR = 4
+	SELECTIONTOOLBAR = 4,
+	TEXTAREA = 5
 };
 
 class ActorComponentInterface

@@ -38,11 +38,14 @@ public:
 	void RotateCounterClockwiseRequest(int shapeId);
 	void RotateClockwiseRequest(int shapeId);
 
+	void MouseClicked(int posX, int posY);
 	void CreateShapeRequest();
 	int SelectedShape();
 	int randomShapeSelection();
-	void SelectShapeRequest();
+	void SelectShapeRequest(int selectedBox);
+	void updateDirectionImage();
 	void SelectGivenShapeRequest(int tetrominoId);
+	void SelectGameLevel(Actor* actor,int posX, int posY);
 
 	void ImplementGravity(double deltaMS);
 	bool ismoveableBlock(int blockId);
@@ -53,21 +56,26 @@ public:
 	Direction direction[4];
 	GamePlayer* winner;
 	bool HasWinner;
+	bool ShapeSelected;
+	int CurrentTetrominoShapeID;
+	int visualDirection;
 	
 	Direction randomGravity();
 	Direction getDirection();
 	void ShowCursor();
 	void LineDeletion();
 	void ForcedDeletion();
-
+	void showTitleView();
 	
 	int shiftTime;
 	int gameTime;
-
+	int levelTime;
+	
 	sf::Font font;
 	
 	int ConfiguredSHIFTTIME;
 	int ConfiguredGAMETIME;
+	int ConfiguredLEVELTIME;
 	
 	int score;
 

@@ -27,8 +27,9 @@ void PhysicalComponent::init(XMLElement *componentElement)
 			break;
 		case 3://"GridMap":
 		case 4:
+		case 5://TextArea
 			actorShape = new ActorShape::GridMap();
-			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->FloatAttribute("BlockWidth"));
+			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->FloatAttribute("BlockHeight"),shapeElement->FloatAttribute("BlockWidth"));
 			//actorShape = new sf::CircleShape(shapeElement->IntAttribute("Radious"));
 			break;
 		default:

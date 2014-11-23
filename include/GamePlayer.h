@@ -13,6 +13,7 @@ public:
 	void initGamePlayer(const char* actorsList, int PlayerId);
 	void initGamePlayerActors(XMLElement *actorFiles);
 	void updateActors(double deltaMS);
+	void deleteGamePlayerActors();
 	
 	virtual void init(const char* actorsList);
 	virtual void update(double deltaMS);
@@ -22,6 +23,7 @@ public:
 	int gamePlayerTypeId;
 	int score;
 
+	const char* playerFile;
 	std::map<int,Actor*> actorMap;//actorId int
 };
 

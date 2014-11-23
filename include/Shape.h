@@ -38,9 +38,19 @@ namespace ActorShape
 		public:
 			GridMap(void);
 			~GridMap(void);
-			void setBlockSize(double BlockSize);
+			void setBlockSize(int BlockHeight,int BlockWidth);
+			void LoadTexture(const char* fileLocation);
+			void LoadFont(const char* fileLocation);
+			void SetText();
+			void setTexture();
+			void SetTextInBox(std::ostringstream& string, int PosX, int PosY);
 
-			double blockSize;
+			int blockHeight;
+			int blockWidth;
 			sf::RectangleShape gridMap[MAXROW][MAXCOL];
+			sf::Texture texture;
+			sf::Sprite gridMapSprite[MAXROW][MAXCOL];
+			sf::Font font;
+			sf::Text gridMaptext[MAXROW][MAXCOL];
 	};
 }

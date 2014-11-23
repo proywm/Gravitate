@@ -1,4 +1,0 @@
-<?xml version="1.0" ?>
-<Actor ActorType="Score" ActorTypeID="4">
-	<ScoreBehavior ComponentType="5" ComponentTypeText ="ScoreBehavior"/>
-</Actor>

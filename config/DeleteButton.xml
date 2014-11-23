@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<Actor ActorType="TextArea" ActorTypeID="4">
+	<Visual ComponentType="1" ComponentTypeText = "Visual" IsInvisible = "1" GameViewId = "2" GameViewType = "GAMEVIEW">
+		<Color r="200" g="50" b="50" a="255" />
+		<Structure Shape="TextArea" ShapeID="5" NoOfRows="1" NoOfCols="1"  BlockHeight="30" BlockWidth="80"/>
+		<Texture TextureFileName="./resources/images/Leveltexture.png" FontFileName="./resources/fonts/arial.ttf" />
+    	</Visual>
+	<Physical ComponentType="2" ComponentTypeText = "Physical" IsInvisible = "1">
+		<Structure Shape="TextArea" ShapeID="5" NoOfRows="1" NoOfCols="1"  BlockHeight="30" BlockWidth="80"/>
+    	</Physical>
+	<TextArea ComponentType="5" ComponentTypeText = "TextArea" IsInvisible = "1">
+		<Structure Shape="TextArea" ShapeID="5" NoOfRows="1" NoOfCols="1"  BlockHeight="30" BlockWidth="80"/>
+	</TextArea>
+</Actor>

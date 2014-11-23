@@ -1,9 +1,11 @@
 #include "GameOwner.h"
 #include "ActorComponentInterface.h"
 #include "GameLogicManager.h"
+#include "GameViewManager.h"
 #include "PhysicalComponent.h"
 #include "VisualComponent.h"
 #include "DisplayManager.h"
+#include "GameStateComponent.h"
 #include "SelectionToolBarComponent.h"
 #include <set>
 #include <math.h>
@@ -23,6 +25,7 @@ void GameOwner::init(const char* actorsList)
 	XMLElement *playerFiles = doc->FirstChildElement();
 	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
+	ConfiguredLEVELTIME = playerFiles->IntAttribute("levelTime");
 	
 	font.loadFromFile("./resources/fonts/arial.ttf");
 	maxShift = 15;
@@ -53,28 +56,163 @@ void GameOwner::init(const char* actorsList)
 	
 	gameTime = 0; 
 	shiftTime = 0;
+	levelTime = ConfiguredLEVELTIME;
 	score = 0;
 	HasWinner = false;
+	ShapeSelected = false;
+	CurrentTetrominoShapeID = -1;
+	visualDirection = -1;
+	showTitleView();
 	controlGame();
+}
+void GameOwner::showTitleView()
+{
+	int i = 0;
+	XMLDocument* doc = new XMLDocument();
+    	doc->LoadFile(playerFile);
+	XMLElement *playerElements ;
+	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorId == 4)//show level
+		{
+			for(playerElements = doc->FirstChildElement(); playerElements != NULL; playerElements = playerElements->NextSiblingElement())
+			{
+				std::ostringstream LevelString;			
+				VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+				LevelString << "Level " << playerElements->Attribute("Difficulty");// put float into string buffer
+				((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(LevelString, 0, i);
+				printf("value of i---------------------->%s\n",playerElements->Attribute("Difficulty"));
+				i++;
+			}
+		}
+	}
+	printf("value of i---------------------->%d",i);
+	GameViewManager::instance()->setCurrentView(TITLEVIEW);
 }
 void GameOwner::update(double deltaMS)
 {	
-	ImplementGravity(deltaMS);
+	switch(GameViewManager::instance()->currentGameView)//Title screen
+	{
+		case TITLEVIEW:
+		break;
+		case GAMEVIEW:
+		{
+			ImplementGravity(deltaMS);
+			updateDirectionImage();
+			ShowCursor();
 	
-	ShowCursor();
+			//Check for Line Deletion
+			LineDeletion();
 	
-	//Check for Line Deletion
-	LineDeletion();
+			// No negative scores!!
+			if (score < 0){
+				score = 0;
+			}
 	
-	// No negative scores!!
-	if (score < 0){
-		score = 0;
+			if(HasWinner)
+				controlGame();
+	
+			updateScoreView();
+		}
+		break;
+		case RESULTVIEW:
+		break;
 	}
-	
-	if(HasWinner)
-		controlGame();
-	
-	updateScoreView();
+}
+void GameOwner::updateDirectionImage()
+{
+	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorId == 14)//directional Image
+		{
+			if(visualDirection!=direction[0])
+			{
+				VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+				switch(direction[0])
+				{
+					case 0:
+						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/south.png");
+						((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
+					break;
+					case 1:
+						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/east.png");
+						((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
+					break;
+					case 2:
+						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/north.png");
+						((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
+					break;
+					case 3:
+						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/west.png");
+						((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
+					break;				
+				}
+				visualDirection = direction[0];
+			}
+		}
+	}
+}
+void GameOwner::MouseClicked(int posX, int posY)
+{
+	Actor* actor = GameViewManager::instance()->GetTopVisibleActorAtPoint(posX, posY);
+	if(actor!=NULL)
+	{
+		printf("actor id ------------>%d\n", actor->actorId);
+		switch(actor->actorId)
+		{
+			case 1://background
+			break;
+			case 2://Game Map
+				CreateShapeRequest();
+			break;
+			case 3://ShapeSelectionToolBar
+			break;
+			case 4://GameLevelSelector
+				SelectGameLevel(actor, posX, posY);
+			break;
+			case 5://GameScore
+			break;
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+			case 12:
+				SelectShapeRequest(actor->actorId);
+			break;
+			case 15://score, time
+			break;
+			case 16://detetion
+				ForcedDeletion();
+			break;
+		}
+	}
+	else
+		printf("actor id ------------None\n");
+}
+void GameOwner::SelectGameLevel(Actor* actor,int posX, int posY)
+{
+	PhysicalComponent* physicalComponent = (PhysicalComponent*)actor->GetComponent(PHYSICAL);
+	int blockHeight = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockHeight;
+	int blockWidth = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockWidth;
+	sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
+	int xGridPosition = floor((posX - physicalComponent->getActorPosition().x)/blockWidth);
+	int yGridPosition = floor((posY - physicalComponent->getActorPosition().y)/blockHeight);
+	printf("Grid Selected ------------>%d , %d\n", xGridPosition,yGridPosition);
+	XMLDocument* doc = new XMLDocument();
+    	doc->LoadFile(playerFile);
+	XMLElement *playerElements = doc->FirstChildElement();
+	while(yGridPosition!=0)
+	{
+		playerElements = playerElements->NextSiblingElement("Player");
+		yGridPosition--;
+	}
+	deleteGamePlayerActors();
+	initGamePlayerActors(playerElements);
+	GameViewManager::instance()->goToNextView();
 }
 bool GameOwner::ismoveableBlock(int blockId)
 {
@@ -95,6 +233,12 @@ void GameOwner::ImplementGravity(double deltaMS)
 		if(actor->actorType == "Map")
 		{	
 			gameTime += deltaMS;
+			levelTime -= deltaMS;
+			if(levelTime <= 0)
+			{
+				//finish
+				GameViewManager::instance()->goToNextView();
+			}
 			if (gameTime >= ConfiguredGAMETIME)
 			{
 				gameTime = 0;
@@ -198,13 +342,15 @@ void GameOwner::ShowCursor()
 		{
 			GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);
 			PhysicalComponent* physicalComponent = (PhysicalComponent*)actor->GetComponent(PHYSICAL);
-			int blockSize = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockSize;
+			int blockHeight = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockHeight;
+			int blockWidth = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockWidth;
 			//Get mouse position in window
 			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
 			
 			//Convert position to grid
-			int yCorr = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
-			int xCorr = floor((localPosition.y - physicalComponent->getActorPosition().x)/blockSize);
+			int yCorr = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockWidth);
+			int xCorr = floor((localPosition.y - physicalComponent->getActorPosition().y)/blockHeight);
+		
 			int tetrominoShape = SelectedShape();
 			if(tetrominoShape == -1)//something selected check
 				continue;
@@ -481,14 +627,10 @@ int GameOwner::randomShapeSelection()
 int GameOwner::SelectedShape()
 {
 	//	return randomShapeSelection();
-	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	if(ShapeSelected)
 	{
-		Actor* actor = (Actor*)iter->second;
-		if(actor->actorType == "ShapeSelectionToolBar")
-		{
-			SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)actor->GetComponent(SELECTIONTOOLBAR);
-			return selectionToolBarComponent->GetSelectedShape();
-		}
+		printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
+		return CurrentTetrominoShapeID;
 	}
 	return -1;
 }
@@ -511,37 +653,47 @@ void GameOwner::CreateShapeRequest()
 		}
 	}
 }
-void GameOwner::SelectShapeRequest()
+void GameOwner::SelectShapeRequest(int selectedBox)
 {
-	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	switch(selectedBox)
 	{
-		Actor* actor = (Actor*)iter->second;
-		if(actor->actorType == "ShapeSelectionToolBar")
-		{
-			SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)actor->GetComponent(SELECTIONTOOLBAR);
-			PhysicalComponent* physicalComponent = (PhysicalComponent*)actor->GetComponent(PHYSICAL);
-			int blockSize = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockSize;
-			//Get mouse position in window
-			sf::Vector2i localPosition = sf::Mouse::getPosition(DisplayManager::instance() -> window);
-			
-			//Convert position to grid
-			int xGridPosition = floor((localPosition.x - physicalComponent->getActorPosition().x)/blockSize);
-			int yGridPosition = floor((localPosition.y - physicalComponent->getActorPosition().y)/blockSize);
-			
-			selectionToolBarComponent->SelectShape(yGridPosition, xGridPosition);
-		}
+		case 6:
+			CurrentTetrominoShapeID = STRAIGHTPOLYOMINO;
+			break;
+		case 7:
+			CurrentTetrominoShapeID = JPOLYOMINO;
+			break;
+		case 8:
+			CurrentTetrominoShapeID = LPOLYOMINO;
+			break;
+		case 9:
+			CurrentTetrominoShapeID = SPOLYOMINO;
+			break;
+		case 10:
+			CurrentTetrominoShapeID = ZPOLYOMINO;
+			break;
+		case 11:
+			CurrentTetrominoShapeID = TPOLYOMINO;
+			break;
+		case 12:
+			CurrentTetrominoShapeID = SQUAREPOLYOMINO;
+			break;
+		default:
+			CurrentTetrominoShapeID = -1;
+			break;
+	}
+	if(CurrentTetrominoShapeID>0)
+	{
+			ShapeSelected = true;
 	}
 }
+
 void GameOwner::SelectGivenShapeRequest(int tetrominoId)
 {
-	for(actorIterType iter = actorMap.begin(); iter != actorMap.end(); ++iter)
+	CurrentTetrominoShapeID = tetrominoId;
+	if(CurrentTetrominoShapeID>0)
 	{
-		Actor* actor = (Actor*)iter->second;
-		if(actor->actorType == "ShapeSelectionToolBar")
-		{
-			SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)actor->GetComponent(SELECTIONTOOLBAR);
-			selectionToolBarComponent->SelectGivenShape(tetrominoId);
-		}
+			ShapeSelected = true;
 	}
 }
 void GameOwner::controlGame(void)
@@ -571,7 +723,23 @@ void GameOwner::ShowWinner(GamePlayer* winner)
 }
 void GameOwner::updateScoreView()
 {
-	
+	std::ostringstream GravityShiftString; 
+	std::ostringstream ScoreString; 
+	std::ostringstream LevelTimeString; 
+	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorId == 15)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			GravityShiftString << "Gravity Shift Within " << (ConfiguredGAMETIME-gameTime);// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(GravityShiftString, 0, 0);
+			ScoreString << "Score " << score;// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ScoreString, 1, 0);
+			LevelTimeString << "Time Left " << levelTime;// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(LevelTimeString, 2, 0);
+		}
+	}
 }
 void GameOwner::RestartGame()
 {
