@@ -2,7 +2,6 @@
 #include "DisplayManager.h"
 #include "PhysicalComponent.h"
 #include "GameStateComponent.h"
-#include "SelectionToolBarComponent.h"
 #include "TextAreaComponent.h"
 #include <sstream>
 #include <stdlib.h>
@@ -39,7 +38,6 @@ void VisualComponent::init(XMLElement *componentElement)
 			((ActorShape::Circle*)actorShape)->actorShape.setFillColor((const sf::Color &)actorColor);
 			break;
 		case 3://"GRID MAP":
-		case 4://"SelectionToolBarMAP"-> "GRID MAP":
 			actorShape = new ActorShape::GridMap();
 			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->IntAttribute("BlockHeight"),shapeElement->IntAttribute("BlockWidth"));
 			
@@ -118,59 +116,6 @@ void VisualComponent::update(double deltaMS)
 			}
 		}
 	}
-	else if(shapeID == 4)//"SelectionToolBarMAP"
-	{
-		SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)owner->GetComponent(SELECTIONTOOLBAR);
-		for(int r=0;r<selectionToolBarComponent->CurrentToolBarRow;r++)
-		{
-			for(int c=0;c<selectionToolBarComponent->CurrentToolBarCol;c++)
-			{
-				int posX = physicalComponent->getActorPosition().x + (c * ((ActorShape::GridMap*)actorShape)->blockWidth)+ c;
-				int posY = physicalComponent->getActorPosition().y + 
-									(r * ((ActorShape::GridMap*)actorShape)->blockHeight) + r;
-				
-				((ActorShape::GridMap*)actorShape)->gridMap[r][c].setPosition(sf::Vector2f(posX, posY));
-				if(selectionToolBarComponent->GameMap[r][c]==STRAIGHTPOLYOMINO)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Green);
-				}
-				else if(selectionToolBarComponent->GameMap[r][c]==SQUAREPOLYOMINO)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Red);			
-				}
-				else if(selectionToolBarComponent->GameMap[r][c]==TPOLYOMINO)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Yellow);
-				}
-				else if(selectionToolBarComponent->GameMap[r][c]==JPOLYOMINO)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Magenta);			
-				}
-				else if(selectionToolBarComponent->GameMap[r][c]==LPOLYOMINO)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::White);
-				}
-				else if(selectionToolBarComponent->GameMap[r][c]==SPOLYOMINO)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Cyan);			
-				}
-				else if(selectionToolBarComponent->GameMap[r][c]==ZPOLYOMINO)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Black);			
-				}
-				else if(selectionToolBarComponent->GameMap[r][c]==EMPTYBLOCK)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Blue);			
-				}
-				else if(selectionToolBarComponent->GameMap[r][c]==CONCRETEBLOCK)
-				{
-					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Black);			
-				}			
-				DisplayManager::instance()->window.draw(((ActorShape::GridMap*)actorShape)->gridMap[r][c]);
-				
-			}
-		}
-	}
 	else if(shapeID == 5)//"TextAreaComponent"
 	{
 		TextAreaComponent* textAreaComponent = (TextAreaComponent*)owner->GetComponent(TEXTAREA);
@@ -233,16 +178,6 @@ bool VisualComponent::IsAnInclusivePoint(int posX, int posY)
 		Right = physicalComponent->getActorPosition().x + (gameStateComponent->CurrentGameCol *
 						((ActorShape::GridMap*)actorShape)->blockWidth);
 		Bottom = physicalComponent->getActorPosition().y + (gameStateComponent->CurrentGameRow * 
-						((ActorShape::GridMap*)actorShape)->blockHeight);
-		Left = physicalComponent->getActorPosition().x;
-		Top = physicalComponent->getActorPosition().y;
-	}
-	else if(shapeID == 4)//"SelectionToolBarMAP"
-	{
-		SelectionToolBarComponent* selectionToolBarComponent = (SelectionToolBarComponent*)owner->GetComponent(SELECTIONTOOLBAR);
-		Right = physicalComponent->getActorPosition().x + (selectionToolBarComponent->CurrentToolBarCol *
-						((ActorShape::GridMap*)actorShape)->blockWidth);
-		Bottom = physicalComponent->getActorPosition().y + (selectionToolBarComponent->CurrentToolBarRow * 
 						((ActorShape::GridMap*)actorShape)->blockHeight);
 		Left = physicalComponent->getActorPosition().x;
 		Top = physicalComponent->getActorPosition().y;

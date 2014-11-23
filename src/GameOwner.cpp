@@ -6,7 +6,6 @@
 #include "VisualComponent.h"
 #include "DisplayManager.h"
 #include "GameStateComponent.h"
-#include "SelectionToolBarComponent.h"
 #include <set>
 #include <math.h>
 #include <sstream>

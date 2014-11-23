@@ -2,7 +2,6 @@
 #include "PhysicalComponent.h"
 #include "VisualComponent.h"
 #include "GameStateComponent.h"
-#include "SelectionToolBarComponent.h"
 #include "TextAreaComponent.h"
 
 ActorFactory::ActorFactory(void)
@@ -52,9 +51,6 @@ ActorComponentInterface* ActorFactory::CreateComponentOf( int componentType)
 		break;
 	case GAMESTATE:
 		return new GameStateComponent();
-		break;
-	case SELECTIONTOOLBAR:
-		return new SelectionToolBarComponent();
 		break;
 	case TEXTAREA:
 		return new TextAreaComponent();
