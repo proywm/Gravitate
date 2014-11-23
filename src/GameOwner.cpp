@@ -654,6 +654,7 @@ void GameOwner::CreateShapeRequest()
 }
 void GameOwner::SelectShapeRequest(int selectedBox)
 {
+	sound2.play();
 	switch(selectedBox)
 	{
 		case 6:
@@ -689,6 +690,7 @@ void GameOwner::SelectShapeRequest(int selectedBox)
 
 void GameOwner::SelectGivenShapeRequest(int tetrominoId)
 {
+	sound2.play();
 	CurrentTetrominoShapeID = tetrominoId;
 	if(CurrentTetrominoShapeID>0)
 	{
