@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Player Name="GameLogic" Difficulty = "Easy" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="15000" gameTime="1000" levelTime="200000">
+<Player Name="GameLogic" Difficulty="Easy" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="15000" gameTime="1000" levelTime="150000">
 	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
 	<!--Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/-->
 	<Actor ActorFileName="./config/Map3.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="2"/>
@@ -21,7 +21,7 @@
 	<Actor ActorFileName="./config/DeleteButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="16"/>
 </Player>
 
-<Player Name="GameLogic" Difficulty = "Medium" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="10000" gameTime="650" levelTime="200000">
+<Player Name="GameLogic" Difficulty="Medium" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="10000" gameTime="650" levelTime="150000">
 	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
 	<!--Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/-->
 	<Actor ActorFileName="./config/Map2.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80"  actorId="2"/>
@@ -44,7 +44,7 @@
 </Player>
 
 
-<Player Name="GameLogic" Difficulty = "Hard" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="8000" gameTime="350" levelTime="200000">
+<Player Name="GameLogic" Difficulty="Hard" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="8000" gameTime="350" levelTime="150000">
 	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
 	<!--Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/-->
 	<Actor ActorFileName="./config/Map.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="2"/>
