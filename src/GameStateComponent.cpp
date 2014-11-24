@@ -96,7 +96,7 @@ void GameStateComponent::PlaceNewShape()
 //This method moves piece East on the grid regardless of gravity.
 void GameStateComponent::ShiftRight(int id)
 {
-	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2, -2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -171,7 +171,7 @@ void GameStateComponent::ShiftRight(int id)
 //This method moves piece West on the grid regardless of gravity.
 void GameStateComponent::ShiftLeft(int id)
 {
-	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2, -2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -245,7 +245,7 @@ void GameStateComponent::ShiftLeft(int id)
 //This method moves piece North on the grid regardless of gravity.
 void GameStateComponent::ShiftUp(int id)
 {
-	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2, -2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -318,7 +318,7 @@ void GameStateComponent::ShiftUp(int id)
 //This method moves piece South on the grid regardless of gravity.
 void GameStateComponent::ShiftDown(int id)
 {
-	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2, -2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -389,7 +389,7 @@ void GameStateComponent::ShiftDown(int id)
 void GameStateComponent::RotateClockwise(int id)
 {
 	//get (x,y) of points. also get x and y values in seperate array
-	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2, -2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayOfPointsOLD[8];
 	int arrayTicker = 0;
 	int arrayX[4];
@@ -553,7 +553,7 @@ void GameStateComponent::RotateClockwise(int id)
 void GameStateComponent::RotateCounterClockwise(int id)
 {
   	//get (x,y) of points. also get x and y values in seperate array
-	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2, -2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayOfPointsOLD[8];
 	int arrayTicker = 0;
 	int arrayX[4];
