@@ -21,6 +21,7 @@ public:
 	~GameOwner(void);
 
 	void init(const char* actorsList);
+	void resetGame();
 	void update(double deltaMS);
 	void HandleEvent(sf::Event receivedEvent);
 
@@ -59,6 +60,7 @@ public:
 	bool ShapeSelected;
 	int CurrentTetrominoShapeID;
 	int visualDirection;
+	const char* actorsList1;
 	
 	Direction randomGravity();
 	Direction getDirection();

@@ -19,6 +19,7 @@ GameOwner::~GameOwner(void)
 }
 void GameOwner::init(const char* actorsList)
 {
+	actorsList1 = actorsList;
 	XMLDocument* doc = new XMLDocument();
 	doc->LoadFile(actorsList);
 	XMLElement *playerFiles = doc->FirstChildElement();
@@ -64,6 +65,32 @@ void GameOwner::init(const char* actorsList)
 	showTitleView();
 	controlGame();
 }
+
+void GameOwner::resetGame()
+{
+	XMLDocument* doc = new XMLDocument();
+	doc->LoadFile(actorsList1);
+	XMLElement *playerFiles = doc->FirstChildElement();
+	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
+	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
+	ConfiguredLEVELTIME = playerFiles->IntAttribute("levelTime");
+	maxShift = 15;
+	
+	MaxPossibleScore = 10;//hardcoded
+	srand(1);
+	direction[0]= randomGravity();
+	direction[1]= randomGravity();
+	direction[2]= randomGravity();
+	direction[3]= randomGravity();
+	gameTime = 0; 
+	shiftTime = 0;
+	levelTime = ConfiguredLEVELTIME;
+	score = 0;
+	HasWinner = false;
+	ShapeSelected = false;
+	CurrentTetrominoShapeID = -1;
+	visualDirection = -1;
+}
 void GameOwner::showTitleView()
 {
 	int i = 0;
@@ -94,7 +121,10 @@ void GameOwner::update(double deltaMS)
 	switch(GameViewManager::instance()->currentGameView)//Title screen
 	{
 		case TITLEVIEW:
-		break;
+		{
+			resetGame();
+			break;
+		}
 		case GAMEVIEW:
 		{
 			ImplementGravity(deltaMS);
@@ -117,7 +147,10 @@ void GameOwner::update(double deltaMS)
 		break;
 		case RESULTVIEW:
 		//	ShowResultPage();
-		break;
+		{
+			resetGame();
+			break;
+		}
 	}
 }
 void GameOwner::ShowResultPage()
