@@ -138,7 +138,23 @@ void GameOwner::update(double deltaMS)
 		}
 		break;
 		case RESULTVIEW:
+		//	ShowResultPage();
 		break;
+	}
+}
+void GameOwner::ShowResultPage()
+{
+	GameViewManager::instance()->setCurrentView(RESULTVIEW);
+	std::ostringstream ResultString; 
+	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorId == 26)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			ResultString << "Your Score " << score;// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ResultString, 0, 0);
+		}
 	}
 }
 void GameOwner::updateDirectionImage()
@@ -276,7 +292,7 @@ void GameOwner::MouseClicked(int posX, int posY)
 			break;
 			case 19:
 				//quit game
-				GameViewManager::instance()->setCurrentView(RESULTVIEW);
+				ShowResultPage();
 			break;
 			case 20:
 				//End game
@@ -338,7 +354,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 			if(levelTime <= 0)
 			{
 				//finish
-				GameViewManager::instance()->setCurrentView(RESULTVIEW);
+				ShowResultPage();
 			}
 			if (gameTime >= ConfiguredGAMETIME)
 			{

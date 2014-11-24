@@ -5,6 +5,7 @@
 #include "TextAreaComponent.h"
 #include <sstream>
 #include <stdlib.h>
+#include <unistd.h>
 VisualComponent::VisualComponent(void)
 {
 }
@@ -69,6 +70,7 @@ void VisualComponent::update(double deltaMS)
 	/*sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 	DisplayManager::instance()->window.draw(shape);*/
+	
 	if(!isVisible)
 		return;
 	PhysicalComponent* physicalComponent = (PhysicalComponent*)owner->GetComponent(PHYSICAL);
@@ -119,6 +121,7 @@ void VisualComponent::update(double deltaMS)
 				
 			}
 		}
+		//usleep(1000000);
 	}
 	else if(shapeID == 5)//"TextAreaComponent"
 	{

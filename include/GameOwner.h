@@ -66,6 +66,7 @@ public:
 	void LineDeletion();
 	void ForcedDeletion();
 	void showTitleView();
+	void ShowResultPage();
 	
 	int shiftTime;
 	int gameTime;
