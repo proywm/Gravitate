@@ -350,7 +350,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 				}
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
 				std::set<int> pieces; 
-		/*		
+
 				for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 				{
 					for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
@@ -359,7 +359,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 					printf("\n");
 				}
 				printf("\n");
-*/
+
 				switch(direction[0])
 				{
 				case SOUTH:
@@ -726,7 +726,8 @@ int GameOwner::SelectedShape()
 	//	return randomShapeSelection();
 	if(ShapeSelected)
 	{
-	//	printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
+		//printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
+		//printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
 		return CurrentTetrominoShapeID;
 	}
 	return -1;
@@ -905,11 +906,9 @@ void GameOwner::LineDeletion()
 				
 				for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
 				{
-					gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = EMPTYBLOCK;
+					gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol - 1] = EMPTYBLOCK;
 				}
 			}
-			
-			
 			
 			//Check bottom col. If full: delete bottom col. RIGHT.
 			for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
@@ -973,7 +972,7 @@ void GameOwner::LineDeletion()
 				
 				for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
 				{
-					gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = EMPTYBLOCK;
+					gameStateComponent->GameMap[gameStateComponent->CurrentGameRow - 1][i] = EMPTYBLOCK;
 				}
 			}
 			
@@ -1007,8 +1006,7 @@ void GameOwner::LineDeletion()
 				{
 					gameStateComponent->GameMap[0][i] = EMPTYBLOCK;
 				}
-			}
-			
+			}			
 			
 		}	
 	}
