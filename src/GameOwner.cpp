@@ -363,7 +363,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 				switch(direction[0])
 				{
 				case SOUTH:
-					for(int r=gameStateComponent->CurrentGameRow-2;r>=0;r--)
+					for(int r=gameStateComponent->CurrentGameRow-1;r>=0;r--)
 					{
 						for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
 						{
@@ -381,7 +381,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 				case EAST: 
 					for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 					{
-						for(int c=gameStateComponent->CurrentGameCol-2;c>=0;c--)
+						for(int c=gameStateComponent->CurrentGameCol-1;c>=0;c--)
 						{
 							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
@@ -394,7 +394,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 					}
 					break;
 				case NORTH:
-					for(int r=1;r<gameStateComponent->CurrentGameRow;r++)
+					for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 					{
 						for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
 						{
@@ -411,7 +411,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 				case WEST:
 					for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 					{
-						for(int c=1;c<gameStateComponent->CurrentGameCol;c++)
+						for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
 						{
 							int id = gameStateComponent->GameMap[r][c];
 							//calling proper function to shift non-empty block
