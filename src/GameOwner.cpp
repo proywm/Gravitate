@@ -121,35 +121,96 @@ void GameOwner::update(double deltaMS)
 }
 void GameOwner::updateDirectionImage()
 {
+	int nextDirection;
+	bool directionChanged = false;
 	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
 	{
 		Actor* actor = (Actor*)iter->second;
-		if(actor->actorId == 14)//directional Image
+		switch(actor->actorId)//directional Image
 		{
-			if(visualDirection!=direction[0])
+			case 14:
 			{
+				if(visualDirection!=direction[0])
+				{
+					directionChanged = true;
+					VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+					switch(direction[0])
+					{
+						case 0:
+							((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/south.png");
+							((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
+						break;
+						case 1:
+							((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/east.png");
+							((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
+						break;
+						case 2:
+							((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/north.png");
+							((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
+						break;
+						case 3:
+							((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/west.png");
+							((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
+						break;				
+					}
+					visualDirection = direction[0];
+				}
+			}
+			break;
+			case 23:
+			{
+				if(!directionChanged)
+				{
+					continue;
+				}
+				nextDirection = direction[1];
+				break;
+			}
+			case 24:
+			{
+				if(!directionChanged)
+				{
+					continue;
+				}
+				nextDirection = direction[2];
+				break;
+			}
+			case 25:
+			{
+				if(!directionChanged)
+				{
+					continue;
+				}
+				nextDirection = direction[3];
+				break;
+			}
+		}
+		switch(actor->actorId)//directional Image
+		{
+			case 23:
+			case 24:
+			case 25:
 				VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
-				switch(direction[0])
+				switch(nextDirection)
 				{
 					case 0:
-						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/south.png");
+						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/southS.png");
 						((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
 					break;
 					case 1:
-						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/east.png");
+						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/eastS.png");
 						((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
 					break;
 					case 2:
-						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/north.png");
+						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/northS.png");
 						((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
 					break;
 					case 3:
-						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/west.png");
+						((ActorShape::GridMap*)visualComponent->actorShape)->LoadTexture("./resources/images/westS.png");
 						((ActorShape::GridMap*)visualComponent->actorShape)->setTexture();
 					break;				
 				}
-				visualDirection = direction[0];
-			}
+			break;
 		}
 	}
 }
@@ -273,6 +334,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 				}
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
 				std::set<int> pieces; 
+/*				
 				for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 				{
 					for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
@@ -281,6 +343,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 					printf("\n");
 				}
 				printf("\n");
+*/
 				switch(direction[0])
 				{
 				case SOUTH:

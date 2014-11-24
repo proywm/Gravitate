@@ -25,6 +25,10 @@
 	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="280" spawnPositionY="420" actorId="20"/>
 	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="21"/>
 	<Actor ActorFileName="./config/GameMenuButtonFromHelp.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="22"/>
+
+	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="530" spawnPositionY="200" actorId="23"/>
+	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="590" spawnPositionY="200" actorId="24"/>
+	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="650" spawnPositionY="200" actorId="25"/>
 </Player>
 
 <Player Name="GameLogic" Difficulty="Medium" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="10000" gameTime="650" levelTime="150000">
@@ -54,6 +58,10 @@
 	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="280" spawnPositionY="420" actorId="20"/>
 	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="21"/>
 	<Actor ActorFileName="./config/GameMenuButtonFromHelp.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="22"/>
+
+	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="530" spawnPositionY="200" actorId="23"/>
+	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="590" spawnPositionY="200" actorId="24"/>
+	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="650" spawnPositionY="200" actorId="25"/>
 </Player>
 
 
@@ -84,4 +92,8 @@
 	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="280" spawnPositionY="420" actorId="20"/>
 	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="21"/>
 	<Actor ActorFileName="./config/GameMenuButtonFromHelp.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="22"/>
+
+	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="530" spawnPositionY="200" actorId="23"/>
+	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="590" spawnPositionY="200" actorId="24"/>
+	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="650" spawnPositionY="200" actorId="25"/>
 </Player>
