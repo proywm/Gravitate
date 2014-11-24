@@ -2,7 +2,7 @@
 #include "ActorFactory.h"
 enum ViewType
 {
-	TITLEVIEW=1, GAMEVIEW, RESULTVIEW, TOTALVIEWS
+	TITLEVIEW=1, GAMEVIEW, RESULTVIEW, RULEVIEW, TOTALVIEWS
 };
 class GameViewManager
 {
@@ -14,7 +14,7 @@ public:
 	static GameViewManager* instance();
 
 	void setCurrentView(ViewType type);
-	void goToNextView();
+	//void goToNextView();
 	Actor* GetTopVisibleActorAtPoint(int posX, int posY);
 
 	ViewType currentGameView;

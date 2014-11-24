@@ -186,7 +186,25 @@ void GameOwner::MouseClicked(int posX, int posY)
 			break;
 			case 16://detetion
 				ForcedDeletion();
+				break;			
+			case 18:
+				//Go to Help Page
+				GameViewManager::instance()->setCurrentView(RULEVIEW);
 			break;
+			case 19:
+				//quit game
+				GameViewManager::instance()->setCurrentView(RESULTVIEW);
+			break;
+			case 20:
+				//End game
+				DisplayManager::instance()->window.close();
+			break;
+			case 21:
+			case 22:
+				//Go to Title Page
+				showTitleView();
+			break;
+			
 		}
 	}
 	else
@@ -194,6 +212,7 @@ void GameOwner::MouseClicked(int posX, int posY)
 }
 void GameOwner::SelectGameLevel(Actor* actor,int posX, int posY)
 {
+	int level = 0;
 	PhysicalComponent* physicalComponent = (PhysicalComponent*)actor->GetComponent(PHYSICAL);
 	int blockHeight = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockHeight;
 	int blockWidth = ((ActorShape::GridMap*)physicalComponent->actorShape)->blockWidth;
@@ -204,14 +223,14 @@ void GameOwner::SelectGameLevel(Actor* actor,int posX, int posY)
 	XMLDocument* doc = new XMLDocument();
     	doc->LoadFile(playerFile);
 	XMLElement *playerElements = doc->FirstChildElement();
-	while(yGridPosition!=0)
+	while(yGridPosition!=level)
 	{
 		playerElements = playerElements->NextSiblingElement("Player");
-		yGridPosition--;
+		level++;
 	}
 	deleteGamePlayerActors();
 	initGamePlayerActors(playerElements);
-	GameViewManager::instance()->goToNextView();
+	GameViewManager::instance()->setCurrentView(GAMEVIEW);
 }
 bool GameOwner::ismoveableBlock(int blockId)
 {
@@ -236,7 +255,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 			if(levelTime <= 0)
 			{
 				//finish
-				GameViewManager::instance()->goToNextView();
+				GameViewManager::instance()->setCurrentView(RESULTVIEW);
 			}
 			if (gameTime >= ConfiguredGAMETIME)
 			{

@@ -19,6 +19,8 @@ void VisualComponent::init(XMLElement *componentElement)
 	XMLElement* textureElement;
 	const char* textureFileLocation;
 	const char* fontFileLocation;
+	std::ostringstream LabelString; 
+
 	ComponentID = componentElement->IntAttribute("ComponentType");
 	viewType = (ViewType)componentElement->IntAttribute("GameViewId");
 	XMLElement* colorElement = componentElement->FirstChildElement("Color");
@@ -50,6 +52,8 @@ void VisualComponent::init(XMLElement *componentElement)
 			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->IntAttribute("BlockHeight"),shapeElement->IntAttribute("BlockWidth"));
 			fontFileLocation = textureElement->Attribute("FontFileName");
 			((ActorShape::GridMap*)actorShape)->LoadFont(fontFileLocation);
+			LabelString << textureElement->Attribute("Text");// put float into string buffer
+			((ActorShape::GridMap*)actorShape)->SetTextInBox(LabelString, 0, 0);
 			break;
 		default:
 			actorShape = new ActorShape::Circle();

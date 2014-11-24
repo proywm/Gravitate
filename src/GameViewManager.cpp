@@ -54,7 +54,7 @@ void GameViewManager::setCurrentView(ViewType type)
 	}
 	currentGameView = type;
 }
-
+/*
 void GameViewManager::goToNextView()
 {
 	switch(currentGameView)
@@ -70,4 +70,4 @@ void GameViewManager::goToNextView()
 		break;
 	}
 }
-
+*/
