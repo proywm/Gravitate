@@ -70,6 +70,7 @@ public:
 	int shiftTime;
 	int gameTime;
 	int levelTime;
+	int imageTime;
 	
 	sf::Font font;
 	
@@ -87,5 +88,7 @@ public:
 	sf::Sound sound2;
 	sf::Sound sound3;
 	sf::Sound sound4;
+	sf::Texture starBG;
+	sf::Sprite starSprite;
 
 };

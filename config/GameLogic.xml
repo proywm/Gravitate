@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <Player Name="GameLogic" Difficulty="Easy" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="15000" gameTime="1000" levelTime="150000">
 	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
-	<!--Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/-->
+	<Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/>
 	<Actor ActorFileName="./config/Map3.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="2"/>
 	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="200" spawnPositionY="150" actorId="4"/>
 	<Actor ActorFileName="./config/GameScore.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="5"/>
