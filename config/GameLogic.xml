@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <Player Name="GameLogic" Difficulty="Easy" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="15000" gameTime="1000" levelTime="150000">
-	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
-	<!--Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/-->
+	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="0"/>
+	<Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
 	<Actor ActorFileName="./config/Map3.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="2"/>
 	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="200" spawnPositionY="150" actorId="4"/>
 	<Actor ActorFileName="./config/GameScore.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="5"/>
@@ -29,10 +29,13 @@
 	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="530" spawnPositionY="200" actorId="23"/>
 	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="590" spawnPositionY="200" actorId="24"/>
 	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="650" spawnPositionY="200" actorId="25"/>
+
+	<Actor ActorFileName="./config/ResultScoreLabel.xml"  totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="26"/>
 </Player>
 
 <Player Name="GameLogic" Difficulty="Medium" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="10000" gameTime="650" levelTime="150000">
-	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
+	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="0"/>
+	<Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
 	<!--Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/-->
 	<Actor ActorFileName="./config/Map2.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80"  actorId="2"/>
 	<!--Actor ActorFileName="./config/ShapeSelectionToolBar.xml" totalActors="1" spawnPositionX="20" spawnPositionY="500" actorId="3"/-->
@@ -66,8 +69,8 @@
 
 
 <Player Name="GameLogic" Difficulty="Hard" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="8000" gameTime="350" levelTime="150000">
-	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
-	<!--Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/-->
+	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="0"/>
+	<Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
 	<Actor ActorFileName="./config/Map.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="2"/>
 	<!--Actor ActorFileName="./config/ShapeSelectionToolBar.xml" totalActors="1" spawnPositionX="20" spawnPositionY="500" actorId="3"/-->
 	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="200" spawnPositionY="150" actorId="4"/>

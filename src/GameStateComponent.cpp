@@ -194,6 +194,9 @@ void GameStateComponent::ShiftLeft(int id)
 		{
 			if (isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1]) or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == id)
 			{
+				//printf("isEmptyBlock %d \n",isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1]));
+				printf("arrayOfPoints[i]: %d ,arrayOfPoints[i+1] - 1: %d \n",arrayOfPoints[i], arrayOfPoints[i+1] - 1);
+				//printf("GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] %d, %d \n",GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1], id);
 			}
 			else
 			{
