@@ -58,9 +58,7 @@ void GameOwner::resetGame()
 	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
 	ConfiguredLEVELTIME = playerFiles->IntAttribute("levelTime");
-	maxShift = 15;
 	
-	MaxPossibleScore = 10;//hardcoded
 	srand(1);
 	direction[0]= randomGravity();
 	direction[1]= randomGravity();
