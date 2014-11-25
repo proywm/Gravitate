@@ -26,7 +26,7 @@ void GameOwner::init(const char* actorsList)
 	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
 	ConfiguredLEVELTIME = playerFiles->IntAttribute("levelTime");
-	
+	srand(time(NULL));
 	
 	//Init sounds
 	if (!buffer.loadFromFile("./resources/sounds/GravityChange.wav"))
@@ -52,14 +52,13 @@ void GameOwner::init(const char* actorsList)
 
 void GameOwner::resetGame()
 {
+	srand(time(NULL));
 	XMLDocument* doc = new XMLDocument();
 	doc->LoadFile(actorsList1);
 	XMLElement *playerFiles = doc->FirstChildElement();
 	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
 	ConfiguredLEVELTIME = playerFiles->IntAttribute("levelTime");
-	
-	srand(1);
 	direction[0]= randomGravity();
 	direction[1]= randomGravity();
 	direction[2]= randomGravity();
@@ -99,7 +98,7 @@ void GameOwner::showTitleView()
 	printf("value of i---------------------->%d",i);
 	
 	//setting the directions
-	srand(1);
+	srand(time(NULL));
 	direction[0]= randomGravity();
 	direction[1]= randomGravity();
 	direction[2]= randomGravity();
