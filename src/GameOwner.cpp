@@ -118,6 +118,7 @@ void GameOwner::showTitleView()
 }
 void GameOwner::update(double deltaMS)
 {	
+	ShowButtonTexts();
 	switch(GameViewManager::instance()->currentGameView)//Title screen
 	{
 		case TITLEVIEW:
@@ -130,7 +131,6 @@ void GameOwner::update(double deltaMS)
 			ImplementGravity(deltaMS);
 			updateDirectionImage();
 			ShowCursor();
-	
 			//Check for Line Deletion
 			LineDeletion();
 	
@@ -166,6 +166,49 @@ void GameOwner::ShowResultPage()
 			ResultString << "Your Score " << score;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ResultString, 0, 0);
 		}
+	}
+}
+void GameOwner::ShowButtonTexts()
+{
+	std::ostringstream HelpString; 
+	std::ostringstream QuitString; 
+	std::ostringstream ExitString; 
+	std::ostringstream MenuString; 
+	std::ostringstream MenuString1; 
+	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorId == 18)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			HelpString << "Help";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(HelpString, 0, 0);
+		}
+		else if(actor->actorId == 19)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			QuitString << "Quit";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(QuitString, 0, 0);
+		}
+		else if(actor->actorId == 20)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			ExitString << "Exit";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ExitString, 0, 0);
+		}
+		else if(actor->actorId == 21)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			MenuString << "Menu";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(MenuString, 0, 0);
+		}
+		else if(actor->actorId == 22)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			MenuString1 << "Menu";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(MenuString1, 0, 0);
+		}
+		
 	}
 }
 void GameOwner::updateDirectionImage()

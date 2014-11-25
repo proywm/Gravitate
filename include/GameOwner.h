@@ -47,6 +47,7 @@ public:
 	void updateDirectionImage();
 	void SelectGivenShapeRequest(int tetrominoId);
 	void SelectGameLevel(Actor* actor,int posX, int posY);
+	void ShowButtonTexts();
 
 	void ImplementGravity(double deltaMS);
 	bool ismoveableBlock(int blockId);
