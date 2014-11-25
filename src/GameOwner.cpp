@@ -36,7 +36,7 @@ void GameOwner::init(const char* actorsList)
 	if (!buffer2.loadFromFile("./resources/sounds/PiecePlacement.wav"))
 		exit (EXIT_FAILURE);
 	sound2.setBuffer(buffer2);
-	sound2.setVolume(18);
+	sound2.setVolume(12);
 	//sound2.setPitch(1.2);
 	if (!buffer3.loadFromFile("./resources/sounds/LineDeletion.wav"))
 		exit (EXIT_FAILURE);

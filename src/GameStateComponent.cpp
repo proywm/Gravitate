@@ -275,8 +275,7 @@ void GameStateComponent::ShiftUp(int id)
 		{
 			if ((arrayOfPoints[i] - 1) >= 0)
 			{
-				if ((isEmptyBlock(GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]]) or GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == id) 
-					and not(arrayOfPoints[i] - 1 < 0))
+				if (isEmptyBlock(GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]]) or GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == id)
 				{
 				}
 				else
