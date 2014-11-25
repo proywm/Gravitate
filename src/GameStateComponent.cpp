@@ -96,7 +96,7 @@ void GameStateComponent::PlaceNewShape()
 //This method moves piece East on the grid regardless of gravity.
 void GameStateComponent::ShiftRight(int id)
 {
-	int arrayOfPoints[8] = {-2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -113,7 +113,6 @@ void GameStateComponent::ShiftRight(int id)
 			}
 		}
 	}
-
 	if (arrayOfPoints[0] == -2)
 	{
 		return;
@@ -126,8 +125,15 @@ void GameStateComponent::ShiftRight(int id)
 	{
 		if (arrayOfPoints[i] != -2)
 		{
-			if (isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1]) or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == id)
+			if ((arrayOfPoints[i+1] + 1) < CurrentGameCol)
 			{
+				if (isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1]) or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] == id)
+				{
+				}
+				else
+				{
+					obstacleFlag = true;
+				}
 			}
 			else
 			{
@@ -151,6 +157,7 @@ void GameStateComponent::ShiftRight(int id)
 			if (arrayOfPoints[i] != -2)
 			{
 				GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] + 1] = id;
+
 			}
 		}	
 	}else
@@ -164,7 +171,7 @@ void GameStateComponent::ShiftRight(int id)
 //This method moves piece West on the grid regardless of gravity.
 void GameStateComponent::ShiftLeft(int id)
 {
-	int arrayOfPoints[8] = {-2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -192,11 +199,15 @@ void GameStateComponent::ShiftLeft(int id)
 	{
 		if (arrayOfPoints[i] != -2)
 		{
-			if (isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1]) or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == id)
+			if ((arrayOfPoints[i+1] - 1) >= 0)
 			{
-				//printf("isEmptyBlock %d \n",isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1]));
-				//printf("arrayOfPoints[i]: %d ,arrayOfPoints[i+1] - 1: %d \n",arrayOfPoints[i], arrayOfPoints[i+1] - 1);
-				//printf("GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] %d, %d \n",GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1], id);
+				if (isEmptyBlock(GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1]) or GameMap[arrayOfPoints[i]][arrayOfPoints[i+1] - 1] == id)
+				{
+				}
+				else
+				{
+					obstacleFlag = true;
+				}
 			}
 			else
 			{
@@ -234,7 +245,7 @@ void GameStateComponent::ShiftLeft(int id)
 //This method moves piece North on the grid regardless of gravity.
 void GameStateComponent::ShiftUp(int id)
 {
-	int arrayOfPoints[8] = {-2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -262,9 +273,16 @@ void GameStateComponent::ShiftUp(int id)
 	{
 		if (arrayOfPoints[i] != -2)
 		{
-			if ((isEmptyBlock(GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]]) or GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == id) 
-				and not(arrayOfPoints[i] - 1 < 0))
+			if ((arrayOfPoints[i] - 1) >= 0)
 			{
+				if ((isEmptyBlock(GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]]) or GameMap[arrayOfPoints[i] - 1][arrayOfPoints[i+1]] == id) 
+					and not(arrayOfPoints[i] - 1 < 0))
+				{
+				}
+				else
+				{
+					obstacleFlag = true;
+				}
 			}
 			else
 			{
@@ -300,7 +318,7 @@ void GameStateComponent::ShiftUp(int id)
 //This method moves piece South on the grid regardless of gravity.
 void GameStateComponent::ShiftDown(int id)
 {
-	int arrayOfPoints[8] = {-2};	
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayTicker = 0;
 	bool obstacleFlag = false;
 
@@ -327,8 +345,15 @@ void GameStateComponent::ShiftDown(int id)
 	{
 		if (arrayOfPoints[i] != -2)
 		{
-			if (isEmptyBlock(GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]]) or GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == id)
+			if((arrayOfPoints[i] + 1) < CurrentGameCol)
 			{
+				if (isEmptyBlock(GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]]) or GameMap[arrayOfPoints[i] + 1][arrayOfPoints[i+1]] == id)
+				{
+				}
+				else
+				{
+					obstacleFlag = true;
+				}
 			}
 			else
 			{
@@ -364,7 +389,7 @@ void GameStateComponent::ShiftDown(int id)
 void GameStateComponent::RotateClockwise(int id)
 {
 	//get (x,y) of points. also get x and y values in seperate array
-	int arrayOfPoints[8] = {-2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayOfPointsOLD[8];
 	int arrayTicker = 0;
 	int arrayX[4];
@@ -480,9 +505,16 @@ void GameStateComponent::RotateClockwise(int id)
 		{
 			row = arrayOfRotatedPoints[z] + minX;
 			col = arrayOfRotatedPoints[z+1] + minY;
-			if ((isEmptyBlock(GameMap[row][col]) or GameMap[row][col] == id) 
-				and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+			if((row >= 0 and row < CurrentGameRow) and (col >= 0 and col < CurrentGameRow))
 			{
+				if ((isEmptyBlock(GameMap[row][col]) or GameMap[row][col] == id) 
+					and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+				{
+				}
+				else
+				{
+					obstacleFlag = true;
+				}
 			}
 			else
 			{
@@ -521,7 +553,7 @@ void GameStateComponent::RotateClockwise(int id)
 void GameStateComponent::RotateCounterClockwise(int id)
 {
   	//get (x,y) of points. also get x and y values in seperate array
-	int arrayOfPoints[8] = {-2};
+	int arrayOfPoints[8] = {-2, -2, -2, -2, -2, -2, -2, -2};
 	int arrayOfPointsOLD[8];
 	int arrayTicker = 0;
 	int arrayX[4];
@@ -636,9 +668,16 @@ void GameStateComponent::RotateCounterClockwise(int id)
 		{
 			row = arrayOfRotatedPoints[z] + minX -1;
 			col = arrayOfRotatedPoints[z+1] + minY;
-			if ((isEmptyBlock(GameMap[row][col]) or GameMap[row][col] == id) 
-				and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+			if((row >= 0 and row < CurrentGameRow) and (col >= 0 and col < CurrentGameRow))
 			{
+				if ((isEmptyBlock(GameMap[row][col]) or GameMap[row][col] == id) 
+					and not(row < 0) and not(row > CurrentGameRow) and not(col > CurrentGameCol) and not(col < 0))
+				{
+				}
+				else
+				{
+					obstacleFlag = true;
+				}
 			}
 			else
 			{

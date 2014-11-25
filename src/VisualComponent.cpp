@@ -53,8 +53,8 @@ void VisualComponent::init(XMLElement *componentElement)
 			((ActorShape::GridMap*)actorShape)->setBlockSize(shapeElement->IntAttribute("BlockHeight"),shapeElement->IntAttribute("BlockWidth"));
 			fontFileLocation = textureElement->Attribute("FontFileName");
 			((ActorShape::GridMap*)actorShape)->LoadFont(fontFileLocation);
-			LabelString << textureElement->Attribute("Text");// put float into string buffer
-			((ActorShape::GridMap*)actorShape)->SetTextInBox(LabelString, 0, 0);
+			//LabelString << textureElement->Attribute("Text");// put float into string buffer
+			//((ActorShape::GridMap*)actorShape)->SetTextInBox(LabelString, 0, 0);
 			break;
 		default:
 			actorShape = new ActorShape::Circle();

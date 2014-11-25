@@ -19,6 +19,7 @@ GameOwner::~GameOwner(void)
 }
 void GameOwner::init(const char* actorsList)
 {
+	actorsList1 = actorsList;
 	XMLDocument* doc = new XMLDocument();
 	doc->LoadFile(actorsList);
 	XMLElement *playerFiles = doc->FirstChildElement();
@@ -47,6 +48,32 @@ void GameOwner::init(const char* actorsList)
 	
 	showTitleView();
 	controlGame();
+}
+
+void GameOwner::resetGame()
+{
+	XMLDocument* doc = new XMLDocument();
+	doc->LoadFile(actorsList1);
+	XMLElement *playerFiles = doc->FirstChildElement();
+	ConfiguredSHIFTTIME = playerFiles->IntAttribute("shiftTime");
+	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
+	ConfiguredLEVELTIME = playerFiles->IntAttribute("levelTime");
+	maxShift = 15;
+	
+	MaxPossibleScore = 10;//hardcoded
+	srand(1);
+	direction[0]= randomGravity();
+	direction[1]= randomGravity();
+	direction[2]= randomGravity();
+	direction[3]= randomGravity();
+	gameTime = 0; 
+	shiftTime = 0;
+	levelTime = ConfiguredLEVELTIME;
+	score = 0;
+	HasWinner = false;
+	ShapeSelected = false;
+	CurrentTetrominoShapeID = -1;
+	visualDirection = -1;
 }
 void GameOwner::showTitleView()
 {
@@ -93,10 +120,14 @@ void GameOwner::showTitleView()
 }
 void GameOwner::update(double deltaMS)
 {	
+	ShowButtonTexts();
 	switch(GameViewManager::instance()->currentGameView)//Title screen
 	{
 		case TITLEVIEW:
-		break;
+		{
+			resetGame();
+			break;
+		}
 		case GAMEVIEW:
 		{
 			ImplementGravity(deltaMS);
@@ -109,7 +140,6 @@ void GameOwner::update(double deltaMS)
 				//printf("%d, %d\n",DisplayManager::instance()->window.getSize().x, DisplayManager::instance()->window.getSize().y);
 			}
 			ShowCursor();
-	
 			//Check for Line Deletion
 			LineDeletion();
 	
@@ -126,7 +156,10 @@ void GameOwner::update(double deltaMS)
 		break;
 		case RESULTVIEW:
 		//	ShowResultPage();
-		break;
+		{
+			resetGame();
+			break;
+		}
 	}
 }
 void GameOwner::ShowGameBackground()
@@ -159,6 +192,49 @@ void GameOwner::ShowResultPage()
 			ResultString << "Your Score " << score;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ResultString, 0, 0);
 		}
+	}
+}
+void GameOwner::ShowButtonTexts()
+{
+	std::ostringstream HelpString; 
+	std::ostringstream QuitString; 
+	std::ostringstream ExitString; 
+	std::ostringstream MenuString; 
+	std::ostringstream MenuString1; 
+	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorId == 18)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			HelpString << "Help";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(HelpString, 0, 0);
+		}
+		else if(actor->actorId == 19)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			QuitString << "Quit";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(QuitString, 0, 0);
+		}
+		else if(actor->actorId == 20)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			ExitString << "Exit";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ExitString, 0, 0);
+		}
+		else if(actor->actorId == 21)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			MenuString << "Menu";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(MenuString, 0, 0);
+		}
+		else if(actor->actorId == 22)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			MenuString1 << "Menu";// put float into string buffer
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(MenuString1, 0, 0);
+		}
+		
 	}
 }
 void GameOwner::updateDirectionImage()
@@ -333,6 +409,9 @@ void GameOwner::SelectGameLevel(Actor* actor,int posX, int posY)
 	}
 	deleteGamePlayerActors();
 	initGamePlayerActors(playerElements);
+	ConfiguredSHIFTTIME = playerElements->IntAttribute("shiftTime");
+	ConfiguredGAMETIME = playerElements->IntAttribute("gameTime");
+	ConfiguredLEVELTIME = playerElements->IntAttribute("levelTime");
 	GameViewManager::instance()->setCurrentView(GAMEVIEW);
 }
 bool GameOwner::ismoveableBlock(int blockId)
@@ -355,6 +434,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 		{	
 			gameTime += deltaMS;
 			levelTime -= deltaMS;
+			shiftTime += deltaMS;
 			if(levelTime <= 0)
 			{
 				//finish
@@ -363,7 +443,6 @@ void GameOwner::ImplementGravity(double deltaMS)
 			if (gameTime >= ConfiguredGAMETIME)
 			{
 				gameTime = 0;
-				shiftTime += 1000;
 				if (shiftTime >= ConfiguredSHIFTTIME)
 				{
 					shiftTime = 0;
@@ -376,7 +455,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 				}
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
 				std::set<int> pieces; 
-		/*		
+
 				for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 				{
 					for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
@@ -385,7 +464,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 					printf("\n");
 				}
 				printf("\n");
-*/
+
 				switch(direction[0])
 				{
 				case SOUTH:
@@ -752,7 +831,8 @@ int GameOwner::SelectedShape()
 	//	return randomShapeSelection();
 	if(ShapeSelected)
 	{
-	//	printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
+		//printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
+		//printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
 		return CurrentTetrominoShapeID;
 	}
 	return -1;
@@ -931,11 +1011,9 @@ void GameOwner::LineDeletion()
 				
 				for (int i=0; i < gameStateComponent->CurrentGameCol; i++)
 				{
-					gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol] = EMPTYBLOCK;
+					gameStateComponent->GameMap[i][gameStateComponent->CurrentGameCol - 1] = EMPTYBLOCK;
 				}
 			}
-			
-			
 			
 			//Check bottom col. If full: delete bottom col. RIGHT.
 			for (int r=0; r < gameStateComponent->CurrentGameRow;r++)
@@ -999,7 +1077,7 @@ void GameOwner::LineDeletion()
 				
 				for (int i=0; i < gameStateComponent->CurrentGameRow; i++)
 				{
-					gameStateComponent->GameMap[gameStateComponent->CurrentGameRow][i] = EMPTYBLOCK;
+					gameStateComponent->GameMap[gameStateComponent->CurrentGameRow - 1][i] = EMPTYBLOCK;
 				}
 			}
 			
@@ -1033,8 +1111,7 @@ void GameOwner::LineDeletion()
 				{
 					gameStateComponent->GameMap[0][i] = EMPTYBLOCK;
 				}
-			}
-			
+			}			
 			
 		}	
 	}
