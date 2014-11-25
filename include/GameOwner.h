@@ -51,8 +51,6 @@ public:
 	bool ismoveableBlock(int blockId);
 	bool isEmptyBlock(int blockId);
 
-	int MaxPossibleScore;
-	int maxShift;
 	Direction direction[4];
 	GamePlayer* winner;
 	bool HasWinner;
@@ -67,13 +65,14 @@ public:
 	void ForcedDeletion();
 	void showTitleView();
 	void ShowResultPage();
+	void ShowGameBackground();
 	
 	int shiftTime;
 	int gameTime;
 	int levelTime;
-	int imageTime;
+	int viewTime;
 	
-	sf::Font font;
+	int initFrame;
 	
 	int ConfiguredSHIFTTIME;
 	int ConfiguredGAMETIME;
@@ -89,7 +88,5 @@ public:
 	sf::Sound sound2;
 	sf::Sound sound3;
 	sf::Sound sound4;
-	sf::Texture starBG;
-	sf::Sprite starSprite;
 
 };

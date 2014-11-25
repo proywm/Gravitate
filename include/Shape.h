@@ -43,7 +43,9 @@ namespace ActorShape
 			void LoadFont(const char* fileLocation);
 			void SetText();
 			void setTexture();
+			void setSprite(int px, int py, int xpos, int ypos, int SpriteWidth, int SpriteHeight, int direction);
 			void SetTextInBox(std::ostringstream& string, int PosX, int PosY);
+			
 
 			int blockHeight;
 			int blockWidth;

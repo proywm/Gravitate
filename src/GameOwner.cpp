@@ -26,15 +26,6 @@ void GameOwner::init(const char* actorsList)
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
 	ConfiguredLEVELTIME = playerFiles->IntAttribute("levelTime");
 	
-	font.loadFromFile("./resources/fonts/arial.ttf");
-	maxShift = 15;
-	
-	MaxPossibleScore = 10;//hardcoded
-	srand(1);
-	direction[0]= randomGravity();
-	direction[1]= randomGravity();
-	direction[2]= randomGravity();
-	direction[3]= randomGravity();
 	
 	//Init sounds
 	if (!buffer.loadFromFile("./resources/sounds/GravityChange.wav"))
@@ -53,19 +44,7 @@ void GameOwner::init(const char* actorsList)
 		exit (EXIT_FAILURE);
 	sound4.setBuffer(buffer4);
 	
-	//Init Texture
-	if (!starBG.loadFromFile("./resources/textures/stars.png"))
-		exit (EXIT_FAILURE);
-
-	gameTime = 0; 
-	shiftTime = 0;
-	levelTime = ConfiguredLEVELTIME;
-	imageTime = 0;
-	score = 0;
-	HasWinner = false;
-	ShapeSelected = false;
-	CurrentTetrominoShapeID = -1;
-	visualDirection = -1;
+	
 	showTitleView();
 	controlGame();
 }
@@ -92,6 +71,24 @@ void GameOwner::showTitleView()
 		}
 	}
 	printf("value of i---------------------->%d",i);
+	
+	//setting the directions
+	srand(1);
+	direction[0]= randomGravity();
+	direction[1]= randomGravity();
+	direction[2]= randomGravity();
+	direction[3]= randomGravity();
+
+	gameTime = 0; 
+	shiftTime = 0;
+	levelTime = ConfiguredLEVELTIME;
+	viewTime = 0;
+	score = 0;
+	HasWinner = false;
+	ShapeSelected = false;
+	CurrentTetrominoShapeID = -1;
+	visualDirection = -1;
+	initFrame = 0;
 	GameViewManager::instance()->setCurrentView(TITLEVIEW);
 }
 void GameOwner::update(double deltaMS)
@@ -104,23 +101,13 @@ void GameOwner::update(double deltaMS)
 		{
 			ImplementGravity(deltaMS);
 			updateDirectionImage();
-			
-			imageTime += deltaMS;
-			if(imageTime > 200)
+			viewTime += deltaMS;
+			if (viewTime >= 15)
 			{
-				imageTime = 0;
-				sf::Sprite sprite;
-				sprite.setTexture(starBG);
-				sprite.setTextureRect(sf::IntRect(0,0,287,249));
-				//sprite.setPosition(sf::Vector2f(10, 50)); // absolute position
-				//sprite.move(sf::Vector2f(5, 10)); // relative offset
-				//sprite.setRotation(90); // absolute angle
-				//sprite.rotate(15); // relative angle
-				//sprite.setScale(sf::Vector2f(0.5f, 2.f)); // absolute scale
-				//sprite.scale(sf::Vector2f(1.5f, 3.f)); // relative scale
-				DisplayManager::instance()->window.draw(sprite);
+				viewTime = 0;
+				ShowGameBackground();
+				//printf("%d, %d\n",DisplayManager::instance()->window.getSize().x, DisplayManager::instance()->window.getSize().y);
 			}
-			
 			ShowCursor();
 	
 			//Check for Line Deletion
@@ -140,6 +127,23 @@ void GameOwner::update(double deltaMS)
 		case RESULTVIEW:
 		//	ShowResultPage();
 		break;
+	}
+}
+void GameOwner::ShowGameBackground()
+{
+	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorId == 1)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			initFrame++;
+			initFrame %= 40;
+			int xpos = initFrame % 5;
+			int ypos = initFrame / 5;
+			
+			((ActorShape::GridMap*)visualComponent->actorShape)->setSprite(0, 0, xpos * (287 + 2), ypos * (249 + 2), 287, 249, getDirection());
+		}
 	}
 }
 void GameOwner::ShowResultPage()
@@ -372,16 +376,16 @@ void GameOwner::ImplementGravity(double deltaMS)
 				}
 				GameStateComponent* gameStateComponent = (GameStateComponent*)actor->GetComponent(GAMESTATE);	
 				std::set<int> pieces; 
-///*				
+		/*		
 				for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 				{
 					for(int c=0;c<gameStateComponent->CurrentGameCol;c++)
-						printf("%d ",gameStateComponent->GameMap[r][c]);
+					printf("%d ",gameStateComponent->GameMap[r][c]);
 					
 					printf("\n");
 				}
 				printf("\n");
-//*/
+*/
 				switch(direction[0])
 				{
 				case SOUTH:
@@ -748,7 +752,7 @@ int GameOwner::SelectedShape()
 	//	return randomShapeSelection();
 	if(ShapeSelected)
 	{
-		//printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
+	//	printf("shape has been Selected--->%d\n",CurrentTetrominoShapeID);
 		return CurrentTetrominoShapeID;
 	}
 	return -1;

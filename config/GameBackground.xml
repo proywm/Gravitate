@@ -3,7 +3,7 @@
 	<Visual ComponentType="1" ComponentTypeText = "Visual" IsInvisible = "1" GameViewId = "2" GameViewType = "GAMEVIEW" >
 		<Color r="200" g="50" b="50" a="255" />
 		<Structure Shape="TextArea" ShapeID="5" NoOfRows="1" NoOfCols="1" BlockHeight="1300" BlockWidth="1300" />
-		<Texture TextureFileName="./resources/images/background.jpg" FontFileName="./resources/fonts/arial.ttf" />
+		<Texture TextureFileName="./resources/textures/stars.png" FontFileName="./resources/fonts/arial.ttf" />
     	</Visual>
 	<Physical ComponentType="2" ComponentTypeText = "Physical" IsInvisible = "1">
 		<Structure Shape="TextArea" ShapeID="5" NoOfRows="1" NoOfCols="1" BlockHeight="1300" BlockWidth="1300"/>
