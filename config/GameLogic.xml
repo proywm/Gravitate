@@ -3,7 +3,7 @@
 	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="0"/>
 	<Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
 	<Actor ActorFileName="./config/Map3.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="2"/>
-	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="200" spawnPositionY="150" actorId="4"/>
+	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="250" spawnPositionY="450" actorId="4"/>
 	<Actor ActorFileName="./config/GameScore.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="5"/>
 
 	<Actor ActorFileName="./config/IShape.xml"  totalActors="1" spawnPositionX="70" spawnPositionY="500" actorId="6"/>
@@ -14,30 +14,28 @@
 	<Actor ActorFileName="./config/Directions.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="50" actorId="14"/>
 	<Actor ActorFileName="./config/ScoreLabel.xml"  totalActors="1" spawnPositionX="80" spawnPositionY="20" actorId="15"/>
 
-	<Actor ActorFileName="./config/DeleteButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="16"/>
+	<Actor ActorFileName="./config/DeleteButton.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="420" actorId="16"/>
 	<Actor ActorFileName="./config/GameRulesPage.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="17"/>
 
-	<Actor ActorFileName="./config/GameManualButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="18"/>
-	<Actor ActorFileName="./config/GameQuitButton.xml"  totalActors="1" spawnPositionX="20" spawnPositionY="420" actorId="19"/>
-	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="280" spawnPositionY="420" actorId="20"/>
-	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="21"/>
+	<Actor ActorFileName="./config/GameManualButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="490" actorId="18"/>
+	<Actor ActorFileName="./config/GameQuitButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="520" actorId="19"/>
+	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="180" spawnPositionY="420" actorId="20"/>
+	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="480" spawnPositionY="420" actorId="21"/>
 	<Actor ActorFileName="./config/GameMenuButtonFromHelp.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="22"/>
 
-	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="530" spawnPositionY="200" actorId="23"/>
-	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="590" spawnPositionY="200" actorId="24"/>
-	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="650" spawnPositionY="200" actorId="25"/>
+	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="200" actorId="23"/>
+	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="250" actorId="24"/>
+	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="300" actorId="25"/>
 
-	<Actor ActorFileName="./config/ResultScoreLabel.xml"  totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="26"/>
+	<Actor ActorFileName="./config/ResultScoreLabel.xml"  totalActors="1" spawnPositionX="250" spawnPositionY="200" actorId="26"/>
 </Player>
 
 <Player Name="GameLogic" Difficulty="Medium" PlayerViewType="GameLogicView"  PlayerViewTypeID="2" shiftTime="10000" gameTime="650" levelTime="150000">
 	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="0"/>
 	<Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
-	<!--Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="13"/-->
 	<Actor ActorFileName="./config/Map2.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80"  actorId="2"/>
-	<!--Actor ActorFileName="./config/ShapeSelectionToolBar.xml" totalActors="1" spawnPositionX="20" spawnPositionY="500" actorId="3"/-->
-	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="200" spawnPositionY="150" actorId="4"/>
-	<Actor ActorFileName="./config/GameScore.xml"  totalActors="1" spawnPositionX="100" spawnPositionY="50" actorId="5"/>	
+	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="250" spawnPositionY="450" actorId="4"/>
+	<Actor ActorFileName="./config/GameScore.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="5"/>
 
 	<Actor ActorFileName="./config/TShape.xml"  totalActors="1" spawnPositionX="130" spawnPositionY="500" actorId="11"/>
 	<Actor ActorFileName="./config/JShape.xml"  totalActors="1" spawnPositionX="230" spawnPositionY="500" actorId="7"/>
@@ -46,18 +44,20 @@
 	<Actor ActorFileName="./config/Directions.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="50" actorId="14"/>
 	<Actor ActorFileName="./config/ScoreLabel.xml"  totalActors="1" spawnPositionX="80" spawnPositionY="20" actorId="15"/>
 
-	<Actor ActorFileName="./config/DeleteButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="16"/>
+	<Actor ActorFileName="./config/DeleteButton.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="420" actorId="16"/>
 	<Actor ActorFileName="./config/GameRulesPage.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="17"/>
 
-	<Actor ActorFileName="./config/GameManualButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="18"/>
-	<Actor ActorFileName="./config/GameQuitButton.xml"  totalActors="1" spawnPositionX="20" spawnPositionY="420" actorId="19"/>
-	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="280" spawnPositionY="420" actorId="20"/>
-	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="21"/>
+	<Actor ActorFileName="./config/GameManualButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="490" actorId="18"/>
+	<Actor ActorFileName="./config/GameQuitButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="520" actorId="19"/>
+	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="180" spawnPositionY="420" actorId="20"/>
+	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="480" spawnPositionY="420" actorId="21"/>
 	<Actor ActorFileName="./config/GameMenuButtonFromHelp.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="22"/>
 
-	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="530" spawnPositionY="200" actorId="23"/>
-	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="590" spawnPositionY="200" actorId="24"/>
-	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="650" spawnPositionY="200" actorId="25"/>
+	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="200" actorId="23"/>
+	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="250" actorId="24"/>
+	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="300" actorId="25"/>
+
+	<Actor ActorFileName="./config/ResultScoreLabel.xml"  totalActors="1" spawnPositionX="250" spawnPositionY="200" actorId="26"/>
 </Player>
 
 
@@ -65,9 +65,8 @@
 	<Actor ActorFileName="./config/TitleBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="0"/>
 	<Actor ActorFileName="./config/GameBackground.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="1"/>
 	<Actor ActorFileName="./config/Map.xml" totalActors="1" spawnPositionX="100" spawnPositionY="80" actorId="2"/>
-	<!--Actor ActorFileName="./config/ShapeSelectionToolBar.xml" totalActors="1" spawnPositionX="20" spawnPositionY="500" actorId="3"/-->
-	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="200" spawnPositionY="150" actorId="4"/>
-	<Actor ActorFileName="./config/GameScore.xml"  totalActors="1" spawnPositionX="100" spawnPositionY="50" actorId="5"/>
+	<Actor ActorFileName="./config/GameLevelSelector.xml"  totalActors="1" spawnPositionX="250" spawnPositionY="450" actorId="4"/>
+	<Actor ActorFileName="./config/GameScore.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="5"/>
 
 	<Actor ActorFileName="./config/TShape.xml"  totalActors="1" spawnPositionX="150" spawnPositionY="500" actorId="11"/>
 	<Actor ActorFileName="./config/SShape.xml"  totalActors="1" spawnPositionX="250" spawnPositionY="500" actorId="9"/>
@@ -77,16 +76,18 @@
 	<Actor ActorFileName="./config/Directions.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="50" actorId="14"/>
 	<Actor ActorFileName="./config/ScoreLabel.xml"  totalActors="1" spawnPositionX="80" spawnPositionY="20" actorId="15"/>
 
-	<Actor ActorFileName="./config/DeleteButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="16"/>
+	<Actor ActorFileName="./config/DeleteButton.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="420" actorId="16"/>
 	<Actor ActorFileName="./config/GameRulesPage.xml"  totalActors="1" spawnPositionX="0" spawnPositionY="0" actorId="17"/>
 
-	<Actor ActorFileName="./config/GameManualButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="18"/>
-	<Actor ActorFileName="./config/GameQuitButton.xml"  totalActors="1" spawnPositionX="20" spawnPositionY="420" actorId="19"/>
-	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="280" spawnPositionY="420" actorId="20"/>
-	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="21"/>
+	<Actor ActorFileName="./config/GameManualButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="490" actorId="18"/>
+	<Actor ActorFileName="./config/GameQuitButton.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="520" actorId="19"/>
+	<Actor ActorFileName="./config/GameExitButton.xml"  totalActors="1" spawnPositionX="180" spawnPositionY="420" actorId="20"/>
+	<Actor ActorFileName="./config/GameMenuButton.xml"  totalActors="1" spawnPositionX="480" spawnPositionY="420" actorId="21"/>
 	<Actor ActorFileName="./config/GameMenuButtonFromHelp.xml"  totalActors="1" spawnPositionX="580" spawnPositionY="420" actorId="22"/>
 
-	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="530" spawnPositionY="200" actorId="23"/>
-	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="590" spawnPositionY="200" actorId="24"/>
-	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="650" spawnPositionY="200" actorId="25"/>
+	<Actor ActorFileName="./config/DirectionsNext1.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="200" actorId="23"/>
+	<Actor ActorFileName="./config/DirectionsNext2.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="250" actorId="24"/>
+	<Actor ActorFileName="./config/DirectionsNext3.xml"  totalActors="1" spawnPositionX="620" spawnPositionY="300" actorId="25"/>
+
+	<Actor ActorFileName="./config/ResultScoreLabel.xml"  totalActors="1" spawnPositionX="250" spawnPositionY="200" actorId="26"/>
 </Player>

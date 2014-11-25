@@ -70,6 +70,7 @@ void VisualComponent::update(double deltaMS)
 	/*sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 	DisplayManager::instance()->window.draw(shape);*/
+	int r,g,b;
 	
 	if(!isVisible)
 		return;
@@ -88,6 +89,9 @@ void VisualComponent::update(double deltaMS)
 	}
 	else if(shapeID == 3)//Grid Map
 	{
+		//r = rand()%250;
+		//g = rand()%250;
+		//b = rand()%250;
 		GameStateComponent* gameStateComponent = (GameStateComponent*)owner->GetComponent(GAMESTATE);
 		for(int r=0;r<gameStateComponent->CurrentGameRow;r++)
 		{
@@ -100,6 +104,8 @@ void VisualComponent::update(double deltaMS)
 				if(gameStateComponent->GameMap[r][c]>ACTIVEBLOCK)//placed
 				{
 					((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color::Green);
+					
+					//((ActorShape::GridMap*)actorShape)->gridMap[r][c].setFillColor(sf::Color(100%owner->actorId, 250%owner->actorId, 150%owner->actorId));
 				}
 				else if(gameStateComponent->GameMap[r][c]==ACTIVEBLOCK)
 				{
@@ -151,7 +157,7 @@ void VisualComponent::update(double deltaMS)
 				int posY = physicalComponent->getActorPosition().y + 
 									(r * ((ActorShape::GridMap*)actorShape)->blockHeight) + r;
 				((ActorShape::GridMap*)actorShape)->gridMapSprite[r][c].setPosition(sf::Vector2f(posX, posY));
-				((ActorShape::GridMap*)actorShape)->gridMaptext[r][c].setPosition(posX,posY);
+				((ActorShape::GridMap*)actorShape)->gridMaptext[r][c].setPosition(posX+50,posY+7);
 				DisplayManager::instance()->window.draw(((ActorShape::GridMap*)actorShape)->gridMaptext[r][c]);
 			}
 		}

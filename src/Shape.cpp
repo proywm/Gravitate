@@ -36,7 +36,10 @@ void ActorShape::GridMap::LoadTexture(const char* fileLocation)
 	if (!texture.loadFromFile(fileLocation))
 	{
 		printf("Error loading Texture file \n");
+		hasTexture = false;
 	}
+	else
+		hasTexture = true;
 }
 void ActorShape::GridMap::LoadFont(const char* fileLocation)
 {
@@ -45,16 +48,23 @@ void ActorShape::GridMap::LoadFont(const char* fileLocation)
 		printf("Error loading Font file \n");
 	}
 }
-void ActorShape::GridMap::SetText()
+void ActorShape::GridMap::SetText(int size, int color,sf::Text::Style t)
 {
+	
+		
 	for(int r=0;r<MAXROW;r++)
 	{
 		for(int c=0;c<MAXCOL;c++)
 		{
 			gridMaptext[r][c].setFont(font); 
-			gridMaptext[r][c].setCharacterSize(15); // in pixels, not points!
-			gridMaptext[r][c].setColor(sf::Color::Red);
-			gridMaptext[r][c].setStyle(sf::Text::Bold | sf::Text::Underlined);
+			gridMaptext[r][c].setCharacterSize(size); // in pixels, not points!
+			if(color == 1)
+				gridMaptext[r][c].setColor(sf::Color(50, 205, 50));
+			if(color == 2)
+				gridMaptext[r][c].setColor(sf::Color(178, 34, 34));
+			if(color == 3)
+				gridMaptext[r][c].setColor(sf::Color::Yellow);
+			gridMaptext[r][c].setStyle(t);
 		}
 	}
 }
@@ -71,19 +81,25 @@ void ActorShape::GridMap::setBlockSize(int BlockHeight,int BlockWidth)
 		for(int c=0;c<MAXCOL;c++)
 		{
 			gridMap[r][c].setSize(sf::Vector2f(blockWidth,blockHeight));
-			gridMapSprite[r][c].setTexture(texture);
-			gridMapSprite[r][c].setTextureRect(sf::IntRect(0, 0,blockWidth, blockHeight));
+			if(hasTexture)
+			{
+				gridMapSprite[r][c].setTexture(texture);
+				gridMapSprite[r][c].setTextureRect(sf::IntRect(0, 0,blockWidth, blockHeight));
+			}
 		}
 	}
-	SetText();
+	SetText(15,1,sf::Text::Bold);
 }
 void ActorShape::GridMap::setTexture()
 {
-	for(int r=0;r<MAXROW;r++)
+	if(hasTexture)
 	{
-		for(int c=0;c<MAXCOL;c++)
+		for(int r=0;r<MAXROW;r++)
 		{
-			gridMapSprite[r][c].setTexture(texture);
+			for(int c=0;c<MAXCOL;c++)
+			{
+				gridMapSprite[r][c].setTexture(texture);
+			}
 		}
 	}
 }

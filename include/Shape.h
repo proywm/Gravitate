@@ -40,8 +40,9 @@ namespace ActorShape
 			~GridMap(void);
 			void setBlockSize(int BlockHeight,int BlockWidth);
 			void LoadTexture(const char* fileLocation);
+			bool hasTexture;
 			void LoadFont(const char* fileLocation);
-			void SetText();
+			void SetText(int size, int color,sf::Text::Style t);
 			void setTexture();
 			void SetTextInBox(std::ostringstream& string, int PosX, int PosY);
 

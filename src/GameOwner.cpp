@@ -106,8 +106,9 @@ void GameOwner::showTitleView()
 			{
 				std::ostringstream LevelString;			
 				VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
-				LevelString << "Level " << playerElements->Attribute("Difficulty");// put float into string buffer
+				LevelString << playerElements->Attribute("Difficulty");// put float into string buffer
 				((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(LevelString, 0, i);
+				((ActorShape::GridMap*)visualComponent->actorShape)->SetText(15,2,sf::Text::Bold);
 				printf("value of i---------------------->%s\n",playerElements->Attribute("Difficulty"));
 				i++;
 			}
@@ -163,8 +164,9 @@ void GameOwner::ShowResultPage()
 		if(actor->actorId == 26)//directional Image
 		{
 			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
-			ResultString << "Your Score " << score;// put float into string buffer
+			ResultString << "Score: " << score;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ResultString, 0, 0);
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetText(60,3,sf::Text::Bold);
 		}
 	}
 }
@@ -189,12 +191,14 @@ void GameOwner::ShowButtonTexts()
 			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
 			QuitString << "Quit";// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(QuitString, 0, 0);
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetText(15,2,sf::Text::Bold);
 		}
 		else if(actor->actorId == 20)//directional Image
 		{
 			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
 			ExitString << "Exit";// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ExitString, 0, 0);
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetText(15,2,sf::Text::Bold);
 		}
 		else if(actor->actorId == 21)//directional Image
 		{
@@ -913,10 +917,13 @@ void GameOwner::updateScoreView()
 			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
 			GravityShiftString << "Next Gravity Shift: " << (ConfiguredSHIFTTIME-shiftTime) / 1000;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(GravityShiftString, 0, 0);
+			
 			ScoreString << "Score " << score;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(ScoreString, 1, 0);
+					
 			LevelTimeString << "Time Left: " << levelTime / 1000;// put float into string buffer
 			((ActorShape::GridMap*)visualComponent->actorShape)->SetTextInBox(LevelTimeString, 2, 0);
+			((ActorShape::GridMap*)visualComponent->actorShape)->SetText(15,2,sf::Text::Bold);
 		}
 	}
 }

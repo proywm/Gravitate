@@ -2,8 +2,8 @@
 <Actor ActorType="TextArea" ActorTypeID="4">
 	<Visual ComponentType="1" ComponentTypeText = "Visual" IsInvisible = "1" GameViewId = "2" GameViewType = "GAMEVIEW">
 		<Color r="200" g="50" b="50" a="255" />
-		<Structure Shape="TextArea" ShapeID="5" NoOfRows="1" NoOfCols="1" BlockHeight="42" BlockWidth="150"/>
-		<Texture TextureFileName="./resources/images/ButtonOrange.bmp" FontFileName="./resources/fonts/arial.ttf" Text="Quit Game"/>
+		<Structure Shape="TextArea" ShapeID="5" NoOfRows="1" NoOfCols="1" BlockHeight="32" BlockWidth="133"/>
+		<Texture TextureFileName="./resources/images/ButtonOrange.png" FontFileName="./resources/fonts/arial.ttf" Text="Quit Game"/>
     	</Visual>
 	<Physical ComponentType="2" ComponentTypeText = "Physical" IsInvisible = "1">
 		<Structure Shape="TextArea" ShapeID="5" NoOfRows="1" NoOfCols="1" BlockHeight="42" BlockWidth="150"/>
