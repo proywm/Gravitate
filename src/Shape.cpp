@@ -103,3 +103,28 @@ void ActorShape::GridMap::setTexture()
 		}
 	}
 }
+void ActorShape::GridMap::setSprite(int px, int py, int xpos, int ypos, int SpriteWidth, int SpriteHeight, int direction)
+{
+	//gridMapSprite[px][py].setOrigin(400, 300);
+	gridMapSprite[px][py].setTextureRect(sf::IntRect(xpos, ypos, SpriteWidth, SpriteHeight));
+	gridMapSprite[px][py].setScale(sf::Vector2f(800 / SpriteWidth, 600 / SpriteHeight));
+	//gridMapSprite[px][py].setScale(sf::Vector2f(0.5f, 0.5f));
+	//gridMapSprite[px][py].rotate(90 * direction);
+	direction = 0;
+	switch(direction)
+	{
+	case 0:
+		break;
+	case 1:
+		gridMapSprite[px][py].setRotation(270);
+		break;
+	case 2:
+		gridMapSprite[px][py].setRotation(180);
+		break;
+	case 3:
+		gridMapSprite[px][py].setRotation(90);
+		break;
+	default:
+		break;
+	}
+}

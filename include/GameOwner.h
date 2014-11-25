@@ -53,8 +53,6 @@ public:
 	bool ismoveableBlock(int blockId);
 	bool isEmptyBlock(int blockId);
 
-	int MaxPossibleScore;
-	int maxShift;
 	Direction direction[4];
 	GamePlayer* winner;
 	bool HasWinner;
@@ -70,12 +68,14 @@ public:
 	void ForcedDeletion();
 	void showTitleView();
 	void ShowResultPage();
+	void ShowGameBackground();
 	
 	int shiftTime;
 	int gameTime;
 	int levelTime;
+	int viewTime;
 	
-	sf::Font font;
+	int initFrame;
 	
 	int ConfiguredSHIFTTIME;
 	int ConfiguredGAMETIME;

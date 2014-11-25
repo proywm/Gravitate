@@ -27,15 +27,6 @@ void GameOwner::init(const char* actorsList)
 	ConfiguredGAMETIME = playerFiles->IntAttribute("gameTime");
 	ConfiguredLEVELTIME = playerFiles->IntAttribute("levelTime");
 	
-	font.loadFromFile("./resources/fonts/arial.ttf");
-	maxShift = 15;
-	
-	MaxPossibleScore = 10;//hardcoded
-	srand(1);
-	direction[0]= randomGravity();
-	direction[1]= randomGravity();
-	direction[2]= randomGravity();
-	direction[3]= randomGravity();
 	
 	//Init sounds
 	if (!buffer.loadFromFile("./resources/sounds/GravityChange.wav"))
@@ -54,14 +45,7 @@ void GameOwner::init(const char* actorsList)
 		exit (EXIT_FAILURE);
 	sound4.setBuffer(buffer4);
 	
-	gameTime = 0; 
-	shiftTime = 0;
-	levelTime = ConfiguredLEVELTIME;
-	score = 0;
-	HasWinner = false;
-	ShapeSelected = false;
-	CurrentTetrominoShapeID = -1;
-	visualDirection = -1;
+	
 	showTitleView();
 	controlGame();
 }
@@ -115,6 +99,24 @@ void GameOwner::showTitleView()
 		}
 	}
 	printf("value of i---------------------->%d",i);
+	
+	//setting the directions
+	srand(1);
+	direction[0]= randomGravity();
+	direction[1]= randomGravity();
+	direction[2]= randomGravity();
+	direction[3]= randomGravity();
+
+	gameTime = 0; 
+	shiftTime = 0;
+	levelTime = ConfiguredLEVELTIME;
+	viewTime = 0;
+	score = 0;
+	HasWinner = false;
+	ShapeSelected = false;
+	CurrentTetrominoShapeID = -1;
+	visualDirection = -1;
+	initFrame = 0;
 	GameViewManager::instance()->setCurrentView(TITLEVIEW);
 }
 void GameOwner::update(double deltaMS)
@@ -131,6 +133,13 @@ void GameOwner::update(double deltaMS)
 		{
 			ImplementGravity(deltaMS);
 			updateDirectionImage();
+			viewTime += deltaMS;
+			if (viewTime >= 15)
+			{
+				viewTime = 0;
+				ShowGameBackground();
+				//printf("%d, %d\n",DisplayManager::instance()->window.getSize().x, DisplayManager::instance()->window.getSize().y);
+			}
 			ShowCursor();
 			//Check for Line Deletion
 			LineDeletion();
@@ -151,6 +160,23 @@ void GameOwner::update(double deltaMS)
 		{
 			resetGame();
 			break;
+		}
+	}
+}
+void GameOwner::ShowGameBackground()
+{
+	for(actorIterType iter = ActorFactory::instance()->actorMapALL.begin(); iter != ActorFactory::instance()->actorMapALL.end(); ++iter)
+	{
+		Actor* actor = (Actor*)iter->second;
+		if(actor->actorId == 1)//directional Image
+		{
+			VisualComponent* visualComponent = (VisualComponent*)actor->GetComponent(VISUAL);
+			initFrame++;
+			initFrame %= 40;
+			int xpos = initFrame % 5;
+			int ypos = initFrame / 5;
+			
+			((ActorShape::GridMap*)visualComponent->actorShape)->setSprite(0, 0, xpos * (287 + 2), ypos * (249 + 2), 287, 249, getDirection());
 		}
 	}
 }
