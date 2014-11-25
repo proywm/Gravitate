@@ -340,6 +340,9 @@ void GameOwner::SelectGameLevel(Actor* actor,int posX, int posY)
 	}
 	deleteGamePlayerActors();
 	initGamePlayerActors(playerElements);
+	ConfiguredSHIFTTIME = playerElements->IntAttribute("shiftTime");
+	ConfiguredGAMETIME = playerElements->IntAttribute("gameTime");
+	ConfiguredLEVELTIME = playerElements->IntAttribute("levelTime");
 	GameViewManager::instance()->setCurrentView(GAMEVIEW);
 }
 bool GameOwner::ismoveableBlock(int blockId)
@@ -362,6 +365,7 @@ void GameOwner::ImplementGravity(double deltaMS)
 		{	
 			gameTime += deltaMS;
 			levelTime -= deltaMS;
+			shiftTime += deltaMS;
 			if(levelTime <= 0)
 			{
 				//finish
@@ -370,7 +374,6 @@ void GameOwner::ImplementGravity(double deltaMS)
 			if (gameTime >= ConfiguredGAMETIME)
 			{
 				gameTime = 0;
-				shiftTime += 1000;
 				if (shiftTime >= ConfiguredSHIFTTIME)
 				{
 					shiftTime = 0;
